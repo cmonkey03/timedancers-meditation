@@ -23,7 +23,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier: 'org.timedancers.meditation',
     infoPlist: {
-      "ITSAppUsesNonExemptEncryption": false
+      "ITSAppUsesNonExemptEncryption": false,
+      "CFBundleDisplayName": "Timedancers"   // <= short label under the icon
     }
   },
   orientation: 'portrait',
