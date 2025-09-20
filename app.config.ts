@@ -33,7 +33,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   newArchEnabled: true,
   extra: {
     eas: {
-      projectId: "43cce12d-3b04-4a32-a38b-7bf22a9c3cb9",
+       projectId: "de8347b6-d666-4360-b7ec-791c9eee94cf",
     }
   },
   web: {
@@ -42,6 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   plugins: [
     'expo-router',
+    'expo-audio',
     [
       'expo-splash-screen',
       {
