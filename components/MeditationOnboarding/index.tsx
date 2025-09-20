@@ -7,12 +7,20 @@ import WelcomeImage from './WelcomeImage';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
+import { Pressable, Text } from 'react-native';
 
 type Props = {
   finishOnboarding: () => void;
 };
 
 const MeditationOnboarding = ({ finishOnboarding }: Props) => {
+  const NextButton = (props: any) => (
+    <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
+    >
+      <Text style={{ fontWeight: '600', color: '#1a5632' }}>Next</Text>
+    </Pressable>
+  );
+
   const instructions = [
     `Sit upright in a chair with your appendages at rest or, if possible, on the ground seated cross-legged on a pillow or folded blanket.`,
     `When you start the timer, spend equal time focusing on each wheel to the exclusion of everything else. The first chime tells you to begin to focus on the Wheel of Power, which is located two fingers below the naval (your belly button).`,
@@ -28,6 +36,9 @@ const MeditationOnboarding = ({ finishOnboarding }: Props) => {
       onSkip={() => {
         finishOnboarding();
       }}
+      showSkip
+      showNext
+      NextButtonComponent={NextButton}
       imageContainerStyles={{ paddingBottom: 0 }}
       pages={[
         {

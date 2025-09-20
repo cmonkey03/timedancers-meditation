@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Audio, AVPlaybackNativeSource } from 'expo-av';
 import { useAssets } from 'expo-asset';
-import { useKeepAwake } from 'expo-keep-awake';
+import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import WheelTower from '@/components/WheelTower';
 import WheelControls from '@/components/WheelControls';
 import displayTime from '@/utils/displayTime';
@@ -13,8 +13,8 @@ type Props = {
   onboarded: boolean;
 };
 
-const Meditation = ({ handler, onboarded }: Props): JSX.Element => {
-  useKeepAwake();
+const Meditation = ({ handler, onboarded }: Props) => {
+  useKeepAwakeSafe();
   const [input, setInput] = useState('3');
   const [counting, setCounting] = useState(false);
   const [started, setStarted] = useState(false);

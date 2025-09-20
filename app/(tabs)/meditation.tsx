@@ -1,12 +1,12 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
 import Meditation from '@/components/Meditation';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useKeepAwake } from 'expo-keep-awake';
 import MeditationOnboarding from '@/components/MeditationOnboarding';
+import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 export default function MeditationTabScreen() {
-  useKeepAwake();
+  useKeepAwakeSafe();
   const [onboarded, setOnboarded] = useState(false);
 
   const finishOnboarding = async (): Promise<void> => {
@@ -32,7 +32,7 @@ export default function MeditationTabScreen() {
           }
         }
       } catch (e) {
-        // ignore
+        console.log(e)
       }
     };
 
