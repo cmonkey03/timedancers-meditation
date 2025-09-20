@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "timedancers-meditation",
   "main": "expo-router/entry",
   "version": "1.0.0",
@@ -48,7 +49,7 @@
     "@types/react-native-onboarding-swiper": "^1.1.9",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
-    "typescript": "~5.9.2"
+    "typescript": "5.4.5"
   },
   "private": true
 }
