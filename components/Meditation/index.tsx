@@ -1,12 +1,11 @@
-import { View } from 'react-native';
-import { useEffect, useState } from 'react';
-import { Audio, AVPlaybackNativeSource } from 'expo-av';
-import { useAssets } from 'expo-asset';
-import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
-import WheelTower from '@/components/WheelTower';
-import WheelControls from '@/components/WheelControls';
-import displayTime from '@/utils/displayTime';
 import Button from '@/components/Button';
+import WheelControls from '@/components/WheelControls';
+import WheelTower from '@/components/WheelTower';
+import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
+import displayTime from '@/utils/displayTime';
+import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
+import { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 type Props = {
   handler: React.Dispatch<React.SetStateAction<any>>;
@@ -22,11 +21,21 @@ const Meditation = ({ handler, onboarded }: Props) => {
   const [timer1, setTimer1] = useState(60);
   const [timer2, setTimer2] = useState(60);
   const [timer3, setTimer3] = useState(60);
-  const [sound, setSound] = useState<Audio.Sound | null>();
-  const [chimes] = useAssets([
-    require('@/assets/sounds/chime1.mp3'),
-    require('@/assets/sounds/chime2.mp3'),
-  ]);
+
+  // expo-audio players for chimes
+  const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
+  const chime2 = useAudioPlayer(require('@/assets/sounds/chime2.mp3'));
+
+  // Configure audio once (silent mode, etc.)
+  useEffect(() => {
+    (async () => {
+      try {
+        await setAudioModeAsync({ playsInSilentMode: true });
+      } catch {
+        // ignore
+      }
+    })();
+  }, []);
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
@@ -45,6 +54,16 @@ const Meditation = ({ handler, onboarded }: Props) => {
       setTimer3(seconds / 3);
     }
   }, [input, started]);
+
+  const playPreloadedChime = useCallback(async (which: 1 | 2) => {
+    try {
+      const p = which === 1 ? chime1 : chime2;
+      if (!p) return;
+      // expo-audio does not auto-reset to start after ending
+      await p.seekTo(0);
+      await p.play();
+    } catch {}
+  }, [chime1, chime2]);
 
   const onPress = (action: string) => {
     switch (action) {
@@ -67,29 +86,27 @@ const Meditation = ({ handler, onboarded }: Props) => {
     let interval: any;
 
     if (counting) {
-      if (chimes && chimes[0] && chimes[1]) {
-        const chime1 = chimes[0] as AVPlaybackNativeSource;
-        const chime2 = chimes[1] as AVPlaybackNativeSource;
+      if (chime1 && chime2) {
         setStarted(true);
 
         interval = setInterval(() => {
           switch (true) {
             case timer1 === subSeconds:
-              playChime(chime1);
+              playPreloadedChime(1);
               setTimer1(timer1 - 1);
               break;
             case 0 < timer1:
               setTimer1(timer1 - 1);
               break;
             case timer2 === subSeconds:
-              playChime(chime1);
+              playPreloadedChime(1);
               setTimer2(timer2 - 1);
               break;
             case 0 < timer2:
               setTimer2(timer2 - 1);
               break;
             case timer3 === subSeconds:
-              playChime(chime1);
+              playPreloadedChime(1);
               setTimer3(timer3 - 1);
               break;
             case 0 < timer3:
@@ -99,7 +116,7 @@ const Meditation = ({ handler, onboarded }: Props) => {
               clearInterval(interval);
               setCounting(false);
               setStarted(false);
-              playChime(chime2);
+              playPreloadedChime(2);
               break;
           }
         }, 1000);
@@ -107,26 +124,7 @@ const Meditation = ({ handler, onboarded }: Props) => {
     }
 
     return () => clearInterval(interval);
-  }, [chimes, counting, subSeconds, timer1, timer2, timer3]);
-
-  const playChime = async (chime: AVPlaybackNativeSource) => {
-    await Audio.setAudioModeAsync({
-      playsInSilentModeIOS: true,
-    });
-
-    const { sound } = await Audio.Sound.createAsync(chime);
-    setSound(sound);
-
-    await sound.playAsync();
-  };
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+  }, [counting, subSeconds, timer1, timer2, timer3, playPreloadedChime, chime1, chime2]);
 
   return (
     <View
