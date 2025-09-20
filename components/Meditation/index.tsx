@@ -4,6 +4,7 @@ import WheelTower from '@/components/WheelTower';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import displayTime from '@/utils/displayTime';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -36,6 +37,27 @@ const Meditation = ({ handler, onboarded }: Props) => {
       }
     })();
   }, []);
+
+  // Prefill input from last used duration
+  useEffect(() => {
+    (async () => {
+      try {
+        const stored = await AsyncStorage.getItem('lastDurationMinutes');
+        if (stored && !started) {
+          setInput(stored);
+        }
+      } catch {
+        // ignore storage errors
+      }
+    })();
+  }, [started]);
+
+  // Persist input when it changes (only when not started)
+  useEffect(() => {
+    if (!started) {
+      AsyncStorage.setItem('lastDurationMinutes', input).catch(() => {});
+    }
+  }, [input, started]);
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
