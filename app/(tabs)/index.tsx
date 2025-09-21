@@ -13,7 +13,7 @@ export default function HomeScreen() {
         JSON.stringify({ hasOnboarded: true })
       );
     } catch {}
-    router.replace('/(tabs)/practice');
+    router.replace('/(tabs)/meditate');
   }, [router]);
 
   return <MeditationOnboarding finishOnboarding={finishOnboarding} />;
