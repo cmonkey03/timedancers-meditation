@@ -1,41 +1,127 @@
-import Button from '@/components/Button';
 import WheelControls from '@/components/WheelControls';
 import WheelTower from '@/components/WheelTower';
+import { useAlerts } from '@/hooks/use-alerts';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
-import displayTime from '@/utils/displayTime';
-import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
-import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useNotifications } from '@/hooks/use-notifications';
+import { usePhasedTimer } from '@/hooks/use-phased-timer';
+import displayTime from '@/utils/display-time';
+import { useThemeColors } from '@/hooks/use-theme';
+import * as Notifier from '@/utils/notifications';
+import * as Timer from '@/utils/timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setAudioModeAsync } from 'expo-audio';
+import { useEffect, useRef, useState } from 'react';
+import { AppState, Text, View } from 'react-native';
+
+// Timer/UI constants
+const START_CHIME_WINDOW_MS = 500;
 
 type Props = {
   handler: React.Dispatch<React.SetStateAction<any>>;
   onboarded: boolean;
 };
 
-const Meditation = ({ handler, onboarded }: Props) => {
-  useKeepAwakeSafe();
-  const [input, setInput] = useState('3');
-  const [counting, setCounting] = useState(false);
-  const [started, setStarted] = useState(false);
-  const [subSeconds, setSubSeconds] = useState(20);
-  const [timer1, setTimer1] = useState(60);
-  const [timer2, setTimer2] = useState(60);
-  const [timer3, setTimer3] = useState(60);
+function capitalize(s: string): string {
+  if (!s) return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
-  // expo-audio players for chimes
-  const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
-  const chime2 = useAudioPlayer(require('@/assets/sounds/chime2.mp3'));
+const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
+  useKeepAwakeSafe();
+  const C = useThemeColors();
+  const [input, setInput] = useState('3');
+  const initialPhases = Timer.createPhasesFromMinutes(3);
+  const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
+  const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>(() => 'chime');
+  const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
+  const appIsActiveRef = useRef(true);
+  const [showCompleted, setShowCompleted] = useState(false);
+
+  // Alerts (chime/haptic)
+  const { playStartAlert, playPhaseTransitionAlert, playCompletionAlert } = useAlerts(alertMode);
 
   // Configure audio once (silent mode, etc.)
   useEffect(() => {
     (async () => {
       try {
-        await setAudioModeAsync({ playsInSilentMode: true });
-      } catch {
-        // ignore
+        await setAudioModeAsync({ playsInSilentMode: true, staysActiveInBackground: true } as any);
+      } catch (e) {
+        console.log(e);
       }
     })();
   }, []);
+
+  // Notifications helper (scheduling, tokens, cleanup)
+  const { scheduleNotificationsForRemaining, markSessionStart, clearSessionToken, coldStartCleanup } = useNotifications(
+    timer,
+    alertMode,
+    allowBackgroundAlerts
+  );
+
+  // Prefill input from last used duration and restore settings; clear stale notifications on cold start
+  useEffect(() => {
+    (async () => {
+      try {
+        const stored = await AsyncStorage.getItem('lastDurationMinutes');
+        if (stored && !timer.started) {
+          setInput(stored);
+        }
+        const savedMode = await AsyncStorage.getItem('alertMode');
+        if (savedMode === 'chime' || savedMode === 'chime_haptic' || savedMode === 'haptic' || savedMode === 'silent') {
+          setAlertMode(savedMode);
+        }
+        const savedAllowBg = await AsyncStorage.getItem('allowBackgroundAlerts');
+        if (savedAllowBg === 'true' || savedAllowBg === 'false') {
+          setAllowBackgroundAlerts(savedAllowBg === 'true');
+        }
+        // Cold start cleanup
+        await coldStartCleanup();
+      } catch {
+        // ignore storage errors
+      }
+    })();
+  }, [timer.started, coldStartCleanup]);
+
+  // Keep app active state ref updated (used to avoid firing start alert during backgrounding)
+  useEffect(() => {
+    const onChange = (s: any) => {
+      appIsActiveRef.current = s === 'active';
+    };
+    const sub = AppState.addEventListener('change', onChange);
+    return () => sub.remove();
+  }, []);
+
+
+  // Persist input when it changes (only when not started)
+  useEffect(() => {
+    if (!timer.started) {
+      AsyncStorage.setItem('lastDurationMinutes', input).catch(() => {});
+    }
+  }, [input, timer.started]);
+
+  // Persist alertMode immediately when it changes
+  useEffect(() => {
+    AsyncStorage.setItem('alertMode', alertMode).catch(() => {});
+  }, [alertMode]);
+
+  // Persist allowBackgroundAlerts
+  useEffect(() => {
+    AsyncStorage.setItem('allowBackgroundAlerts', allowBackgroundAlerts ? 'true' : 'false').catch(() => {});
+  }, [allowBackgroundAlerts]);
+
+  // React immediately to background alerts toggle changes while running
+  useEffect(() => {
+    if (!timer.running) return;
+    if (allowBackgroundAlerts) {
+      // Reschedule remaining notifications now that it's enabled
+      scheduleNotificationsForRemaining();
+    } else {
+      // Cancel any scheduled notifications now that it's disabled
+      Notifier.cancelAllScheduled();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allowBackgroundAlerts, timer.running]);
+
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
@@ -43,88 +129,141 @@ const Meditation = ({ handler, onboarded }: Props) => {
     }
   };
 
+  // Update timer phases when input changes
   useEffect(() => {
-    if (!started) {
-      const minutes = parseInt(input) || 0;
-      const seconds: number = minutes * 60;
-      setSubSeconds(seconds / 3);
-
-      setTimer1(seconds / 3);
-      setTimer2(seconds / 3);
-      setTimer3(seconds / 3);
+    if (!timer.running && !timer.started) {
+      const minutes = parseInt(input) || 3;
+      const newPhases = Timer.createPhasesFromMinutes(minutes);
+      setPhases(newPhases);
     }
-  }, [input, started]);
-
-  const playPreloadedChime = useCallback(async (which: 1 | 2) => {
-    try {
-      const p = which === 1 ? chime1 : chime2;
-      if (!p) return;
-      // expo-audio does not auto-reset to start after ending
-      await p.seekTo(0);
-      await p.play();
-    } catch {}
-  }, [chime1, chime2]);
+  }, [input, timer.running, timer.started, setPhases]);
 
   const onPress = (action: string) => {
     switch (action) {
       case 'counting':
-        setCounting(true);
+        if (!timer.running && !timer.started) {
+          // Start timer
+          start();
+          // Schedule notifications for all upcoming phase transitions and completion
+          if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
+          // Persist expected end time for cold-start cleanup
+          markSessionStart();
+          // Initial phase alert: either instant or slightly debounced to avoid background glitch
+          const fireStartAlert = () => {
+            if (!appIsActiveRef.current) return;
+            playStartAlert();
+          };
+          setTimeout(fireStartAlert, 120);
+          // Initialize phase index tracking
+          lastPhaseIndexRef.current = 0;
+          // Mark start chime as done to avoid the interval safety net playing it again
+          startChimeDoneRef.current = true;
+        } else if (!timer.running) {
+          // Resume timer
+          resume();
+          // Re-schedule from current position
+          if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
+          // Ensure we don't replay the start chime after a resume
+          startChimeDoneRef.current = true;
+          completionChimeDoneRef.current = false;
+        }
         break;
       case 'cancel':
-        setCounting(false);
-        setStarted(false);
+        // Reset timer
+        const minutes = parseInt(input) || 3;
+        const newPhases = Timer.createPhasesFromMinutes(minutes);
+        setPhases(newPhases);
+        reset();
+        // Cancel any scheduled notifications
+        Notifier.cancelAllScheduled();
+        clearSessionToken();
         break;
       case 'pause':
-        setCounting(false);
+        // Pause timer
+        pause();
+        // Cancel notifications while paused; will be re-scheduled on resume
+        Notifier.cancelAllScheduled();
         break;
       default:
+        if (action === 'test_alert') {
+          // Preview the currently selected alert mode
+          playPhaseTransitionAlert();
+          break;
+        }
         break;
     }
   };
 
+  // Track last phase index for chime detection
+  const lastPhaseIndexRef = useRef(0);
+  // Guard to ensure start chime only plays once
+  const startChimeDoneRef = useRef(false);
+  // Guard to ensure completion chime only plays once
+  const completionChimeDoneRef = useRef(false);
+  const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
-    let interval: any;
+    const newCurrentTime = timer.now;
 
-    if (counting) {
-      if (chime1 && chime2) {
-        setStarted(true);
-
-        interval = setInterval(() => {
-          switch (true) {
-            case timer1 === subSeconds:
-              playPreloadedChime(1);
-              setTimer1(timer1 - 1);
-              break;
-            case 0 < timer1:
-              setTimer1(timer1 - 1);
-              break;
-            case timer2 === subSeconds:
-              playPreloadedChime(1);
-              setTimer2(timer2 - 1);
-              break;
-            case 0 < timer2:
-              setTimer2(timer2 - 1);
-              break;
-            case timer3 === subSeconds:
-              playPreloadedChime(1);
-              setTimer3(timer3 - 1);
-              break;
-            case 0 < timer3:
-              setTimer3(timer3 - 1);
-              break;
-            default:
-              clearInterval(interval);
-              setCounting(false);
-              setStarted(false);
-              playPreloadedChime(2);
-              break;
-          }
-        }, 1000);
+    // Ensure we chime at the very start of the session even if the player wasn't ready on press
+    if (
+      timer.running &&
+      !startChimeDoneRef.current &&
+      newCurrentTime.currentIndex === 0 &&
+      !newCurrentTime.done
+    ) {
+      const phase0Ms = (timer.phases[0]?.seconds ?? 0) * 1000;
+      if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
+        if (__DEV__) console.log('[chime] start-of-session');
+        playStartAlert();
+        startChimeDoneRef.current = true;
       }
     }
 
-    return () => clearInterval(interval);
-  }, [counting, subSeconds, timer1, timer2, timer3, playPreloadedChime, chime1, chime2]);
+    // Phase transition chime
+    if (newCurrentTime.currentIndex > lastPhaseIndexRef.current && !newCurrentTime.done) {
+      if (__DEV__) console.log(`[chime] phase transition ${lastPhaseIndexRef.current} -> ${newCurrentTime.currentIndex}`);
+      playPhaseTransitionAlert();
+    }
+    lastPhaseIndexRef.current = newCurrentTime.currentIndex;
+
+    // Completion chime
+    if (newCurrentTime.done && !completionChimeDoneRef.current) {
+      if (__DEV__) console.log('[chime] session complete');
+      playCompletionAlert();
+      completionChimeDoneRef.current = true;
+      // Cancel any pending notifications now that we're done
+      Notifier.cancelAllScheduled();
+      clearSessionToken();
+      // Show completion state briefly, then reset back to Start/input
+      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+      setShowCompleted(true);
+      completionResetTimeoutRef.current = setTimeout(() => {
+        reset();
+        setShowCompleted(false);
+      }, 2000);
+    }
+  }, [timer, playStartAlert, playPhaseTransitionAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
+
+  // Cleanup any pending completion reset timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+    };
+  }, []);
+
+  // Reset phase index when timer resets
+  useEffect(() => {
+    if (!timer.started) {
+      lastPhaseIndexRef.current = 0;
+      startChimeDoneRef.current = false;
+      completionChimeDoneRef.current = false;
+      setShowCompleted(false);
+    }
+  }, [timer.started]);
+
+  // No local tick loop; timing managed by usePhasedTimer
 
   return (
     <View
@@ -132,27 +271,47 @@ const Meditation = ({ handler, onboarded }: Props) => {
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: C.background,
       }}
     >
-      <WheelTower
-        large={true}
-        text1={displayTime(timer1)}
-        text2={displayTime(timer2)}
-        text3={displayTime(timer3)}
-      />
+      {(() => {
+        const getPhaseRemainingMs = (i: number): number => {
+          const phaseMs = (timer.phases[i]?.seconds ?? 0) * 1000;
+          if (!timer.started) return phaseMs; // not started yet
+          if (timer.now.done) return 0;
+          if (timer.now.currentIndex === i) return timer.now.phaseRemainingMs;
+          if (timer.now.currentIndex > i) return 0;
+          return phaseMs;
+        };
+
+        const t1 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(0)));
+        const t2 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(1)));
+        const t3 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(2)));
+
+        return (
+          <WheelTower
+            large={true}
+            text1={t1}
+            text2={t2}
+            text3={t3}
+            label1={capitalize(timer.phases[0]?.key ?? '')}
+            label2={capitalize(timer.phases[1]?.key ?? '')}
+            label3={capitalize(timer.phases[2]?.key ?? '')}
+            past1={timer.now.currentIndex > 0 || timer.now.done}
+            past2={timer.now.currentIndex > 1 || timer.now.done}
+            past3={timer.now.currentIndex > 2 || timer.now.done}
+          />
+        );
+      })()}
+      {showCompleted && (
+        <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
+      )}
       <WheelControls
-        counting={counting}
+        counting={timer.running}
         handleInput={handleInput}
         input={input}
         onPress={onPress}
-        started={started}
-      />
-      <View style={{ height: 64 }} />
-      <Button
-        backgroundColor="#e4ede7"
-        onPress={() => handler(!onboarded)}
-        text="Instructions"
+        started={timer.started}
       />
     </View>
   );

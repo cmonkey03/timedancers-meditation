@@ -1,6 +1,7 @@
 import { Text, TextInput, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
+import { useThemeColors } from '@/hooks/use-theme';
 
 interface Props {
   counting: boolean;
@@ -10,7 +11,8 @@ interface Props {
   started: boolean;
 }
 
-const WheelControls = ({ counting, handleInput, input, onPress, started }: Props): JSX.Element => {
+const WheelControls = ({ counting, handleInput, input, onPress, started }: Props) => {
+  const C = useThemeColors();
   const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
@@ -29,18 +31,19 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
                 <TextInput
                   keyboardType="numeric"
                   placeholder="Minutes"
-                  placeholderTextColor="#1a5632"
+                  placeholderTextColor={C.mutedText}
                   onChangeText={handleInput}
                   value={input}
                   maxLength={3}
                   textAlign={'center'}
                   style={{
                     fontSize: 16,
-                    color: '#1a5632',
+                    color: C.text,
                     fontWeight: 'bold',
                     borderWidth: 1,
                     maxWidth: 56,
                     padding: 10,
+                    borderColor: C.border,
                   }}
                 />
               )}
@@ -54,7 +57,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           text={buttonText}
         />
       </View>
-      <View style={{ height: 32 }} />
+      <View style={{ height: 16 }} />
       <View>
         {started ? (
           <Button backgroundColor="#e4ede7" onPress={() => onPress('cancel')} text="Cancel" />
@@ -64,7 +67,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
               fontWeight: 'bold',
               fontSize: 20,
               textAlign: 'center',
-              color: '#1a5632',
+              color: C.text,
             }}
           >
             Enter time in minutes
