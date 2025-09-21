@@ -11,7 +11,8 @@ import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync } from 'expo-audio';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { AppState, Text, TouchableOpacity, View } from 'react-native';
 
 // Timer/UI constants
@@ -40,6 +41,21 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
 
   // Phase config: apply per-phase overrides or equal division when idle
   const { applyNow } = usePhaseConfig(input, timer, setPhases);
+  const [appliedMsgAt, setAppliedMsgAt] = useState<number | null>(null);
+
+  // Re-apply when screen regains focus (e.g., after editing Settings)
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const changed = await applyNow();
+        if (changed) {
+          setAppliedMsgAt(Date.now());
+          setTimeout(() => setAppliedMsgAt(null), 2000);
+        }
+      })();
+      return () => {};
+    }, [applyNow])
+  );
 
   // Alerts (chime/haptic)
   const { playStartAlert, playPhaseTransitionAlert, playCompletionAlert } = useAlerts(alertMode);
@@ -135,10 +151,18 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
 
   // (Removed separate input-based updater; handled by recomputeIdlePhases)
 
-  const onPress = (action: string) => {
+  const onPress = async (action: string) => {
     switch (action) {
       case 'counting':
         if (!timer.running && !timer.started) {
+          // Ensure latest overrides are applied before starting
+          {
+            const changed = await applyNow();
+            if (changed) {
+              setAppliedMsgAt(Date.now());
+              setTimeout(() => setAppliedMsgAt(null), 2000);
+            }
+          }
           // Start timer
           start();
           // Schedule notifications for all upcoming phase transitions and completion
@@ -171,6 +195,8 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
         const newPhases = Timer.createPhasesFromMinutes(minutes);
         setPhases(newPhases);
         reset();
+        // Re-apply overrides after reset so next session uses them
+        await applyNow();
         // Cancel any scheduled notifications
         Notifier.cancelAllScheduled();
         clearSessionToken();
@@ -307,6 +333,13 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
         >
           <Text style={{ color: C.text, fontWeight: '700' }}>Apply per-phase now</Text>
         </TouchableOpacity>
+      )}
+      {/* Debug: show current phase seconds and transient applied message */}
+      <Text style={{ marginTop: 8, color: C.mutedText, fontSize: 12 }}>
+        config: {timer.phases.map(p => p.seconds).join(', ')} secs
+      </Text>
+      {appliedMsgAt && (
+        <Text style={{ marginTop: 4, color: C.text, fontSize: 12 }}>Applied per‑phase settings</Text>
       )}
       {showCompleted && (
         <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>

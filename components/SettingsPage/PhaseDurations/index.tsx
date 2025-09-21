@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useThemeColors } from '@/hooks/use-theme';
 import { setPhaseSeconds } from '@/utils/settings';
 
@@ -46,6 +46,19 @@ export default function PhaseDurations() {
     if (wisdomMin.trim() === '') setPhaseSeconds({ wisdom: undefined }).catch(() => {});
   }, [wisdomMin]);
 
+  const applyAll = async () => {
+    try {
+      const ops: Promise<any>[] = [];
+      const p = parseInt(powerMin, 10);
+      const h = parseInt(heartMin, 10);
+      const w = parseInt(wisdomMin, 10);
+      if (!isNaN(p) && p > 0) ops.push(AsyncStorage.setItem('phaseSeconds.power', String(p * 60))); else ops.push(AsyncStorage.removeItem('phaseSeconds.power'));
+      if (!isNaN(h) && h > 0) ops.push(AsyncStorage.setItem('phaseSeconds.heart', String(h * 60))); else ops.push(AsyncStorage.removeItem('phaseSeconds.heart'));
+      if (!isNaN(w) && w > 0) ops.push(AsyncStorage.setItem('phaseSeconds.wisdom', String(w * 60))); else ops.push(AsyncStorage.removeItem('phaseSeconds.wisdom'));
+      await Promise.all(ops);
+    } catch {}
+  };
+
   return (
     <View>
       <Text style={{ fontWeight: '600', color: C.text }}>Default Duration (minutes)</Text>
@@ -74,6 +87,11 @@ export default function PhaseDurations() {
           <TextInput keyboardType="numeric" placeholder="e.g. 5" value={wisdomMin} onChangeText={setWisdomMin} placeholderTextColor={C.mutedText} style={{ borderColor: C.border, borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, color: C.text }} blurOnSubmit />
         </View>
       </View>
+
+      <TouchableOpacity onPress={applyAll} style={{ alignSelf: 'flex-start', backgroundColor: C.surface, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
+        <Text style={{ color: C.text, fontWeight: '700' }}>Apply Per-phase</Text>
+      </TouchableOpacity>
+      <Text style={{ color: C.mutedText, marginTop: 6 }}>Tip: Tap Apply to persist all three values together.</Text>
     </View>
   );
 }

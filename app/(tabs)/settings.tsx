@@ -3,7 +3,7 @@ import { ScrollView, Switch, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeColors } from '@/hooks/use-theme';
 import DismissKeyboard from '@/components/DismissKeyboard';
-import { ThemePreview, DailyReminder, PhaseDurations } from '@/components/Settings';
+import { ThemePreview, DailyReminder, PhaseDurations } from '@/components/SettingsPage';
 
 export default function SettingsScreen() {
   const C = useThemeColors();
