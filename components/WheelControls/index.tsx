@@ -1,4 +1,4 @@
-import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, Switch } from 'react-native';
 import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 
@@ -10,9 +10,11 @@ interface Props {
   started: boolean;
   alertMode: 'chime' | 'chime_haptic' | 'haptic' | 'silent';
   onChangeAlertMode: (m: 'chime' | 'chime_haptic' | 'haptic' | 'silent') => void;
+  allowBackgroundAlerts: boolean;
+  onChangeAllowBackgroundAlerts: (v: boolean) => void;
 }
 
-const WheelControls = ({ counting, handleInput, input, onPress, started, alertMode, onChangeAlertMode }: Props) => {
+const WheelControls = ({ counting, handleInput, input, onPress, started, alertMode, onChangeAlertMode, allowBackgroundAlerts, onChangeAllowBackgroundAlerts }: Props) => {
   const [buttonText, setButtonText] = useState('');
 
   useEffect(() => {
@@ -86,6 +88,17 @@ const WheelControls = ({ counting, handleInput, input, onPress, started, alertMo
       <View style={{ height: 16 }} />
       <View style={{ alignItems: 'center' }}>
         <Button backgroundColor="#e4ede7" onPress={() => onPress('test_alert')} text="Test Alert" />
+      </View>
+      <View style={{ height: 16 }} />
+      {/* Background alerts toggle */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+        <Text style={{ color: '#1a5632', fontWeight: '600' }}>Allow background alerts</Text>
+        <Switch
+          value={allowBackgroundAlerts}
+          onValueChange={onChangeAllowBackgroundAlerts}
+          trackColor={{ true: '#1a5632', false: '#cbd5d1' }}
+          thumbColor={allowBackgroundAlerts ? '#e4ede7' : '#fff'}
+        />
       </View>
       <View>
         {started ? (
