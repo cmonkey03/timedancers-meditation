@@ -1,4 +1,4 @@
-import MeditationOnboarding from '@/components/MeditationOnboarding';
+import OnboardingPage from '@/components/OnboardingPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
@@ -16,5 +16,5 @@ export default function HomeScreen() {
     router.replace('/(tabs)/meditate');
   }, [router]);
 
-  return <MeditationOnboarding finishOnboarding={finishOnboarding} />;
+  return <OnboardingPage finishOnboarding={finishOnboarding} />;
 }

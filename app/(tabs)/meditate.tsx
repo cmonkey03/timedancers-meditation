@@ -1,5 +1,5 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
-import Meditation from '@/components/Meditation';
+import Meditation from '@/components/MeditationPage';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,7 +27,7 @@ export default function MeditateScreen() {
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.background }}>
+    <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-meditate">
       <DismissKeyboard>
         <Meditation handler={setOnboarded} onboarded={onboarded} />
       </DismissKeyboard>
