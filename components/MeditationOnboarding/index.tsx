@@ -8,16 +8,17 @@ import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
 import { Pressable, Text } from 'react-native';
+import { useThemeColors } from '@/hooks/use-theme';
 
 type Props = {
   finishOnboarding: () => void;
 };
 
 const MeditationOnboarding = ({ finishOnboarding }: Props) => {
+  const C = useThemeColors();
   const NextButton = (props: any) => (
-    <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
-    >
-      <Text style={{ fontWeight: '600', color: '#1a5632' }}>Next</Text>
+    <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}>
+      <Text style={{ fontWeight: '600', color: C.text }}>Next</Text>
     </Pressable>
   );
 
@@ -42,50 +43,50 @@ const MeditationOnboarding = ({ finishOnboarding }: Props) => {
       imageContainerStyles={{ paddingBottom: 0 }}
       pages={[
         {
-          backgroundColor: '#fff',
+          backgroundColor: C.background,
           image: <WelcomeImage />,
           subtitle: 'Hello',
           title: <WelcomeTitle />,
         },
         {
-          backgroundColor: '#fff',
+          backgroundColor: C.background,
           image: (
             <ImageWrapper>
               <WheelTower large={false} text1="Power" text2="Heart" text3="Wisdom" />
             </ImageWrapper>
           ),
-          title: <TitleWrapper color="#1a5632" text="We begin by turning the three wheels" />,
-          subtitle: <SubtitleWrapper color="#1a5632" text={instructions[0] || ''} />,
+          title: <TitleWrapper color={C.text} text="We begin by turning the three wheels" />,
+          subtitle: <SubtitleWrapper color={C.text} text={instructions[0] || ''} />,
         },
         {
-          backgroundColor: 'red',
+          backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel color="#1a5632" backgroundColor={['yellow', 'red']} text={''} />
+              <Wheel backgroundColor={['yellow', 'red']} text={''} />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Power" />,
-          subtitle: <SubtitleWrapper text={instructions[1] || ''} />,
+          title: <TitleWrapper text="Wheel of Power" color={C.text} />,
+          subtitle: <SubtitleWrapper text={instructions[1] || ''} color={C.text} />,
         },
         {
-          backgroundColor: 'blue',
+          backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel color="white" backgroundColor={['blue', 'green']} text={''} />
+              <Wheel backgroundColor={['blue', 'green']} text={''} />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Heart" color="white" />,
-          subtitle: <SubtitleWrapper text={instructions[2] || ''} color="white" />,
+          title: <TitleWrapper text="Wheel of Heart" color={C.text} />,
+          subtitle: <SubtitleWrapper text={instructions[2] || ''} color={C.text} />,
         },
         {
-          backgroundColor: 'purple',
+          backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel color="white" backgroundColor={['purple', 'indigo']} text={''} />
+              <Wheel backgroundColor={['purple', 'indigo']} text={''} />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Wisdom" color="white" />,
-          subtitle: <SubtitleWrapper text={instructions[3] || ''} color="white" />,
+          title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
+          subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
         },
       ]}
     />

@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
-import { View, Text, TextInput, Switch, TouchableOpacity, Linking } from 'react-native';
 import { useAlerts } from '@/hooks/use-alerts';
+import { useThemeColors } from '@/hooks/use-theme';
+import { useThemeOverride } from '@/hooks/theme-override';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function SettingsScreen() {
+  const C = useThemeColors();
+  const { override, setOverride } = useThemeOverride();
   const [minutes, setMinutes] = useState<string>('3');
   const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>('chime');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
@@ -46,12 +50,14 @@ export default function SettingsScreen() {
         'allowBackgroundAlerts',
         'dailyReminderTime',
         'activeSessionEndAtMs',
+        'themeOverride',
       ]);
     } catch {}
     setMinutes('3');
     setAlertMode('chime');
     setAllowBackgroundAlerts(true);
     setReminderTime('');
+    setOverride(null); // back to System
   };
 
   const alertOptions: { key: 'chime' | 'chime_haptic' | 'haptic' | 'silent'; label: string }[] = [
@@ -62,25 +68,57 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: '#1a5632', marginBottom: 12 }}>Settings</Text>
+    <View style={{ flex: 1, padding: 16, backgroundColor: C.background }}>
+      <Text style={{ fontSize: 22, fontWeight: '700', color: C.text, marginBottom: 12 }}>Settings</Text>
+
+      {/* Theme Preview */}
+      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 6 }}>Theme Preview</Text>
+      <View style={{ flexDirection: 'row', marginBottom: 16 }}>
+        {[
+          { key: 'system', label: 'System' },
+          { key: 'light', label: 'Light' },
+          { key: 'dark', label: 'Dark' },
+        ].map((opt) => {
+          const selected =
+            (opt.key === 'system' && override == null) ||
+            (opt.key === 'light' && override === 'light') ||
+            (opt.key === 'dark' && override === 'dark');
+          return (
+            <TouchableOpacity
+              key={opt.key}
+              onPress={() => setOverride(opt.key === 'system' ? null : (opt.key as 'light' | 'dark'))}
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: selected ? C.primary : C.border,
+                backgroundColor: selected ? C.surface : 'transparent',
+                marginRight: 8,
+              }}
+            >
+              <Text style={{ color: C.text, fontWeight: selected ? '700' : '500' }}>{opt.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
 
       {/* Default Duration */}
-      <Text style={{ fontWeight: '600', color: '#1a5632' }}>Default Duration (minutes)</Text>
+      <Text style={{ fontWeight: '600', color: C.text }}>Default Duration (minutes)</Text>
       <TextInput
         keyboardType="numeric"
         placeholder="Minutes"
         value={minutes}
         onChangeText={setMinutes}
-        placeholderTextColor="#1a5632"
+        placeholderTextColor={C.mutedText}
         style={{
-          borderColor: '#1a5632', borderWidth: 1, borderRadius: 8,
-          paddingHorizontal: 12, paddingVertical: 8, color: '#1a5632', marginTop: 6, marginBottom: 16,
+          borderColor: C.border, borderWidth: 1, borderRadius: 8,
+          paddingHorizontal: 12, paddingVertical: 8, color: C.text, marginTop: 6, marginBottom: 16,
         }}
       />
 
       {/* Alert Mode */}
-      <Text style={{ fontWeight: '600', color: '#1a5632' }}>Alert Mode</Text>
+      <Text style={{ fontWeight: '600', color: C.text }}>Alert Mode</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 6, marginBottom: 16 }}>
         {alertOptions.map((opt) => (
           <TouchableOpacity
@@ -88,51 +126,47 @@ export default function SettingsScreen() {
             onPress={() => setAlertMode(opt.key)}
             style={{
               paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1,
-              borderColor: alertMode === opt.key ? '#1a5632' : '#cbd5d1',
-              backgroundColor: alertMode === opt.key ? '#e4ede7' : '#fff',
+              borderColor: alertMode === opt.key ? C.primary : C.border,
+              backgroundColor: alertMode === opt.key ? C.surface : 'transparent',
               marginRight: 8, marginBottom: 8,
             }}
           >
-            <Text style={{ color: '#1a5632', fontWeight: alertMode === opt.key ? '700' : '500' }}>{opt.label}</Text>
+            <Text style={{ color: C.text, fontWeight: alertMode === opt.key ? '700' : '500' }}>{opt.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       {/* Background Alerts Toggle */}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <Text style={{ color: '#1a5632', fontWeight: '600' }}>Allow background alerts</Text>
+        <Text style={{ color: C.text, fontWeight: '600' }}>Allow background alerts</Text>
         <Switch value={allowBackgroundAlerts} onValueChange={setAllowBackgroundAlerts} />
       </View>
 
       {/* Test Alert */}
-      <TouchableOpacity onPress={() => playPhaseTransitionAlert()} style={{ marginBottom: 16, alignSelf: 'flex-start', backgroundColor: '#e4ede7', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
-        <Text style={{ color: '#1a5632', fontWeight: '700' }}>Test Alert</Text>
+      <TouchableOpacity onPress={() => playPhaseTransitionAlert()} style={{ marginBottom: 16, alignSelf: 'flex-start', backgroundColor: C.surface, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
+        <Text style={{ color: C.text, fontWeight: '700' }}>Test Alert</Text>
       </TouchableOpacity>
 
       {/* Daily Reminder (simple HH:MM input for now) */}
-      <Text style={{ fontWeight: '600', color: '#1a5632' }}>Daily Reminder (HH:MM)</Text>
+      <Text style={{ fontWeight: '600', color: C.text }}>Daily Reminder (HH:MM)</Text>
       <TextInput
         keyboardType="numbers-and-punctuation"
         placeholder="08:00"
         value={reminderTime}
         onChangeText={setReminderTime}
-        placeholderTextColor="#1a5632"
+        placeholderTextColor={C.mutedText}
         style={{
-          borderColor: '#1a5632', borderWidth: 1, borderRadius: 8,
-          paddingHorizontal: 12, paddingVertical: 8, color: '#1a5632', marginTop: 6, marginBottom: 8,
+          borderColor: C.border, borderWidth: 1, borderRadius: 8,
+          paddingHorizontal: 12, paddingVertical: 8, color: C.text, marginTop: 6, marginBottom: 8,
         }}
       />
-      <Text style={{ color: '#4b6356', marginBottom: 24 }}>Reminders require notification permission and a dev/production build.</Text>
+      <Text style={{ color: C.mutedText, marginBottom: 24 }}>Reminders require notification permission and a dev/production build.</Text>
 
       {/* Reset to defaults */}
-      <TouchableOpacity onPress={resetDefaults} style={{ marginBottom: 24, alignSelf: 'flex-start', backgroundColor: '#e4ede7', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
-        <Text style={{ color: '#1a5632', fontWeight: '700' }}>Reset to defaults</Text>
+      <TouchableOpacity onPress={resetDefaults} style={{ marginBottom: 24, alignSelf: 'flex-start', backgroundColor: C.surface, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
+        <Text style={{ color: C.text, fontWeight: '700' }}>Reset to defaults</Text>
       </TouchableOpacity>
 
-      {/* Explore link */}
-      <TouchableOpacity onPress={() => Linking.openURL('https://timedancers.org')}>
-        <Text style={{ color: '#1a5632', fontWeight: '700' }}>Visit timedancers.org</Text>
-      </TouchableOpacity>
     </View>
   );
 }

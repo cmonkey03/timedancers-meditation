@@ -1,11 +1,14 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
 import Meditation from '@/components/Meditation';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
+import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 export default function MeditateScreen() {
   useKeepAwakeSafe();
+  const C = useThemeColors();
   const [onboarded, setOnboarded] = useState(false);
 
   useEffect(() => {
@@ -24,8 +27,10 @@ export default function MeditateScreen() {
   }, []);
 
   return (
-    <DismissKeyboard>
-      <Meditation handler={setOnboarded} onboarded={onboarded} />
-    </DismissKeyboard>
+    <View style={{ flex: 1, backgroundColor: C.background }}>
+      <DismissKeyboard>
+        <Meditation handler={setOnboarded} onboarded={onboarded} />
+      </DismissKeyboard>
+    </View>
   );
 }

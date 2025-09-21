@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
+import { useThemeColors } from '@/hooks/use-theme';
 
 const links = [
   { label: 'Timedancers.org', url: 'https://timedancers.org' },
@@ -8,12 +9,13 @@ const links = [
 ];
 
 export default function Explore() {
+  const C = useThemeColors();
   return (
-    <View style={s.wrap}>
-      <Text style={s.title}>Explore</Text>
+    <View style={[s.wrap, { backgroundColor: C.background }]}>
+      <Text style={[s.title, { color: C.text }]}>Explore</Text>
       {links.map((l) => (
-        <TouchableOpacity key={l.url} style={s.link} onPress={() => WebBrowser.openBrowserAsync(l.url)}>
-          <Text style={s.linkText}>{l.label}</Text>
+        <TouchableOpacity key={l.url} style={[s.link, { borderBottomColor: C.border }]} onPress={() => WebBrowser.openBrowserAsync(l.url)}>
+          <Text style={[s.linkText, { color: C.text }]}>{l.label}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -22,7 +24,7 @@ export default function Explore() {
 
 const s = StyleSheet.create({
   wrap: { flex: 1, padding: 24 },
-  title: { fontSize: 20, fontWeight: '700', marginBottom: 12, color: '#1a5632' },
-  link: { paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#eee' },
-  linkText: { fontSize: 16, color: '#1a5632', fontWeight: '600' },
+  title: { fontSize: 20, fontWeight: '700', marginBottom: 12 },
+  link: { paddingVertical: 14, borderBottomWidth: 1 },
+  linkText: { fontSize: 16, fontWeight: '600' },
 });
