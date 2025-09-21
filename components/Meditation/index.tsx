@@ -1,4 +1,3 @@
-import Button from '@/components/Button';
 import WheelControls from '@/components/WheelControls';
 import WheelTower from '@/components/WheelTower';
 import { useAlerts } from '@/hooks/use-alerts';
@@ -6,6 +5,7 @@ import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import displayTime from '@/utils/display-time';
+import { useThemeColors } from '@/hooks/use-theme';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,8 +26,9 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-const Meditation = ({ handler, onboarded }: Props) => {
+const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
   useKeepAwakeSafe();
+  const C = useThemeColors();
   const [input, setInput] = useState('3');
   const initialPhases = Timer.createPhasesFromMinutes(3);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
@@ -270,7 +271,7 @@ const Meditation = ({ handler, onboarded }: Props) => {
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: C.background,
       }}
     >
       {(() => {
@@ -296,11 +297,14 @@ const Meditation = ({ handler, onboarded }: Props) => {
             label1={capitalize(timer.phases[0]?.key ?? '')}
             label2={capitalize(timer.phases[1]?.key ?? '')}
             label3={capitalize(timer.phases[2]?.key ?? '')}
+            past1={timer.now.currentIndex > 0 || timer.now.done}
+            past2={timer.now.currentIndex > 1 || timer.now.done}
+            past3={timer.now.currentIndex > 2 || timer.now.done}
           />
         );
       })()}
       {showCompleted && (
-        <Text style={{ marginTop: 12, color: '#1a5632', fontWeight: '700', fontSize: 18 }}>Session complete</Text>
+        <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
       )}
       <WheelControls
         counting={timer.running}
@@ -308,16 +312,6 @@ const Meditation = ({ handler, onboarded }: Props) => {
         input={input}
         onPress={onPress}
         started={timer.started}
-        alertMode={alertMode}
-        onChangeAlertMode={setAlertMode}
-        allowBackgroundAlerts={allowBackgroundAlerts}
-        onChangeAllowBackgroundAlerts={setAllowBackgroundAlerts}
-      />
-      <View style={{ height: 64 }} />
-      <Button
-        backgroundColor="#e4ede7"
-        onPress={() => handler(!onboarded)}
-        text="Instructions"
       />
     </View>
   );

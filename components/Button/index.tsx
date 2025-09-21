@@ -1,34 +1,39 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { useThemeColors } from '@/hooks/use-theme';
 
 interface Props {
-    backgroundColor: string;
-    onPress(): void;
-    text: string;
+  backgroundColor?: string;
+  onPress(): void;
+  text: string;
 }
 
-const Button = ({ backgroundColor, onPress, text }: Props) => (
-  <View>
-    <Pressable onPress={onPress}>
-      <View
-        style={{
-          backgroundColor,
-          borderRadius: 10,
-          padding: 12,
-        }}
-      >
-        <Text
+const Button = ({ backgroundColor, onPress, text }: Props) => {
+  const C = useThemeColors();
+  const bg = backgroundColor ?? C.surface;
+  return (
+    <View>
+      <Pressable onPress={onPress}>
+        <View
           style={{
-            color: '#1a5632',
-            fontWeight: 'bold',
-            textAlign: 'center',
+            backgroundColor: bg,
+            borderRadius: 10,
+            padding: 12,
           }}
         >
-          {text}
-        </Text>
-      </View>
-    </Pressable>
-  </View>
-);
+          <Text
+            style={{
+              color: C.text,
+              fontWeight: 'bold',
+              textAlign: 'center',
+            }}
+          >
+            {text}
+          </Text>
+        </View>
+      </Pressable>
+    </View>
+  );
+};
 
 export default Button;

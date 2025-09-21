@@ -5,6 +5,7 @@ import 'react-native-reanimated';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { ThemeOverrideProvider } from '@/hooks/theme-override';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -16,13 +17,14 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left', 'bottom']}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-          </Stack>
-          <StatusBar style="auto" />
-        </SafeAreaView>
+        <ThemeOverrideProvider>
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left', 'bottom']}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+            <StatusBar style="auto" />
+          </SafeAreaView>
+        </ThemeOverrideProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
