@@ -4,13 +4,13 @@ import WheelTower from '@/components/WheelTower';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import displayTime from '@/utils/displayTime';
 import * as Timer from '@/utils/timer';
+import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 
 // Timer/UI constants
-const TICK_MS = 250;
 const START_CHIME_WINDOW_MS = 500;
 
 type Props = {
@@ -21,10 +21,8 @@ type Props = {
 const Meditation = ({ handler, onboarded }: Props) => {
   useKeepAwakeSafe();
   const [input, setInput] = useState('3');
-  const [timerState, setTimerState] = useState<Timer.TimerState>(() => 
-    Timer.newState(Timer.createPhasesFromMinutes(3))
-  );
-  const [currentTime, setCurrentTime] = useState(() => Timer.computeNow(timerState));
+  const initialPhases = Timer.createPhasesFromMinutes(3);
+  const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
 
   // expo-audio players for chimes
   const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
@@ -46,21 +44,21 @@ const Meditation = ({ handler, onboarded }: Props) => {
     (async () => {
       try {
         const stored = await AsyncStorage.getItem('lastDurationMinutes');
-        if (stored && !timerState.startAt) {
+        if (stored && !timer.started) {
           setInput(stored);
         }
       } catch {
         // ignore storage errors
       }
     })();
-  }, [timerState.startAt]);
+  }, [timer.started]);
 
   // Persist input when it changes (only when not started)
   useEffect(() => {
-    if (!timerState.startAt) {
+    if (!timer.started) {
       AsyncStorage.setItem('lastDurationMinutes', input).catch(() => {});
     }
-  }, [input, timerState.startAt]);
+  }, [input, timer.started]);
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
@@ -70,14 +68,12 @@ const Meditation = ({ handler, onboarded }: Props) => {
 
   // Update timer phases when input changes
   useEffect(() => {
-    if (!timerState.running && !timerState.startAt) {
+    if (!timer.running && !timer.started) {
       const minutes = parseInt(input) || 3;
       const newPhases = Timer.createPhasesFromMinutes(minutes);
-      const newState = Timer.newState(newPhases);
-      setTimerState(newState);
-      setCurrentTime(Timer.computeNow(newState));
+      setPhases(newPhases);
     }
-  }, [input, timerState.running, timerState.startAt]);
+  }, [input, timer.running, timer.started, setPhases]);
 
   const playPreloadedChime = useCallback(async (which: 1 | 2) => {
     try {
@@ -96,20 +92,18 @@ const Meditation = ({ handler, onboarded }: Props) => {
   const onPress = (action: string) => {
     switch (action) {
       case 'counting':
-        if (!timerState.running && !timerState.startAt) {
+        if (!timer.running && !timer.started) {
           // Start timer
-          const newState = Timer.start(timerState);
-          setTimerState(newState);
+          start();
           // Initial phase chime at session start to match previous behavior
           playPreloadedChime(1);
           // Initialize phase index tracking
           lastPhaseIndexRef.current = 0;
           // Mark start chime as done to avoid the interval safety net playing it again
           startChimeDoneRef.current = true;
-        } else if (!timerState.running) {
+        } else if (!timer.running) {
           // Resume timer
-          const newState = Timer.resume(timerState);
-          setTimerState(newState);
+          resume();
           // Ensure we don't replay the start chime after a resume
           startChimeDoneRef.current = true;
         }
@@ -118,14 +112,12 @@ const Meditation = ({ handler, onboarded }: Props) => {
         // Reset timer
         const minutes = parseInt(input) || 3;
         const newPhases = Timer.createPhasesFromMinutes(minutes);
-        const resetState = Timer.newState(newPhases);
-        setTimerState(resetState);
-        setCurrentTime(Timer.computeNow(resetState));
+        setPhases(newPhases);
+        reset();
         break;
       case 'pause':
         // Pause timer
-        const pausedState = Timer.pause(timerState);
-        setTimerState(pausedState);
+        pause();
         break;
       default:
         break;
@@ -139,67 +131,50 @@ const Meditation = ({ handler, onboarded }: Props) => {
   // Guard to ensure completion chime only plays once
   const completionChimeDoneRef = useRef(false);
 
-  // Main timer effect - updates current time and handles chimes
+  // React to timer state updates (from hook) to trigger chimes
   useEffect(() => {
-    let interval: any;
+    const newCurrentTime = timer.now;
 
-    if (timerState.running && chime1 && chime2) {
-      interval = setInterval(() => {
-        const newCurrentTime = Timer.computeNow(timerState);
-        setCurrentTime(newCurrentTime);
-
-        // Ensure we chime at the very start of the session even if the player wasn't ready on press
-        if (
-          !startChimeDoneRef.current &&
-          newCurrentTime.currentIndex === 0 &&
-          !newCurrentTime.done
-        ) {
-          const phase0Ms = (timerState.phases[0]?.seconds ?? 0) * 1000;
-          // If we're within the first N ms of the first phase, play start chime
-          if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
-            if (__DEV__) console.log('[chime] start-of-session');
-            playPreloadedChime(1);
-            startChimeDoneRef.current = true;
-          }
-        }
-
-        // Check for phase transitions to play chimes
-        if (newCurrentTime.currentIndex > lastPhaseIndexRef.current && !newCurrentTime.done) {
-          if (__DEV__) console.log(`[chime] phase transition ${lastPhaseIndexRef.current} -> ${newCurrentTime.currentIndex}`);
-          playPreloadedChime(1); // Phase transition chime
-        }
-        lastPhaseIndexRef.current = newCurrentTime.currentIndex;
-
-        // Check if meditation is complete
-        if (newCurrentTime.done) {
-          if (!completionChimeDoneRef.current) {
-            if (__DEV__) console.log('[chime] session complete');
-            playPreloadedChime(2); // Completion chime
-            completionChimeDoneRef.current = true;
-          }
-          // Stop running to avoid re-scheduling intervals
-          setTimerState(prev => ({ ...prev, running: false }));
-          clearInterval(interval);
-        }
-      }, TICK_MS); // Update frequently for smooth display with lighter CPU usage
+    // Ensure we chime at the very start of the session even if the player wasn't ready on press
+    if (
+      timer.running &&
+      !startChimeDoneRef.current &&
+      newCurrentTime.currentIndex === 0 &&
+      !newCurrentTime.done
+    ) {
+      const phase0Ms = (timer.phases[0]?.seconds ?? 0) * 1000;
+      if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
+        if (__DEV__) console.log('[chime] start-of-session');
+        playPreloadedChime(1);
+        startChimeDoneRef.current = true;
+      }
     }
 
-    return () => clearInterval(interval);
-  }, [timerState, playPreloadedChime, chime1, chime2]);
+    // Phase transition chime
+    if (newCurrentTime.currentIndex > lastPhaseIndexRef.current && !newCurrentTime.done) {
+      if (__DEV__) console.log(`[chime] phase transition ${lastPhaseIndexRef.current} -> ${newCurrentTime.currentIndex}`);
+      playPreloadedChime(1);
+    }
+    lastPhaseIndexRef.current = newCurrentTime.currentIndex;
+
+    // Completion chime
+    if (newCurrentTime.done && !completionChimeDoneRef.current) {
+      if (__DEV__) console.log('[chime] session complete');
+      playPreloadedChime(2);
+      completionChimeDoneRef.current = true;
+    }
+  }, [timer, playPreloadedChime]);
 
   // Reset phase index when timer resets
   useEffect(() => {
-    if (!timerState.startAt) {
+    if (!timer.started) {
       lastPhaseIndexRef.current = 0;
       startChimeDoneRef.current = false;
       completionChimeDoneRef.current = false;
     }
-  }, [timerState.startAt]);
+  }, [timer.started]);
 
-  // Update current time when timer state changes (for immediate feedback)
-  useEffect(() => {
-    setCurrentTime(Timer.computeNow(timerState));
-  }, [timerState]);
+  // No local tick loop; timing managed by usePhasedTimer
 
   return (
     <View
@@ -212,11 +187,11 @@ const Meditation = ({ handler, onboarded }: Props) => {
     >
       {(() => {
         const getPhaseRemainingMs = (i: number): number => {
-          const phaseMs = (timerState.phases[i]?.seconds ?? 0) * 1000;
-          if (!timerState.startAt) return phaseMs; // not started yet
-          if (currentTime.done) return 0;
-          if (currentTime.currentIndex === i) return currentTime.phaseRemainingMs;
-          if (currentTime.currentIndex > i) return 0;
+          const phaseMs = (timer.phases[i]?.seconds ?? 0) * 1000;
+          if (!timer.started) return phaseMs; // not started yet
+          if (timer.now.done) return 0;
+          if (timer.now.currentIndex === i) return timer.now.phaseRemainingMs;
+          if (timer.now.currentIndex > i) return 0;
           return phaseMs;
         };
 
@@ -234,11 +209,11 @@ const Meditation = ({ handler, onboarded }: Props) => {
         );
       })()}
       <WheelControls
-        counting={timerState.running}
+        counting={timer.running}
         handleInput={handleInput}
         input={input}
         onPress={onPress}
-        started={timerState.startAt !== null}
+        started={timer.started}
       />
       <View style={{ height: 64 }} />
       <Button
