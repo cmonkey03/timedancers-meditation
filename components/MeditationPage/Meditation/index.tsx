@@ -1,18 +1,18 @@
-import WheelControls from '@/components/WheelControls';
-import WheelTower from '@/components/WheelTower';
+import WheelControls from '@/components/MeditationPage/WheelControls';
+import WheelTower from '@/components/MeditationPage/WheelTower';
 import { useAlerts } from '@/hooks/use-alerts';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
+import { usePhaseConfig } from '@/hooks/use-phase-config';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
-import displayTime from '@/utils/display-time';
 import { useThemeColors } from '@/hooks/use-theme';
+import displayTime from '@/utils/display-time';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync } from 'expo-audio';
-import { useEffect, useRef, useState, useMemo } from 'react';
-import { AppState, Text, View, TouchableOpacity } from 'react-native';
-import { usePhaseConfig } from '@/hooks/use-phase-config';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, Text, TouchableOpacity, View } from 'react-native';
 
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;

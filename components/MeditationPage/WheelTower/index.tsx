@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text, useColorScheme } from 'react-native';
+import Wheel from '@/components/MeditationPage/Wheel';
 import { useThemeColors } from '@/hooks/use-theme';
-import Wheel from '@/components/Wheel';
+import React from 'react';
+import { Text, useColorScheme, View } from 'react-native';
 
 interface Props {
   large: boolean;

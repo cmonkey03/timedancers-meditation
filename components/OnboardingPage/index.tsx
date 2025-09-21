@@ -1,5 +1,5 @@
-import Wheel from '@/components/Wheel';
-import WheelTower from '@/components/WheelTower';
+import Wheel from '@/components/MeditationPage/Wheel';
+import WheelTower from '@/components/MeditationPage/WheelTower';
 import { useThemeColors } from '@/hooks/use-theme';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
@@ -14,7 +14,7 @@ type Props = {
   finishOnboarding: () => void;
 };
 
-const MeditationOnboarding = ({ finishOnboarding }: Props) => {
+const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
   const NextButton = (props: any) => (
     <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}>
@@ -93,4 +93,4 @@ const MeditationOnboarding = ({ finishOnboarding }: Props) => {
   );
 };
 
-export default MeditationOnboarding;
+export default OnboardingPage;
