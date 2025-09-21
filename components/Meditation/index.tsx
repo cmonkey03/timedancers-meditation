@@ -2,15 +2,15 @@ import Button from '@/components/Button';
 import WheelControls from '@/components/WheelControls';
 import WheelTower from '@/components/WheelTower';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
-import displayTime from '@/utils/displayTime';
-import * as Timer from '@/utils/timer';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
+import displayTime from '@/utils/displayTime';
+import * as Notifier from '@/utils/notifications';
+import * as Timer from '@/utils/timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState, AppStateStatus, View, Text } from 'react-native';
-import * as Notifier from '@/utils/notifications';
+import { AppState, AppStateStatus, Text, View } from 'react-native';
 
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
@@ -40,13 +40,13 @@ const Meditation = ({ handler, onboarded }: Props) => {
 
   // Configure audio once (silent mode, etc.)
   useEffect(() => {
+    // Ensure notifications are initialized (permissions + Android channels)
+    Notifier.initNotifications().catch(() => {});
     (async () => {
       try {
         await setAudioModeAsync({ playsInSilentMode: true, staysActiveInBackground: true } as any);
-        // Initialize notifications permissions and channel
-        await Notifier.initNotifications();
-      } catch {
-        // ignore
+      } catch (e) {
+        console.log(e);
       }
     })();
   }, []);

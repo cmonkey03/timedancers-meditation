@@ -17,6 +17,15 @@ export async function initNotifications() {
 
   // Android: create channel with sound
   if (Platform.OS === 'android') {
+    // Ensure the default channel has sound, since some triggers (calendar) use it implicitly
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'Default',
+      importance: Notifications.AndroidImportance.HIGH,
+      sound: 'default',
+      enableVibrate: true,
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+    });
+    // Also create an explicit channel we can target for time-interval triggers
     await Notifications.setNotificationChannelAsync('meditation-timer', {
       name: 'Meditation Timer',
       importance: Notifications.AndroidImportance.HIGH,
@@ -66,7 +75,8 @@ export async function scheduleAfterMs(
       content: {
         title,
         body,
-        sound: opts?.withSound === false ? undefined : (Platform.select({ ios: 'default', android: 'default' }) as any),
+        // iOS: boolean true; Android uses channel sound config
+        sound: opts?.withSound === false ? undefined : (Platform.OS === 'ios' ? true : undefined),
       },
       trigger,
     });
