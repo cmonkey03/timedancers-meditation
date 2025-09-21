@@ -1,65 +1,11 @@
+import { cancelScheduledById, scheduleDailyReminder } from '@/utils/notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { scheduleDailyReminder, cancelScheduledById } from '@/utils/notifications';
-
-export type PhaseSeconds = {
-  power?: number; // seconds
-  heart?: number;
-  wisdom?: number;
-};
 
 const KEYS = {
-  phasePower: 'phaseSeconds.power',
-  phaseHeart: 'phaseSeconds.heart',
-  phaseWisdom: 'phaseSeconds.wisdom',
   reminderEnabled: 'dailyReminderEnabled',
   reminderTime: 'dailyReminderTime',
   reminderId: 'dailyReminderId',
 } as const;
-
-export async function getPhaseSeconds(): Promise<PhaseSeconds> {
-  try {
-    const [p, h, w] = await Promise.all([
-      AsyncStorage.getItem(KEYS.phasePower),
-      AsyncStorage.getItem(KEYS.phaseHeart),
-      AsyncStorage.getItem(KEYS.phaseWisdom),
-    ]);
-    const out: PhaseSeconds = {};
-    if (p) out.power = parseInt(p, 10);
-    if (h) out.heart = parseInt(h, 10);
-    if (w) out.wisdom = parseInt(w, 10);
-    return out;
-  } catch {
-    return {};
-  }
-}
-
-export async function setPhaseSeconds(partial: PhaseSeconds): Promise<void> {
-  const ops: Promise<any>[] = [];
-  if (partial.power == null) {
-    ops.push(AsyncStorage.removeItem(KEYS.phasePower));
-  } else {
-    ops.push(AsyncStorage.setItem(KEYS.phasePower, String(partial.power)));
-  }
-  if (partial.heart == null) {
-    ops.push(AsyncStorage.removeItem(KEYS.phaseHeart));
-  } else {
-    ops.push(AsyncStorage.setItem(KEYS.phaseHeart, String(partial.heart)));
-  }
-  if (partial.wisdom == null) {
-    ops.push(AsyncStorage.removeItem(KEYS.phaseWisdom));
-  } else {
-    ops.push(AsyncStorage.setItem(KEYS.phaseWisdom, String(partial.wisdom)));
-  }
-  await Promise.all(ops);
-}
-
-export async function clearPhaseSeconds(): Promise<void> {
-  await AsyncStorage.multiRemove([
-    KEYS.phasePower,
-    KEYS.phaseHeart,
-    KEYS.phaseWisdom,
-  ]);
-}
 
 export type DailyReminder = {
   enabled: boolean;

@@ -37,7 +37,7 @@ describe('computeScheduleItems additional cases', () => {
     const start = Date.now();
     const st = makeState({ startAtMs: start });
     const items = computeScheduleItems(st, 'chime_haptic');
-    expect(items.length).toBe(3);
+    expect(items.length).toBe(1);
     expect(items.every(i => i.withSound === true)).toBe(true);
   });
 
@@ -67,7 +67,8 @@ describe('computeScheduleItems additional cases', () => {
     const st = makeState({ startAtMs: start, pausedTotalMs: 20_000 });
     vi.setSystemTime(start + 90_000);
     const items = computeScheduleItems(st, 'chime');
-    // Remaining boundaries at 120s and 180s
-    expect(items.map(i => i.whenEpochMs)).toEqual([start + 120_000, start + 180_000]);
+    // Only completion remains. Effective elapsed 70s -> remaining 110s -> scheduled at now + 110s
+    expect(items.length).toBe(1);
+    expect(items[0].whenEpochMs).toBe((start + 90_000) + 110_000);
   });
 });

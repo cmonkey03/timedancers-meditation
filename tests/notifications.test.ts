@@ -41,15 +41,12 @@ describe('computeScheduleItems', () => {
     // Elapsed 30s into first minute
     vi.setSystemTime(start + 30_000);
     const items = computeScheduleItems(st, 'chime');
-    expect(items.length).toBe(3); // 30s to end of power, +60s, +60s
-    expect(items[0].title).toBe('Phase change');
-    expect(items[0].body).toBe('Begin Heart');
+    // Only completion notification remains
+    expect(items.length).toBe(1);
+    expect(items[0].title).toBe('Meditation complete');
     expect(items[0].withSound).toBe(true);
-    // first boundary at start + 60s
-    expect(items[0].whenEpochMs).toBe(start + 60_000);
-    // completion at start + 180s
-    expect(items.at(-1)?.title).toBe('Meditation complete');
-    expect(items.at(-1)?.whenEpochMs).toBe(start + 180_000);
+    // Session total 180s, elapsed 30s -> remaining 150s -> scheduled at now + 150s
+    expect(items[0].whenEpochMs).toBe((start + 30_000) + 150_000);
   });
 
   it('disables sound for haptic-only and silent modes', () => {
@@ -61,14 +58,15 @@ describe('computeScheduleItems', () => {
     expect(itemsSilent.every((i: { withSound: boolean }) => i.withSound === false)).toBe(true);
   });
 
-  it('skips elapsed boundaries and accounts for pausedTotalMs', () => {
+  it('schedules completion accounting for pausedTotalMs (remaining time only)', () => {
     const start = Date.now();
     // Simulate 90s elapsed and 10s paused; effective elapsed = 80s
     const st = makeState({ startAtMs: start, pausedTotalMs: 10_000 });
     vi.setSystemTime(start + 90_000);
     const items = computeScheduleItems(st, 'chime');
-    // effective elapsed 80s -> remaining boundaries at 120s and 180s
-    expect(items.map((i: { whenEpochMs: number }) => i.whenEpochMs)).toEqual([start + 120_000, start + 180_000]);
+    // Total 180s, effective elapsed 80s -> remaining 100s -> scheduled at now + 100s
+    expect(items.length).toBe(1);
+    expect(items[0].whenEpochMs).toBe((start + 90_000) + 100_000);
   });
 
   afterEach(() => {

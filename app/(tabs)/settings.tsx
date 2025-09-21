@@ -3,7 +3,7 @@ import { ScrollView, Switch, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeColors } from '@/hooks/use-theme';
 import DismissKeyboard from '@/components/DismissKeyboard';
-import { ThemePreview, DailyReminder, PhaseDurations } from '@/components/SettingsPage';
+import { ThemePreview, DailyReminder } from '@/components/SettingsPage';
 
 export default function SettingsScreen() {
   const C = useThemeColors();
@@ -34,9 +34,6 @@ export default function SettingsScreen() {
         'dailyReminderId',
         'activeSessionEndAtMs',
         'themeOverride',
-        'phaseSeconds.power',
-        'phaseSeconds.heart',
-        'phaseSeconds.wisdom',
       ]);
       setAllowBackgroundAlerts(true);
     } catch {}
@@ -54,7 +51,6 @@ export default function SettingsScreen() {
 
         <ThemePreview />
         <DailyReminder />
-        <PhaseDurations />
 
         {/* Background Alerts Toggle */}
         <Text style={{ fontWeight: '600', color: C.text, marginBottom: 6 }}>Allow background alerts</Text>
