@@ -8,7 +8,8 @@ import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { AppState, AppStateStatus, View } from 'react-native';
+import * as Notifier from '@/utils/notifications';
 
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
@@ -32,7 +33,9 @@ const Meditation = ({ handler, onboarded }: Props) => {
   useEffect(() => {
     (async () => {
       try {
-        await setAudioModeAsync({ playsInSilentMode: true });
+        await setAudioModeAsync({ playsInSilentMode: true, staysActiveInBackground: true } as any);
+        // Initialize notifications permissions and channel
+        await Notifier.initNotifications();
       } catch {
         // ignore
       }
@@ -52,6 +55,54 @@ const Meditation = ({ handler, onboarded }: Props) => {
       }
     })();
   }, [timer.started]);
+
+  // Schedule local notifications for remaining phase transitions and completion
+  const scheduleNotificationsForRemaining = useCallback(async () => {
+    if (!timer.started || timer.startAtMs == null) return;
+    // Cancel any existing first
+    await Notifier.cancelAllScheduled();
+
+    // Compute elapsed and remaining boundaries using wall clock and pausedTotal
+    const nowMs = Date.now();
+    const elapsedMs = Math.max(0, nowMs - timer.startAtMs - timer.pausedTotalMs);
+
+    // Build cumulative boundaries in ms for each phase end
+    const cumMs: number[] = [];
+    let acc = 0;
+    for (const p of timer.phases) {
+      acc += (p.seconds || 0) * 1000;
+      cumMs.push(acc);
+    }
+
+    // Schedule for each remaining boundary strictly after elapsed
+    for (let i = 0; i < cumMs.length; i++) {
+      const boundary = cumMs[i];
+      if (boundary <= elapsedMs) continue;
+      const msFromNow = boundary - elapsedMs;
+      const isCompletion = i === cumMs.length - 1;
+      if (isCompletion) {
+        await Notifier.scheduleAfterMs(msFromNow, 'Meditation complete', 'Session finished');
+      } else {
+        const nextKey = timer.phases[i + 1]?.key ?? 'next phase';
+        await Notifier.scheduleAfterMs(msFromNow, 'Phase change', `Begin ${nextKey}`);
+      }
+    }
+  }, [timer.started, timer.startAtMs, timer.pausedTotalMs, timer.phases]);
+
+  // Schedule notifications when app backgrounds; cancel when active
+  useEffect(() => {
+    const onChange = (s: AppStateStatus) => {
+      if (s === 'active') {
+        // Back to foreground: cancel scheduled notifications; app will play in-app chimes
+        Notifier.cancelAllScheduled();
+      } else if (timer.running) {
+        // Backgrounded or inactive: schedule remaining notifications if session is running
+        scheduleNotificationsForRemaining();
+      }
+    };
+    const sub = AppState.addEventListener('change', onChange);
+    return () => sub.remove();
+  }, [scheduleNotificationsForRemaining, timer.running]);
 
   // Persist input when it changes (only when not started)
   useEffect(() => {
@@ -95,6 +146,8 @@ const Meditation = ({ handler, onboarded }: Props) => {
         if (!timer.running && !timer.started) {
           // Start timer
           start();
+          // Schedule notifications for all upcoming phase transitions and completion
+          scheduleNotificationsForRemaining();
           // Initial phase chime at session start to match previous behavior
           playPreloadedChime(1);
           // Initialize phase index tracking
@@ -104,6 +157,8 @@ const Meditation = ({ handler, onboarded }: Props) => {
         } else if (!timer.running) {
           // Resume timer
           resume();
+          // Re-schedule from current position
+          scheduleNotificationsForRemaining();
           // Ensure we don't replay the start chime after a resume
           startChimeDoneRef.current = true;
         }
@@ -114,10 +169,14 @@ const Meditation = ({ handler, onboarded }: Props) => {
         const newPhases = Timer.createPhasesFromMinutes(minutes);
         setPhases(newPhases);
         reset();
+        // Cancel any scheduled notifications
+        Notifier.cancelAllScheduled();
         break;
       case 'pause':
         // Pause timer
         pause();
+        // Cancel notifications while paused; will be re-scheduled on resume
+        Notifier.cancelAllScheduled();
         break;
       default:
         break;
@@ -162,6 +221,8 @@ const Meditation = ({ handler, onboarded }: Props) => {
       if (__DEV__) console.log('[chime] session complete');
       playPreloadedChime(2);
       completionChimeDoneRef.current = true;
+      // Cancel any pending notifications now that we're done
+      Notifier.cancelAllScheduled();
     }
   }, [timer, playPreloadedChime]);
 

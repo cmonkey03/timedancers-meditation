@@ -24,7 +24,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: 'org.timedancers.meditation',
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
-      "CFBundleDisplayName": "Timedancers"   // <= short label under the icon
+      "CFBundleDisplayName": "Timedancers",   // <= short label under the icon
+      // Allow audio to continue in the background (for future enhancements)
+      "UIBackgroundModes": ["audio"]
     }
   },
   orientation: 'portrait',
@@ -44,6 +46,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-router',
     'expo-audio',
+    'expo-notifications',
     [
       'expo-splash-screen',
       {

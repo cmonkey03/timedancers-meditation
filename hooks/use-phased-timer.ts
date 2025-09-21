@@ -6,6 +6,8 @@ export type UsePhasedTimerState = {
   running: boolean;
   started: boolean;
   phases: Timer.Phase[];
+  startAtMs: number | null;
+  pausedTotalMs: number;
 };
 
 export function usePhasedTimer(initialPhases: Timer.Phase[]) {
@@ -15,6 +17,8 @@ export function usePhasedTimer(initialPhases: Timer.Phase[]) {
   const phases = timerState.phases;
   const running = timerState.running;
   const started = timerState.startAt != null;
+  const startAtMs = timerState.startAt;
+  const pausedTotalMs = timerState.pausedTotal;
 
   // Update phases when not started and not running
   const setPhases = useCallback((next: Timer.Phase[]) => {
@@ -68,6 +72,6 @@ export function usePhasedTimer(initialPhases: Timer.Phase[]) {
     setNow(computed);
   }, [timerState]);
 
-  const value: UsePhasedTimerState = useMemo(() => ({ now, running, started, phases }), [now, running, started, phases]);
+  const value: UsePhasedTimerState = useMemo(() => ({ now, running, started, phases, startAtMs, pausedTotalMs }), [now, running, started, phases, startAtMs, pausedTotalMs]);
   return { state: value, start, pause, resume, reset, setPhases };
 }
