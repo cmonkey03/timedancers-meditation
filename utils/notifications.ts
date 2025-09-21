@@ -47,7 +47,12 @@ export async function cancelAllScheduled() {
   } catch {}
 }
 
-export async function scheduleAfterMs(msFromNow: number, title: string, body?: string): Promise<ScheduledId | null> {
+export async function scheduleAfterMs(
+  msFromNow: number,
+  title: string,
+  body?: string,
+  opts?: { withSound?: boolean }
+): Promise<ScheduledId | null> {
   if (msFromNow <= 0) return null;
   try {
     const seconds = Math.ceil(msFromNow / 1000);
@@ -61,7 +66,35 @@ export async function scheduleAfterMs(msFromNow: number, title: string, body?: s
       content: {
         title,
         body,
-        sound: Platform.select({ ios: 'default', android: 'default' }) as any,
+        sound: opts?.withSound === false ? undefined : (Platform.select({ ios: 'default', android: 'default' }) as any),
+      },
+      trigger,
+    });
+    return id;
+  } catch {
+    return null;
+  }
+}
+
+// Schedule at an absolute wall-clock time (epoch ms)
+export async function scheduleAtMs(
+  whenEpochMs: number,
+  title: string,
+  body?: string,
+  opts?: { withSound?: boolean }
+): Promise<ScheduledId | null> {
+  try {
+    if (whenEpochMs <= Date.now()) return null;
+    const trigger: Notifications.NotificationTriggerInput = {
+      type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
+      date: new Date(whenEpochMs),
+      repeats: false,
+    } as Notifications.CalendarTriggerInput;
+    const id = await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        sound: opts?.withSound === false ? undefined : (Platform.select({ ios: 'default', android: 'default' }) as any),
       },
       trigger,
     });

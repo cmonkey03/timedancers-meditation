@@ -6,9 +6,10 @@ import displayTime from '@/utils/displayTime';
 import * as Timer from '@/utils/timer';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { setAudioModeAsync, useAudioPlayer } from 'expo-audio';
+import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState, AppStateStatus, View } from 'react-native';
+import { AppState, AppStateStatus, View, Text } from 'react-native';
 import * as Notifier from '@/utils/notifications';
 
 // Timer/UI constants
@@ -19,11 +20,19 @@ type Props = {
   onboarded: boolean;
 };
 
+function capitalize(s: string): string {
+  if (!s) return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 const Meditation = ({ handler, onboarded }: Props) => {
   useKeepAwakeSafe();
   const [input, setInput] = useState('3');
   const initialPhases = Timer.createPhasesFromMinutes(3);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
+  const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>(() => 'chime');
+  const appIsActiveRef = useRef(true);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   // expo-audio players for chimes
   const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
@@ -50,13 +59,17 @@ const Meditation = ({ handler, onboarded }: Props) => {
         if (stored && !timer.started) {
           setInput(stored);
         }
+        const savedMode = await AsyncStorage.getItem('alertMode');
+        if (savedMode === 'chime' || savedMode === 'chime_haptic' || savedMode === 'haptic' || savedMode === 'silent') {
+          setAlertMode(savedMode);
+        }
       } catch {
         // ignore storage errors
       }
     })();
   }, [timer.started]);
 
-  // Schedule local notifications for remaining phase transitions and completion
+  // Schedule local notifications for remaining phase transitions and completion (absolute wall-clock)
   const scheduleNotificationsForRemaining = useCallback(async () => {
     if (!timer.started || timer.startAtMs == null) return;
     // Cancel any existing first
@@ -74,24 +87,27 @@ const Meditation = ({ handler, onboarded }: Props) => {
       cumMs.push(acc);
     }
 
-    // Schedule for each remaining boundary strictly after elapsed
+    // Schedule for each remaining boundary strictly after elapsed using absolute timestamps
+    const withSound = alertMode === 'chime' || alertMode === 'chime_haptic';
+    const baseEpoch = (timer.startAtMs ?? 0) + timer.pausedTotalMs; // session zero point + paused time
     for (let i = 0; i < cumMs.length; i++) {
       const boundary = cumMs[i];
       if (boundary <= elapsedMs) continue;
-      const msFromNow = boundary - elapsedMs;
+      const whenEpochMs = baseEpoch + boundary;
       const isCompletion = i === cumMs.length - 1;
       if (isCompletion) {
-        await Notifier.scheduleAfterMs(msFromNow, 'Meditation complete', 'Session finished');
+        await Notifier.scheduleAtMs(whenEpochMs, 'Meditation complete', 'Session finished', { withSound });
       } else {
         const nextKey = timer.phases[i + 1]?.key ?? 'next phase';
-        await Notifier.scheduleAfterMs(msFromNow, 'Phase change', `Begin ${nextKey}`);
+        await Notifier.scheduleAtMs(whenEpochMs, 'Phase change', `Begin ${capitalize(nextKey)}`, { withSound });
       }
     }
-  }, [timer.started, timer.startAtMs, timer.pausedTotalMs, timer.phases]);
+  }, [timer.started, timer.startAtMs, timer.pausedTotalMs, timer.phases, alertMode]);
 
   // Schedule notifications when app backgrounds; cancel when active
   useEffect(() => {
     const onChange = (s: AppStateStatus) => {
+      appIsActiveRef.current = s === 'active';
       if (s === 'active') {
         // Back to foreground: cancel scheduled notifications; app will play in-app chimes
         Notifier.cancelAllScheduled();
@@ -110,6 +126,12 @@ const Meditation = ({ handler, onboarded }: Props) => {
       AsyncStorage.setItem('lastDurationMinutes', input).catch(() => {});
     }
   }, [input, timer.started]);
+
+  // Persist alertMode immediately when it changes
+  useEffect(() => {
+    AsyncStorage.setItem('alertMode', alertMode).catch(() => {});
+  }, [alertMode]);
+
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
@@ -148,8 +170,17 @@ const Meditation = ({ handler, onboarded }: Props) => {
           start();
           // Schedule notifications for all upcoming phase transitions and completion
           scheduleNotificationsForRemaining();
-          // Initial phase chime at session start to match previous behavior
-          playPreloadedChime(1);
+          // Initial phase alert: either instant or slightly debounced to avoid background glitch
+          const fireStartAlert = () => {
+            if (!appIsActiveRef.current) return;
+            if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+              playPreloadedChime(1);
+            }
+            if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+            }
+          };
+          setTimeout(fireStartAlert, 120);
           // Initialize phase index tracking
           lastPhaseIndexRef.current = 0;
           // Mark start chime as done to avoid the interval safety net playing it again
@@ -179,6 +210,16 @@ const Meditation = ({ handler, onboarded }: Props) => {
         Notifier.cancelAllScheduled();
         break;
       default:
+        if (action === 'test_alert') {
+          // Preview the currently selected alert mode
+          if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+            playPreloadedChime(timer.running ? 1 : 1);
+          }
+          if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+          }
+          break;
+        }
         break;
     }
   };
@@ -189,8 +230,9 @@ const Meditation = ({ handler, onboarded }: Props) => {
   const startChimeDoneRef = useRef(false);
   // Guard to ensure completion chime only plays once
   const completionChimeDoneRef = useRef(false);
+  const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // React to timer state updates (from hook) to trigger chimes
+  // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
     const newCurrentTime = timer.now;
 
@@ -204,7 +246,12 @@ const Meditation = ({ handler, onboarded }: Props) => {
       const phase0Ms = (timer.phases[0]?.seconds ?? 0) * 1000;
       if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
         if (__DEV__) console.log('[chime] start-of-session');
-        playPreloadedChime(1);
+        if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+          playPreloadedChime(1);
+        }
+        if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+        }
         startChimeDoneRef.current = true;
       }
     }
@@ -212,19 +259,43 @@ const Meditation = ({ handler, onboarded }: Props) => {
     // Phase transition chime
     if (newCurrentTime.currentIndex > lastPhaseIndexRef.current && !newCurrentTime.done) {
       if (__DEV__) console.log(`[chime] phase transition ${lastPhaseIndexRef.current} -> ${newCurrentTime.currentIndex}`);
-      playPreloadedChime(1);
+      if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+        playPreloadedChime(1);
+      }
+      if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      }
     }
     lastPhaseIndexRef.current = newCurrentTime.currentIndex;
 
     // Completion chime
     if (newCurrentTime.done && !completionChimeDoneRef.current) {
       if (__DEV__) console.log('[chime] session complete');
-      playPreloadedChime(2);
+      if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+        playPreloadedChime(2);
+      }
+      if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+      }
       completionChimeDoneRef.current = true;
       // Cancel any pending notifications now that we're done
       Notifier.cancelAllScheduled();
+      // Show completion state briefly, then reset back to Start/input
+      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+      setShowCompleted(true);
+      completionResetTimeoutRef.current = setTimeout(() => {
+        reset();
+        setShowCompleted(false);
+      }, 2000);
     }
-  }, [timer, playPreloadedChime]);
+  }, [timer, playPreloadedChime, alertMode, reset]);
+
+  // Cleanup any pending completion reset timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+    };
+  }, []);
 
   // Reset phase index when timer resets
   useEffect(() => {
@@ -232,6 +303,7 @@ const Meditation = ({ handler, onboarded }: Props) => {
       lastPhaseIndexRef.current = 0;
       startChimeDoneRef.current = false;
       completionChimeDoneRef.current = false;
+      setShowCompleted(false);
     }
   }, [timer.started]);
 
@@ -266,15 +338,23 @@ const Meditation = ({ handler, onboarded }: Props) => {
             text1={t1}
             text2={t2}
             text3={t3}
+            label1={capitalize(timer.phases[0]?.key ?? '')}
+            label2={capitalize(timer.phases[1]?.key ?? '')}
+            label3={capitalize(timer.phases[2]?.key ?? '')}
           />
         );
       })()}
+      {showCompleted && (
+        <Text style={{ marginTop: 12, color: '#1a5632', fontWeight: '700', fontSize: 18 }}>Session complete</Text>
+      )}
       <WheelControls
         counting={timer.running}
         handleInput={handleInput}
         input={input}
         onPress={onPress}
         started={timer.started}
+        alertMode={alertMode}
+        onChangeAlertMode={setAlertMode}
       />
       <View style={{ height: 64 }} />
       <Button
