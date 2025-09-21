@@ -27,7 +27,7 @@ export default function MeditateScreen() {
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.background }}>
+    <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-meditate">
       <DismissKeyboard>
         <Meditation handler={setOnboarded} onboarded={onboarded} />
       </DismissKeyboard>

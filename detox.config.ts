@@ -1,0 +1,41 @@
+import type { DetoxConfig } from 'detox';
+
+const config: DetoxConfig = {
+  testRunner: 'jest',
+  runnerConfig: 'e2e/jest.config.js',
+  specs: 'e2e',
+  artifacts: {
+    rootDir: 'e2e/artifacts',
+    plugins: {
+      log: 'all',
+      screenshot: { shouldTakeAutomaticSnapshots: true, keepOnlyFailedTestsArtifacts: true },
+      video: 'fail',
+      instruments: 'all',
+      timeline: 'all',
+    },
+  },
+  behavior: {
+    init: { exposeGlobals: true },
+  },
+  apps: {
+    'ios.debug': {
+      type: 'ios.app',
+      build: 'xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app',
+    },
+  },
+  devices: {
+    simulator: {
+      type: 'ios.simulator',
+      device: { type: 'iPhone 16' },
+    },
+  },
+  configurations: {
+    'ios.debug': {
+      device: 'simulator',
+      app: 'ios.debug',
+    },
+  },
+};
+
+export default config;

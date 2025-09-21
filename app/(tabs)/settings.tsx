@@ -96,6 +96,7 @@ export default function SettingsScreen() {
                 backgroundColor: selected ? C.surface : 'transparent',
                 marginRight: 8,
               }}
+              testID={`theme-${opt.key}`}
             >
               <Text style={{ color: C.text, fontWeight: selected ? '700' : '500' }}>{opt.label}</Text>
             </TouchableOpacity>
