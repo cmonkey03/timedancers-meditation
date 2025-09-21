@@ -35,6 +35,7 @@ export async function initNotifications() {
     });
   }
 
+
   // Foreground behavior
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -86,26 +87,28 @@ export async function scheduleAfterMs(
   }
 }
 
-// Schedule at an absolute wall-clock time (epoch ms)
-export async function scheduleAtMs(
-  whenEpochMs: number,
+// Schedule a daily reminder at local time HH:MM (24-hour)
+export async function scheduleDailyReminder(
+  hhmm: string,
   title: string,
-  body?: string,
-  opts?: { withSound?: boolean }
+  body?: string
 ): Promise<ScheduledId | null> {
   try {
-    if (whenEpochMs <= Date.now()) return null;
-    const trigger: Notifications.NotificationTriggerInput = {
+    const m = /^([0-1]?\d|2[0-3]):([0-5]\d)$/.exec(hhmm)?.slice(1) ?? null;
+    if (!m) return null;
+    const hours = parseInt(m[0], 10);
+    const minutes = parseInt(m[1], 10);
+    const trigger: Notifications.CalendarTriggerInput = {
       type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
-      date: new Date(whenEpochMs),
-      repeats: false,
-    } as Notifications.CalendarTriggerInput;
+      hour: hours,
+      minute: minutes,
+      repeats: true,
+    };
     const id = await Notifications.scheduleNotificationAsync({
       content: {
         title,
         body,
-        // iOS: boolean true; Android uses default channel sound config for calendar triggers
-        sound: opts?.withSound === false ? undefined : (Platform.OS === 'ios' ? true : undefined),
+        sound: Platform.OS === 'ios' ? true : undefined,
       },
       trigger,
     });
@@ -113,4 +116,23 @@ export async function scheduleAtMs(
   } catch {
     return null;
   }
+}
+
+export async function cancelScheduledById(id: ScheduledId | null | undefined) {
+  try {
+    if (!id) return;
+    await Notifications.cancelScheduledNotificationAsync(id);
+  } catch {}
+}
+
+// Schedule at an absolute time by delegating to a time-interval trigger.
+// This avoids Calendar typing/runtime incompatibilities while achieving the same effect.
+export async function scheduleAtMs(
+  whenEpochMs: number,
+  title: string,
+  body?: string,
+  opts?: { withSound?: boolean }
+): Promise<ScheduledId | null> {
+  const delta = whenEpochMs - Date.now();
+  return scheduleAfterMs(delta, title, body, opts);
 }

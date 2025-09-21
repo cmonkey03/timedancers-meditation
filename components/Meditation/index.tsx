@@ -10,8 +10,9 @@ import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync } from 'expo-audio';
-import { useEffect, useRef, useState } from 'react';
-import { AppState, Text, View } from 'react-native';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { AppState, Text, View, TouchableOpacity } from 'react-native';
+import { usePhaseConfig } from '@/hooks/use-phase-config';
 
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
@@ -30,12 +31,15 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
   useKeepAwakeSafe();
   const C = useThemeColors();
   const [input, setInput] = useState('3');
-  const initialPhases = Timer.createPhasesFromMinutes(3);
+  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(3), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
   const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>(() => 'chime');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
   const appIsActiveRef = useRef(true);
   const [showCompleted, setShowCompleted] = useState(false);
+
+  // Phase config: apply per-phase overrides or equal division when idle
+  const { applyNow } = usePhaseConfig(input, timer, setPhases);
 
   // Alerts (chime/haptic)
   const { playStartAlert, playPhaseTransitionAlert, playCompletionAlert } = useAlerts(alertMode);
@@ -129,14 +133,7 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
     }
   };
 
-  // Update timer phases when input changes
-  useEffect(() => {
-    if (!timer.running && !timer.started) {
-      const minutes = parseInt(input) || 3;
-      const newPhases = Timer.createPhasesFromMinutes(minutes);
-      setPhases(newPhases);
-    }
-  }, [input, timer.running, timer.started, setPhases]);
+  // (Removed separate input-based updater; handled by recomputeIdlePhases)
 
   const onPress = (action: string) => {
     switch (action) {
@@ -303,6 +300,14 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
           />
         );
       })()}
+      {(!timer.started && !timer.running) && (
+        <TouchableOpacity
+          onPress={applyNow}
+          style={{ marginTop: 12, alignSelf: 'center', backgroundColor: C.surface, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 }}
+        >
+          <Text style={{ color: C.text, fontWeight: '700' }}>Apply per-phase now</Text>
+        </TouchableOpacity>
+      )}
       {showCompleted && (
         <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
       )}

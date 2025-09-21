@@ -1,4 +1,4 @@
-import MeditationOnboarding from '@/components/MeditationOnboarding';
+import MeditationOnboarding from '@/components/Onboarding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';

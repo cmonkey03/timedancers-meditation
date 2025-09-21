@@ -1,14 +1,14 @@
-import React from 'react';
-import WheelTower from '@/components/WheelTower';
-import Onboarding from 'react-native-onboarding-swiper';
 import Wheel from '@/components/Wheel';
-import WelcomeTitle from './WelcomeTitle';
-import WelcomeImage from './WelcomeImage';
+import WheelTower from '@/components/WheelTower';
+import { useThemeColors } from '@/hooks/use-theme';
+import React from 'react';
+import { Pressable, Text } from 'react-native';
+import Onboarding from 'react-native-onboarding-swiper';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
-import { Pressable, Text } from 'react-native';
-import { useThemeColors } from '@/hooks/use-theme';
+import WelcomeImage from './WelcomeImage';
+import WelcomeTitle from './WelcomeTitle';
 
 type Props = {
   finishOnboarding: () => void;
