@@ -1,4 +1,3 @@
-import Button from '@/components/Button';
 import WheelControls from '@/components/WheelControls';
 import WheelTower from '@/components/WheelTower';
 import { useAlerts } from '@/hooks/use-alerts';
@@ -26,7 +25,7 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-const Meditation = ({ handler, onboarded }: Props) => {
+const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
   useKeepAwakeSafe();
   const [input, setInput] = useState('3');
   const initialPhases = Timer.createPhasesFromMinutes(3);
@@ -308,16 +307,6 @@ const Meditation = ({ handler, onboarded }: Props) => {
         input={input}
         onPress={onPress}
         started={timer.started}
-        alertMode={alertMode}
-        onChangeAlertMode={setAlertMode}
-        allowBackgroundAlerts={allowBackgroundAlerts}
-        onChangeAllowBackgroundAlerts={setAllowBackgroundAlerts}
-      />
-      <View style={{ height: 64 }} />
-      <Button
-        backgroundColor="#e4ede7"
-        onPress={() => handler(!onboarded)}
-        text="Instructions"
       />
     </View>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TextInput, Switch, TouchableOpacity, Linking } from 'react-native';
+import { useAlerts } from '@/hooks/use-alerts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
@@ -7,6 +8,7 @@ export default function SettingsScreen() {
   const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>('chime');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
   const [reminderTime, setReminderTime] = useState<string>(''); // e.g., 08:00
+  const { playPhaseTransitionAlert } = useAlerts(alertMode);
 
   useEffect(() => {
     (async () => {
@@ -35,6 +37,22 @@ export default function SettingsScreen() {
   useEffect(() => {
     if (reminderTime) AsyncStorage.setItem('dailyReminderTime', reminderTime).catch(() => {});
   }, [reminderTime]);
+
+  const resetDefaults = async () => {
+    try {
+      await AsyncStorage.multiRemove([
+        'lastDurationMinutes',
+        'alertMode',
+        'allowBackgroundAlerts',
+        'dailyReminderTime',
+        'activeSessionEndAtMs',
+      ]);
+    } catch {}
+    setMinutes('3');
+    setAlertMode('chime');
+    setAllowBackgroundAlerts(true);
+    setReminderTime('');
+  };
 
   const alertOptions: { key: 'chime' | 'chime_haptic' | 'haptic' | 'silent'; label: string }[] = [
     { key: 'chime', label: 'Chime' },
@@ -86,6 +104,11 @@ export default function SettingsScreen() {
         <Switch value={allowBackgroundAlerts} onValueChange={setAllowBackgroundAlerts} />
       </View>
 
+      {/* Test Alert */}
+      <TouchableOpacity onPress={() => playPhaseTransitionAlert()} style={{ marginBottom: 16, alignSelf: 'flex-start', backgroundColor: '#e4ede7', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
+        <Text style={{ color: '#1a5632', fontWeight: '700' }}>Test Alert</Text>
+      </TouchableOpacity>
+
       {/* Daily Reminder (simple HH:MM input for now) */}
       <Text style={{ fontWeight: '600', color: '#1a5632' }}>Daily Reminder (HH:MM)</Text>
       <TextInput
@@ -100,6 +123,11 @@ export default function SettingsScreen() {
         }}
       />
       <Text style={{ color: '#4b6356', marginBottom: 24 }}>Reminders require notification permission and a dev/production build.</Text>
+
+      {/* Reset to defaults */}
+      <TouchableOpacity onPress={resetDefaults} style={{ marginBottom: 24, alignSelf: 'flex-start', backgroundColor: '#e4ede7', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8 }}>
+        <Text style={{ color: '#1a5632', fontWeight: '700' }}>Reset to defaults</Text>
+      </TouchableOpacity>
 
       {/* Explore link */}
       <TouchableOpacity onPress={() => Linking.openURL('https://timedancers.org')}>

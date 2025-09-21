@@ -4,7 +4,7 @@ import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
-export default function PracticeScreen() {
+export default function MeditateScreen() {
   useKeepAwakeSafe();
   const [onboarded, setOnboarded] = useState(false);
 
@@ -23,8 +23,6 @@ export default function PracticeScreen() {
     checkStorage();
   }, []);
 
-  // If not onboarded, render the Meditation component anyway so Practice works,
-  // since Home tab is now the onboarding entry point.
   return (
     <DismissKeyboard>
       <Meditation handler={setOnboarded} onboarded={onboarded} />

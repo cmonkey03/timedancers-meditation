@@ -13,9 +13,9 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="practice"
+        name="meditate"
         options={{
-          title: 'Practice',
+          title: 'Meditate',
           tabBarIcon: (p) => <Ionicons name="timer-outline" {...p} />,
         }}
       />
