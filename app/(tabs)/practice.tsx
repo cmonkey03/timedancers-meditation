@@ -1,49 +1,33 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
 import Meditation from '@/components/Meditation';
-import MeditationOnboarding from '@/components/MeditationOnboarding';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
-export default function MeditationTabScreen() {
+export default function PracticeScreen() {
   useKeepAwakeSafe();
   const [onboarded, setOnboarded] = useState(false);
-
-  const finishOnboarding = async (): Promise<void> => {
-    await AsyncStorage.setItem(
-      'hasOnboarded',
-      JSON.stringify({
-        hasOnboarded: true,
-      })
-    );
-    setOnboarded(true);
-  };
 
   useEffect(() => {
     const checkStorage = async () => {
       try {
         const storage = await AsyncStorage.getItem('hasOnboarded');
-
-        if (null !== storage) {
-          const parsedStorage = JSON.parse(storage);
-
-          if (parsedStorage.hasOnboarded) {
-            setOnboarded(true);
-          }
+        if (storage) {
+          const parsed = JSON.parse(storage);
+          if (parsed?.hasOnboarded) setOnboarded(true);
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     };
-
     checkStorage();
   }, []);
 
-  return onboarded ? (
+  // If not onboarded, render the Meditation component anyway so Practice works,
+  // since Home tab is now the onboarding entry point.
+  return (
     <DismissKeyboard>
       <Meditation handler={setOnboarded} onboarded={onboarded} />
     </DismissKeyboard>
-  ) : (
-    <MeditationOnboarding finishOnboarding={finishOnboarding} />
   );
 }
