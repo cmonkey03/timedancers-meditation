@@ -1,9 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { useThemeColors } from '@/hooks/use-theme';
 import { useAlerts } from '@/hooks/use-alerts';
 import type { AlertMode } from '@/hooks/use-notifications';
+import { useThemeColors } from '@/hooks/use-theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useMemo, useState } from 'react';
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 const MODES: { key: AlertMode; label: string }[] = [
   { key: 'chime', label: 'Chime' },
@@ -12,7 +12,12 @@ const MODES: { key: AlertMode; label: string }[] = [
   { key: 'silent', label: 'Silent' },
 ];
 
-export default function AlertsSettings() {
+type Props = {
+  allowBackgroundAlerts: boolean;
+  onToggleAllowBackgroundAlerts: (v: boolean) => void;
+};
+
+export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBackgroundAlerts }: Props) {
   const C = useThemeColors();
   const [mode, setMode] = useState<AlertMode>('chime');
   const { playStartAlert } = useAlerts(mode);
@@ -60,13 +65,24 @@ export default function AlertsSettings() {
     >
       <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10 }}>Alerts</Text>
       <View style={s.row}>{buttons}</View>
-      <Text style={{ color: C.mutedText, marginBottom: 12 }}>Choose how the app alerts you at start and completion.</Text>
+      <Text style={{ color: C.mutedText, marginBottom: 8 }}>Choose how the app alerts you throughout your session.</Text>
+
       <TouchableOpacity
         onPress={() => playStartAlert()}
         style={[s.testBtn, { backgroundColor: C.surface, borderColor: C.border }]}
       >
         <Text style={{ color: C.text, fontWeight: '700' }}>Test alert</Text>
       </TouchableOpacity>
+
+      {/* Play alerts in background toggle */}
+      <View style={[s.bgToggleRow, { borderColor: C.border }]}>
+        <Text style={{ color: C.text, fontWeight: '600' }}>Play alerts in background</Text>
+        <Switch value={allowBackgroundAlerts} onValueChange={onToggleAllowBackgroundAlerts} />
+      </View>
+      <Text style={{ color: C.mutedText, marginTop: 6, marginBottom: 12 }}>
+        Chimes & haptics still play if the app is in the background or the screen is locked.
+      </Text>
+
     </View>
   );
 }
@@ -77,10 +93,18 @@ const s = StyleSheet.create({
     padding: 12,
     marginBottom: 16,
   },
+  bgToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: 4,
+  },
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   pill: {
     paddingHorizontal: 12,
@@ -96,5 +120,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderRadius: 8,
+    marginTop: 4,
+    marginBottom: 12,
   },
 });
