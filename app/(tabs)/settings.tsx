@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useThemeColors } from '@/hooks/use-theme';
-import { ThemePreview, DailyReminder } from '@/components/SettingsPage';
+import { DailyReminder, ThemePreview } from '@/components/SettingsPage';
 import Alerts from '@/components/SettingsPage/Alerts';
+import { useThemeColors } from '@/hooks/use-theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -52,21 +52,11 @@ export default function SettingsScreen() {
       <Text style={{ fontSize: 22, fontWeight: '700', color: C.text, marginBottom: 12 }}>Settings</Text>
 
       <ThemePreview />
-      <Alerts />
+      <Alerts
+        allowBackgroundAlerts={allowBackgroundAlerts}
+        onToggleAllowBackgroundAlerts={setAllowBackgroundAlerts}
+      />
       <DailyReminder />
-
-      {/* Background Alerts Toggle */}
-      <View
-        style={{
-          backgroundColor: C.surface,
-          borderRadius: 12,
-          padding: 12,
-          marginBottom: 16,
-        }}
-      >
-        <Text style={{ fontWeight: '600', color: C.text, marginBottom: 6 }}>Allow background alerts</Text>
-        <Switch value={allowBackgroundAlerts} onValueChange={setAllowBackgroundAlerts} />
-      </View>
 
       {/* Reset to defaults */}
       <TouchableOpacity

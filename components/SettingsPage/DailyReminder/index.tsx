@@ -57,11 +57,22 @@ export default function DailyReminder() {
             }
           }}
           placeholderTextColor={C.mutedText}
-          style={{ borderColor: C.border, borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, color: C.text, flex: 0.5 }}
+          editable={enabled}
+          selectTextOnFocus={enabled}
+          style={{
+            borderColor: C.border,
+            borderWidth: 1,
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            color: C.text,
+            flex: 0.5,
+            opacity: enabled ? 1 : 0.5,
+          }}
           blurOnSubmit
         />
       </View>
-      <Text style={{ color: C.mutedText, marginBottom: 16 }}>Enable and set a local reminder time (24h HH:MM).</Text>
+      <Text style={{ color: C.mutedText, marginBottom: 16 }}>Schedule a local notification (24-hour).</Text>
     </View>
   );
 }
