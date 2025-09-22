@@ -41,3 +41,25 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Local build artifacts (ignore local builds)
+build/
+.eas/
+# Android build outputs and caches
+android/app/build/
+android/build/
+.gradle/
+
+# iOS build outputs
+ios/build/
+
+# Built app artifacts
+*.apk
+*.aab
+*.ipa
+*.xcarchive
+
+# Local build archives
+*.tar.gz
+*.tgz
+build-*.tar.gz
