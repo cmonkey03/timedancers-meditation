@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeColors } from '@/hooks/use-theme';
 import DismissKeyboard from '@/components/DismissKeyboard';
 import { ThemePreview, DailyReminder } from '@/components/SettingsPage';
+import Alerts from '@/components/SettingsPage/Alerts';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -52,6 +53,7 @@ export default function SettingsScreen() {
         <Text style={{ fontSize: 22, fontWeight: '700', color: C.text, marginBottom: 12 }}>Settings</Text>
 
         <ThemePreview />
+        <Alerts />
         <DailyReminder />
 
         {/* Background Alerts Toggle */}
