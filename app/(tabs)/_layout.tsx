@@ -12,6 +12,7 @@ export const Tabs = withLayoutContext(Navigator);
 export default function Layout() {
   const insets = useSafeAreaInsets();
   const C = useThemeColors();
+  const bottomPad = Math.min(insets.bottom, 8); // clamp for compact spacing
   return (
     <Tabs
       tabBarPosition="bottom"
@@ -29,10 +30,10 @@ export default function Layout() {
           shadowOpacity: 0, // iOS shadow off
           borderTopWidth: 0.5,
           borderTopColor: C.border,
-          // Tighter bar sizing
-          height: 44 + insets.bottom,
-          paddingTop: 2,
-          paddingBottom: insets.bottom,
+          // Tighter bar sizing with clamped bottom padding
+          height: 44 + bottomPad,
+          paddingTop: 0,
+          paddingBottom: bottomPad,
         },
         tabBarItemStyle: { height: 38, paddingVertical: 0 },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
