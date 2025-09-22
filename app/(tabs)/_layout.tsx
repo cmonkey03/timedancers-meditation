@@ -20,8 +20,9 @@ export default function Layout() {
         swipeEnabled: true,
         tabBarScrollEnabled: false,
         tabBarShowIcon: true,
-        tabBarShowLabel: false,
-        tabBarIndicatorStyle: { backgroundColor: C.primary, height: 1 },
+        tabBarShowLabel: true,
+        tabBarAllowFontScaling: false,
+        tabBarIndicatorStyle: { height: 0 },
         tabBarActiveTintColor: C.primary,
         tabBarInactiveTintColor: C.mutedText,
         tabBarStyle: {
@@ -30,13 +31,13 @@ export default function Layout() {
           shadowOpacity: 0, // iOS shadow off
           borderTopWidth: 0.5,
           borderTopColor: C.border,
-          // Tighter bar sizing with clamped bottom padding
-          height: 44 + bottomPad,
+          // Bar must be >= item height to avoid clipping labels
+          height: 66 + bottomPad,
           paddingTop: 0,
-          paddingBottom: bottomPad,
+          paddingBottom: bottomPad + 2,
         },
-        tabBarItemStyle: { height: 38, paddingVertical: 0 },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarItemStyle: { height: 58, paddingVertical: 0 },
+        tabBarLabelStyle: { fontSize: 12, lineHeight: 16, fontWeight: '600', marginTop: 0 },
       }}
     >
         <Tabs.Screen
@@ -53,7 +54,7 @@ export default function Layout() {
           options={{
             title: 'Meditate',
             tabBarIcon: ({ color }: { color: string }) => (
-              <Ionicons name="timer-outline" size={24} color={color} />
+              <Ionicons name="aperture-outline" size={24} color={color} />
             ),
           }}
         />
