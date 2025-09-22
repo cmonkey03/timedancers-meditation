@@ -50,6 +50,11 @@ export function useNotifications(
       }
       await Notifier.scheduleAtMs(it.whenEpochMs, it.title, it.body, { withSound: it.withSound });
     }
+    // Persist expected end time based on the last scheduled item (completion)
+    const last = items[items.length - 1];
+    if (last?.whenEpochMs) {
+      await AsyncStorage.setItem('activeSessionEndAtMs', String(last.whenEpochMs)).catch(() => {});
+    }
   }, [allowBackgroundAlerts, timer, alertMode]);
 
   // AppState-based scheduling/cancellation

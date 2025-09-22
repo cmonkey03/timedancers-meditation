@@ -4,7 +4,7 @@
  * Responsibilities:
  * - Play chime assets using expo-audio
  * - Trigger appropriate haptic feedback via expo-haptics
- * - Provide simple APIs to fire alerts for start, phase transition, and completion
+ * - Provide simple APIs to fire alerts for start and completion
  */
 import { useCallback } from 'react';
 import { useAudioPlayer } from 'expo-audio';
@@ -36,15 +36,6 @@ export function useAlerts(alertMode: AlertMode) {
     }
   }, [alertMode, playChime]);
 
-  const playPhaseTransitionAlert = useCallback(async () => {
-    if (alertMode === 'chime' || alertMode === 'chime_haptic') {
-      await playChime(1);
-    }
-    if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    }
-  }, [alertMode, playChime]);
-
   const playCompletionAlert = useCallback(async () => {
     if (alertMode === 'chime' || alertMode === 'chime_haptic') {
       await playChime(2);
@@ -54,5 +45,5 @@ export function useAlerts(alertMode: AlertMode) {
     }
   }, [alertMode, playChime]);
 
-  return { playStartAlert, playPhaseTransitionAlert, playCompletionAlert };
+  return { playStartAlert, playCompletionAlert };
 }

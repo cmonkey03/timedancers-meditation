@@ -11,39 +11,25 @@ export function computeScheduleItems(
 ): { whenEpochMs: number; title: string; body: string; withSound: boolean }[] {
   if (!timer.started || timer.startAtMs == null) return [];
 
+  // Compute total session duration in ms (sum of configured phases)
+  const totalMs = timer.phases.reduce((sum, p) => sum + (p.seconds || 0) * 1000, 0);
+  if (totalMs <= 0) return [];
+
   const nowMs = Date.now();
   const elapsedMs = Math.max(0, nowMs - (timer.startAtMs ?? 0) - timer.pausedTotalMs);
-
-  // cumulative phase boundaries in ms
-  const cumMs: number[] = [];
-  let acc = 0;
-  for (const p of timer.phases) {
-    acc += (p.seconds || 0) * 1000;
-    cumMs.push(acc);
-  }
-
+  const remainingMs = Math.max(0, totalMs - elapsedMs);
+  if (remainingMs <= 0) return [];
   const withSound = alertMode === 'chime' || alertMode === 'chime_haptic';
-  // Epoch base: use startAtMs only; paused time is accounted for in elapsed filtering
-  const baseEpoch = timer.startAtMs ?? 0;
-  const items: { whenEpochMs: number; title: string; body: string; withSound: boolean }[] = [];
+  const endEpochMs = nowMs + remainingMs;
 
-  for (let i = 0; i < cumMs.length; i++) {
-    const boundary = cumMs[i];
-    if (boundary <= elapsedMs) continue;
-    const whenEpochMs = baseEpoch + boundary;
-    const isCompletion = i === cumMs.length - 1;
-    if (isCompletion) {
-      items.push({ whenEpochMs, title: 'Meditation complete', body: 'Session finished', withSound });
-    } else {
-      const nextKey = timer.phases[i + 1]?.key ?? 'next phase';
-      items.push({ whenEpochMs, title: 'Phase change', body: `Begin ${capitalize(nextKey)}`, withSound });
-    }
-  }
-
-  return items;
+  // Only schedule the completion notification
+  return [
+    {
+      whenEpochMs: endEpochMs,
+      title: 'Meditation complete',
+      body: 'Session finished',
+      withSound,
+    },
+  ];
 }
 
-function capitalize(s: string): string {
-  if (!s) return '';
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}

@@ -13,9 +13,16 @@ export default function ThemePreview() {
   ];
 
   return (
-    <View>
-      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 6 }}>Theme Preview</Text>
-      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+    <View
+      style={{
+        backgroundColor: C.surface,
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 16,
+      }}
+    >
+      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10 }}>Theme Preview</Text>
+      <View style={{ flexDirection: 'row', marginBottom: 6, flexWrap: 'wrap' }}>
         {options.map((opt) => {
           const selected =
             (opt.key === 'system' && override == null) ||
@@ -31,7 +38,7 @@ export default function ThemePreview() {
                 borderRadius: 20,
                 borderWidth: 1,
                 borderColor: selected ? C.primary : C.border,
-                backgroundColor: selected ? C.surface : 'transparent',
+                backgroundColor: selected ? C.background : 'transparent',
                 marginRight: 8,
                 marginBottom: 8,
               }}
@@ -42,7 +49,7 @@ export default function ThemePreview() {
           );
         })}
       </View>
-      <Text style={{ color: C.mutedText, marginTop: -4, marginBottom: 16 }}>Tip: Reset to defaults returns to System appearance.</Text>
+      <Text style={{ color: C.mutedText, marginTop: 2 }}>Tip: Reset to defaults returns to System appearance.</Text>
     </View>
   );
 }

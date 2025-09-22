@@ -3,7 +3,6 @@ import WheelTower from '@/components/MeditationPage/WheelTower';
 import { useAlerts } from '@/hooks/use-alerts';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
-import { usePhaseConfig } from '@/hooks/use-phase-config';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
 import displayTime from '@/utils/display-time';
@@ -11,9 +10,8 @@ import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync } from 'expo-audio';
-import { useFocusEffect } from '@react-navigation/native';
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { AppState, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, Text, View } from 'react-native';
 
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
@@ -39,26 +37,21 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
   const appIsActiveRef = useRef(true);
   const [showCompleted, setShowCompleted] = useState(false);
 
-  // Phase config: apply per-phase overrides or equal division when idle
-  const { applyNow } = usePhaseConfig(input, timer, setPhases);
-  const [appliedMsgAt, setAppliedMsgAt] = useState<number | null>(null);
-
-  // Re-apply when screen regains focus (e.g., after editing Settings)
-  useFocusEffect(
-    useCallback(() => {
-      (async () => {
-        const changed = await applyNow();
-        if (changed) {
-          setAppliedMsgAt(Date.now());
-          setTimeout(() => setAppliedMsgAt(null), 2000);
-        }
-      })();
-      return () => {};
-    }, [applyNow])
-  );
+  // Simple equal-division phases when idle: recompute from minutes input
+  useEffect(() => {
+    if (timer.running || timer.started) return;
+    const minutes = parseInt(input) || 3;
+    const next = Timer.createPhasesFromMinutes(minutes);
+    const curr = timer.phases;
+    const differs =
+      curr[0]?.seconds !== next[0].seconds ||
+      curr[1]?.seconds !== next[1].seconds ||
+      curr[2]?.seconds !== next[2].seconds;
+    if (differs) setPhases(next);
+  }, [input, timer.running, timer.started, timer.phases, setPhases]);
 
   // Alerts (chime/haptic)
-  const { playStartAlert, playPhaseTransitionAlert, playCompletionAlert } = useAlerts(alertMode);
+  const { playStartAlert, playCompletionAlert } = useAlerts(alertMode);
 
   // Configure audio once (silent mode, etc.)
   useEffect(() => {
@@ -111,7 +104,6 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
     return () => sub.remove();
   }, []);
 
-
   // Persist input when it changes (only when not started)
   useEffect(() => {
     if (!timer.started) {
@@ -142,27 +134,16 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowBackgroundAlerts, timer.running]);
 
-
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
       setInput(text);
     }
   };
 
-  // (Removed separate input-based updater; handled by recomputeIdlePhases)
-
   const onPress = async (action: string) => {
     switch (action) {
       case 'counting':
         if (!timer.running && !timer.started) {
-          // Ensure latest overrides are applied before starting
-          {
-            const changed = await applyNow();
-            if (changed) {
-              setAppliedMsgAt(Date.now());
-              setTimeout(() => setAppliedMsgAt(null), 2000);
-            }
-          }
           // Start timer
           start();
           // Schedule notifications for all upcoming phase transitions and completion
@@ -175,8 +156,6 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
             playStartAlert();
           };
           setTimeout(fireStartAlert, 120);
-          // Initialize phase index tracking
-          lastPhaseIndexRef.current = 0;
           // Mark start chime as done to avoid the interval safety net playing it again
           startChimeDoneRef.current = true;
         } else if (!timer.running) {
@@ -195,8 +174,6 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
         const newPhases = Timer.createPhasesFromMinutes(minutes);
         setPhases(newPhases);
         reset();
-        // Re-apply overrides after reset so next session uses them
-        await applyNow();
         // Cancel any scheduled notifications
         Notifier.cancelAllScheduled();
         clearSessionToken();
@@ -210,15 +187,13 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
       default:
         if (action === 'test_alert') {
           // Preview the currently selected alert mode
-          playPhaseTransitionAlert();
+          playStartAlert();
           break;
         }
         break;
     }
   };
 
-  // Track last phase index for chime detection
-  const lastPhaseIndexRef = useRef(0);
   // Guard to ensure start chime only plays once
   const startChimeDoneRef = useRef(false);
   // Guard to ensure completion chime only plays once
@@ -244,13 +219,6 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
       }
     }
 
-    // Phase transition chime
-    if (newCurrentTime.currentIndex > lastPhaseIndexRef.current && !newCurrentTime.done) {
-      if (__DEV__) console.log(`[chime] phase transition ${lastPhaseIndexRef.current} -> ${newCurrentTime.currentIndex}`);
-      playPhaseTransitionAlert();
-    }
-    lastPhaseIndexRef.current = newCurrentTime.currentIndex;
-
     // Completion chime
     if (newCurrentTime.done && !completionChimeDoneRef.current) {
       if (__DEV__) console.log('[chime] session complete');
@@ -267,7 +235,7 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
         setShowCompleted(false);
       }, 2000);
     }
-  }, [timer, playStartAlert, playPhaseTransitionAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
+  }, [timer, playStartAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
 
   // Cleanup any pending completion reset timeout on unmount
   useEffect(() => {
@@ -279,7 +247,6 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
   // Reset phase index when timer resets
   useEffect(() => {
     if (!timer.started) {
-      lastPhaseIndexRef.current = 0;
       startChimeDoneRef.current = false;
       completionChimeDoneRef.current = false;
       setShowCompleted(false);
@@ -326,21 +293,7 @@ const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
           />
         );
       })()}
-      {(!timer.started && !timer.running) && (
-        <TouchableOpacity
-          onPress={applyNow}
-          style={{ marginTop: 12, alignSelf: 'center', backgroundColor: C.surface, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 }}
-        >
-          <Text style={{ color: C.text, fontWeight: '700' }}>Apply per-phase now</Text>
-        </TouchableOpacity>
-      )}
-      {/* Debug: show current phase seconds and transient applied message */}
-      <Text style={{ marginTop: 8, color: C.mutedText, fontSize: 12 }}>
-        config: {timer.phases.map(p => p.seconds).join(', ')} secs
-      </Text>
-      {appliedMsgAt && (
-        <Text style={{ marginTop: 4, color: C.text, fontSize: 12 }}>Applied per‑phase settings</Text>
-      )}
+      {/* Per-phase overrides removed: using equal-division only */}
       {showCompleted && (
         <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
       )}
