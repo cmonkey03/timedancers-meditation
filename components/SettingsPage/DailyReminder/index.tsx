@@ -19,7 +19,14 @@ export default function DailyReminder() {
   }, []);
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: C.surface,
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 16,
+      }}
+    >
       <Text style={{ fontWeight: '600', color: C.text }}>Daily Reminder</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
         <Switch
