@@ -1,0 +1,119 @@
+22:12:07.962 detox[22723] [90mB[39m node_modules/.bin/detox test -c ios.debug
+  data: {
+    "id": "9c62e876-6d39-4fbc-4146-e926db7ea3a4",
+    "detoxConfig": {
+      "configurationName": "ios.debug",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+          "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "e2e/artifacts/ios.debug.2025-09-22 21-12-07Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true,
+            "enabled": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": false
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "configuration": "ios.debug",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/russellbrown/Developer/timedancers-meditation/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 300000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [],
+          "--": []
+        }
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-22723",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+22:12:07.964 detox[22723] [90mi[39m Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-22723
+22:12:07.965 detox[22723] [90mi[39m starting server on  /tmp/detox.primary-22723 
+22:12:07.966 detox[22723] [90mi[39m starting TLS server false
+22:12:07.966 detox[22723] [90mi[39m starting server as Unix || Windows Socket
+22:12:07.967 detox[22723] [90mi[39m Detox server listening on localhost:51779...
+22:12:07.968 detox[22723] [90mi[39m Serialized the session state at: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/9c62e876-6d39-4fbc-4146-e926db7ea3a4.detox.json
+22:12:07.969 detox[22723] [90mB[39m jest
+22:12:09.316 detox[22723] [90mE[39m Command failed with exit code = 1:
+jest
+22:12:09.317 detox[22723] [90mi[39m Detox server has been closed gracefully
+22:12:09.318 detox[22723] [90mE[39m node_modules/.bin/detox test -c ios.debug

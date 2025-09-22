@@ -1,25 +1,32 @@
 {
-  "testRunner": "jest",
-  "runnerConfig": "e2e/jest.config.js",
-  "specs": "e2e",
   "artifacts": {
     "rootDir": "e2e/artifacts",
     "plugins": {
       "log": "all",
       "screenshot": { "shouldTakeAutomaticSnapshots": true, "keepOnlyFailedTestsArtifacts": true },
       "video": "fail",
-      "instruments": "all",
-      "timeline": "all"
+      "instruments": "all"
     }
   },
   "behavior": {
     "init": { "exposeGlobals": true }
   },
+  "testRunner": {
+    "$0": "jest",
+    "args": {
+      "config": "e2e/jest.config.js"
+    }
+  },
   "apps": {
     "ios.debug": {
       "type": "ios.app",
-      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16' -derivedDataPath ios/build",
+      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
       "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+    },
+    "ios.release": {
+      "type": "ios.app",
+      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/TimedancersMeditation.app"
     }
   },
   "devices": {
@@ -32,6 +39,10 @@
     "ios.debug": {
       "device": "simulator",
       "app": "ios.debug"
+    },
+    "ios.release": {
+      "device": "simulator",
+      "app": "ios.release"
     }
   }
 }

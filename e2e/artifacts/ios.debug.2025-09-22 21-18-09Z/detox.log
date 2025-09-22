@@ -1,0 +1,800 @@
+22:18:09.551 detox[24598] [90mB[39m node_modules/.bin/detox test -c ios.debug
+  data: {
+    "id": "41a3e044-4711-0f38-5d1e-e7223c1d1b3e",
+    "detoxConfig": {
+      "configurationName": "ios.debug",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+          "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "e2e/artifacts/ios.debug.2025-09-22 21-18-09Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true,
+            "enabled": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": false
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "configuration": "ios.debug",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/russellbrown/Developer/timedancers-meditation/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 300000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [],
+          "config": "e2e/jest.config.js",
+          "--": []
+        },
+        "$0": "jest"
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-24598",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+22:18:09.556 detox[24598] [90mi[39m Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-24598
+22:18:09.557 detox[24598] [90mi[39m starting server on  /tmp/detox.primary-24598 
+22:18:09.557 detox[24598] [90mi[39m starting TLS server false
+22:18:09.557 detox[24598] [90mi[39m starting server as Unix || Windows Socket
+22:18:09.559 detox[24598] [90mi[39m Detox server listening on localhost:52887...
+22:18:09.560 detox[24598] [90mi[39m Serialized the session state at: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/41a3e044-4711-0f38-5d1e-e7223c1d1b3e.detox.json
+22:18:09.561 detox[24598] [90mB[39m jest --config e2e/jest.config.js
+22:18:09.976 detox[24599] [90mi[39m Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+22:18:09.977 detox[24599] [90mi[39m requested connection to  primary-24598 /tmp/detox.primary-24598
+22:18:09.977 detox[24599] [90mi[39m Connecting client on Unix Socket : /tmp/detox.primary-24598
+22:18:09.978 detox[24598] [90mi[39m ## socket connection to server detected ##
+22:18:09.978 detox[24599] [90mi[39m retrying reset
+22:18:09.978 detox[24599] [90mi[39m dispatching event to  primary-24598 /tmp/detox.primary-24598  :  registerContext , { id: 'secondary-24599' }
+22:18:09.979 detox[24598] [90mi[39m received event of :  registerContext { id: 'secondary-24599' }
+22:18:09.980 detox[24598] [90mi[39m dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+22:18:09.980 detox[24599] [90mi[39m ## received events ##
+22:18:09.980 detox[24599] [90mi[39m detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+22:18:10.037 detox[24599] [90mB[39m e2e/onboarding.e2e.ts
+22:18:10.048 detox[24599] [90mB[39m set up environment
+22:18:10.048 detox[24599] [90mi[39m dispatching event to  primary-24598 /tmp/detox.primary-24598  :  registerWorker , { workerId: 'w1' }
+22:18:10.049 detox[24598] [90mi[39m received event of :  registerWorker { workerId: 'w1' }
+22:18:10.049 detox[24598] [90mi[39m dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+22:18:10.049 detox[24598] [90mi[39m broadcasting event to all known sockets listening to  /tmp/detox.primary-24598  :   sessionStateUpdate { workersCount: 1 }
+22:18:10.049 detox[24599] [90mi[39m ## received events ##
+22:18:10.049 detox[24599] [90mi[39m detected event registerWorkerDone { workersCount: 1 }
+22:18:10.179 detox[24599] [90mi[39m ## received events ##
+22:18:10.179 detox[24599] [90mi[39m detected event sessionStateUpdate { workersCount: 1 }
+22:18:10.182 detox[24598] [90mB[39m connection :52887<->:52888
+22:18:10.182 detox[24599] [90mi[39m opened web socket to: ws://localhost:52887
+22:18:10.183 detox[24599] [90mi[39m send message
+  data: {"type":"login","params":{"sessionId":"425a5feb-5011-5af9-c9d4-59b760745d73","role":"tester"},"messageId":0}
+22:18:10.184 detox[24598] [90mi[39m get
+  data: {"type":"login","params":{"sessionId":"425a5feb-5011-5af9-c9d4-59b760745d73","role":"tester"},"messageId":0}
+22:18:10.184 detox[24598] [90mi[39m created session 425a5feb-5011-5af9-c9d4-59b760745d73
+22:18:10.184 detox[24598] [90mi[39m send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+22:18:10.184 detox[24598] [90mi[39m tester joined session 425a5feb-5011-5af9-c9d4-59b760745d73
+22:18:10.184 detox[24599] [90mi[39m get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+22:18:10.334 detox[24598] [90mi[39m received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16' } }
+}
+22:18:10.334 detox[24599] [90mi[39m dispatching event to  primary-24598 /tmp/detox.primary-24598  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16' } }
+}
+22:18:10.336 detox[24598] [90mB[39m init
+  args: ()
+22:18:10.337 detox[24598] [90mE[39m init
+22:18:10.337 detox[24598] [90mB[39m allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 16"
+    }
+  }
+22:18:10.345 detox[24598] [90mi[39m applesimutils --list --byType "iPhone 16" --fields udid,os,identifier
+22:18:10.345 detox[24598] [90mi[39m Searching for device by type = "iPhone 16" ...
+22:18:10.547 detox[24598] [90mi[39m [
+  {
+    "os" : {
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-4"
+    },
+    "udid" : "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  },
+  {
+    "os" : {
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-0"
+    },
+    "udid" : "BF1CAF3D-3B23-4ECA-B8A2-5A9086487A78"
+  }
+]
+
+22:18:10.547 detox[24598] [90mi[39m settled on A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {
+    "id": "A90F393D-72AC-4F90-BBE5-9C3B184A3157",
+    "udid": "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  }
+22:18:10.547 detox[24598] [90mE[39m allocate
+22:18:10.547 detox[24598] [90mB[39m post-allocate: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {
+    "id": "A90F393D-72AC-4F90-BBE5-9C3B184A3157",
+    "udid": "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  }
+22:18:10.547 detox[24598] [90mi[39m applesimutils --list --byId A90F393D-72AC-4F90-BBE5-9C3B184A3157 --maxResults 1 --fields udid,os,version,state
+22:18:10.649 detox[24598] [90mi[39m [
+  {
+    "state" : "Booted",
+    "os" : {
+      "version" : "18.4"
+    },
+    "udid" : "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  }
+]
+
+22:18:10.649 detox[24598] [90mE[39m post-allocate: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:18:10.649 detox[24598] [90mi[39m dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+22:18:10.649 detox[24599] [90mi[39m ## received events ##
+22:18:10.649 detox[24599] [90mi[39m detected event allocateDeviceDone {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:18:10.660 detox[24599] [90mB[39m onBootDevice
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157"})
+22:18:10.660 detox[24599] [90mE[39m onBootDevice
+22:18:10.660 detox[24599] [90mB[39m installUtilBinaries
+  args: ()
+22:18:10.661 detox[24599] [90mE[39m installUtilBinaries
+22:18:10.661 detox[24599] [90mB[39m selectApp
+  args: ("default")
+22:18:10.667 detox[24599] [90mE[39m selectApp
+22:18:10.667 detox[24599] [90mB[39m uninstallApp
+  args: ()
+22:18:10.667 detox[24599] [90mB[39m onBeforeUninstallApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:10.667 detox[24599] [90mE[39m onBeforeUninstallApp
+22:18:10.667 detox[24599] [90mi[39m /usr/bin/xcrun simctl uninstall A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:10.667 detox[24599] [90mi[39m Uninstalling org.timedancers.meditation...
+22:18:10.790 detox[24599] [90mi[39m org.timedancers.meditation uninstalled
+22:18:10.791 detox[24599] [90mE[39m uninstallApp
+22:18:10.791 detox[24599] [90mB[39m selectApp
+  args: ("default")
+22:18:10.791 detox[24599] [90mB[39m terminateApp
+  args: ()
+22:18:10.791 detox[24599] [90mB[39m onBeforeTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:10.791 detox[24599] [90mE[39m onBeforeTerminateApp
+22:18:10.791 detox[24599] [90mi[39m /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:10.791 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:11.901 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:11.901 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:12.037 detox[24599] [90mi[39m "/usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+22:18:12.037 detox[24599] [90mi[39m 
+22:18:12.037 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:12.037 detox[24599] [90mB[39m onTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:12.037 detox[24599] [90mE[39m onTerminateApp
+22:18:12.037 detox[24599] [90mE[39m terminateApp
+22:18:12.037 detox[24599] [90mE[39m selectApp
+22:18:12.037 detox[24599] [90mB[39m installApp
+  args: ()
+22:18:12.037 detox[24599] [90mi[39m /usr/bin/xcrun simctl install A90F393D-72AC-4F90-BBE5-9C3B184A3157 "/Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+22:18:12.037 detox[24599] [90mi[39m Installing /Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app...
+22:18:12.317 detox[24599] [90mi[39m /Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app installed
+22:18:12.317 detox[24599] [90mE[39m installApp
+22:18:12.317 detox[24599] [90mB[39m selectApp
+  args: ("default")
+22:18:12.318 detox[24599] [90mB[39m terminateApp
+  args: ()
+22:18:12.318 detox[24599] [90mB[39m onBeforeTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:12.318 detox[24599] [90mE[39m onBeforeTerminateApp
+22:18:12.318 detox[24599] [90mi[39m /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:12.318 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:13.423 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:13.423 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:13.543 detox[24599] [90mi[39m "/usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+22:18:13.543 detox[24599] [90mi[39m 
+22:18:13.543 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:13.544 detox[24599] [90mB[39m onTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:13.544 detox[24599] [90mE[39m onTerminateApp
+22:18:13.544 detox[24599] [90mE[39m terminateApp
+22:18:13.544 detox[24599] [90mE[39m selectApp
+22:18:13.544 detox[24599] [90mE[39m set up environment
+22:18:13.833 detox[24599] [90mi[39m onboarding.e2e.ts is assigned to A90F393D-72AC-4F90-BBE5-9C3B184A3157 (iPhone 16)
+22:18:13.833 detox[24599] [90mB[39m run the tests
+22:18:13.833 detox[24599] [90mB[39m onRunDescribeStart
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+22:18:13.834 detox[24599] [90mE[39m onRunDescribeStart
+22:18:13.834 detox[24599] [90mB[39m beforeAll
+22:18:13.835 detox[24599] [90mB[39m launchApp
+  args: ({"newInstance":true,"permissions":{"notifications":"YES"}})
+22:18:13.835 detox[24599] [90mB[39m terminateApp
+  args: ("org.timedancers.meditation")
+22:18:13.835 detox[24599] [90mB[39m onBeforeTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:13.835 detox[24599] [90mE[39m onBeforeTerminateApp
+22:18:13.835 detox[24599] [90mi[39m /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:13.835 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:14.949 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:14.949 detox[24599] [90mi[39m Terminating org.timedancers.meditation...
+22:18:15.048 detox[24599] [90mi[39m "/usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+22:18:15.048 detox[24599] [90mi[39m 
+22:18:15.048 detox[24599] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:18:15.048 detox[24599] [90mB[39m onTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:18:15.048 detox[24599] [90mE[39m onTerminateApp
+22:18:15.048 detox[24599] [90mE[39m terminateApp
+22:18:15.049 detox[24599] [90mi[39m applesimutils --byId A90F393D-72AC-4F90-BBE5-9C3B184A3157 --bundle org.timedancers.meditation --restartSB --setPermissions notifications=YES
+22:18:15.049 detox[24599] [90mi[39m Trying to set permissions with AppleSimUtils: notifications=YES...
+22:18:15.410 detox[24599] [90mi[39m notifications permissions are set
+22:18:15.410 detox[24599] [90mB[39m onBeforeLaunchApp
+  args: ({"bundleId":"org.timedancers.meditation","deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","launchArgs":{"detoxServer":"ws://localhost:52887","detoxSessionId":"425a5feb-5011-5af9-c9d4-59b760745d73"}})
+22:18:15.411 detox[24599] [90mi[39m starting SimulatorLogRecording {
+  udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+  bundleId: 'org.timedancers.meditation'
+}
+22:18:15.412 detox[24599] [90mi[39m /usr/bin/xcrun simctl get_app_container A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:15.526 detox[24599] [90mi[39m /Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app
+
+22:18:15.527 detox[24599] [90mi[39m /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app\""
+22:18:15.578 detox[24599] [90mE[39m onBeforeLaunchApp
+22:18:15.578 detox[24599] [90mi[39m SIMCTL_CHILD_GULGeneratedClassDisposeDisabled=YES SIMCTL_CHILD_DYLD_INSERT_LIBRARIES="/Users/russellbrown/Library/Detox/ios/framework/ec6991bd5708049e5dd202db02b5795a1742a5b4/Detox.framework/Detox" /usr/bin/xcrun simctl launch A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation --args -detoxServer ws://localhost:52887 -detoxSessionId 425a5feb-5011-5af9-c9d4-59b760745d73 -detoxDebugVisibility YES -detoxDisableHierarchyDump YES
+22:18:15.578 detox[24599] [90mi[39m Launching org.timedancers.meditation...
+22:18:18.113 detox[24599] [90mi[39m org.timedancers.meditation: 24697
+
+22:18:18.114 detox[24599] [90mi[39m /usr/bin/xcrun simctl get_app_container A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:18.366 detox[24599] [90mi[39m /Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app
+
+22:18:18.378 detox[24599] [90mi[39m org.timedancers.meditation launched. To watch simulator logs, run:
+        /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate 'process == "TimedancersMeditation"'
+22:18:18.379 detox[24599] [90mB[39m onLaunchApp
+  args: ({"bundleId":"org.timedancers.meditation","deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","launchArgs":{"detoxServer":"ws://localhost:52887","detoxSessionId":"425a5feb-5011-5af9-c9d4-59b760745d73","detoxDebugVisibility":"YES","detoxDisableHierarchyDump":"YES"},"pid":24697})
+22:18:18.379 detox[24599] [90mE[39m onLaunchApp
+22:18:18.635 detox[24598] [90mB[39m connection :52887<->:52902
+22:18:18.984 detox[24598] [90mi[39m get
+  data: {"type":"login","params":{"sessionId":"425a5feb-5011-5af9-c9d4-59b760745d73","role":"app"},"messageId":0}
+22:18:18.984 detox[24598] [90mi[39m send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": true
+    },
+    "messageId": 0
+  }
+22:18:18.984 detox[24598] [90mi[39m app joined session 425a5feb-5011-5af9-c9d4-59b760745d73
+22:18:18.984 detox[24598] [90mi[39m send
+  data: {
+    "type": "appConnected"
+  }
+22:18:18.985 detox[24599] [90mi[39m get message
+  data: {"type":"appConnected"}
+   
+22:18:18.986 detox[24598] [90mi[39m get
+  data: {"type":"isReady","params":{},"messageId":-1000}
+22:18:18.986 detox[24599] [90mi[39m send message
+  data: {"type":"isReady","params":{},"messageId":-1000}
+22:18:18.987 detox[24598] [90mi[39m send
+  data: {
+    "type": "isReady",
+    "params": {},
+    "messageId": -1000
+  }
+22:18:20.419 detox[24598] [90mi[39m get
+  data: {"messageId":-1000,"type":"ready","params":{}}
+22:18:20.419 detox[24598] [90mi[39m send
+  data: {
+    "messageId": -1000,
+    "type": "ready",
+    "params": {}
+  }
+22:18:20.420 detox[24598] [90mi[39m get
+  data: {"messageId":-1000,"type":"ready","params":{}}
+22:18:20.420 detox[24598] [90mi[39m send
+  data: {
+    "messageId": -1000,
+    "type": "ready",
+    "params": {}
+  }
+22:18:20.420 detox[24598] [90mi[39m get
+  data: {"messageId":-1000,"type":"ready","params":{}}
+22:18:20.420 detox[24599] [90mi[39m get message
+  data: {"messageId":-1000,"type":"ready","params":{}}
+   
+22:18:20.421 detox[24598] [90mi[39m send
+  data: {
+    "messageId": -1000,
+    "type": "ready",
+    "params": {}
+  }
+22:18:20.422 detox[24598] [90mi[39m get
+  data: {"type":"waitForActive","params":{},"messageId":1}
+22:18:20.422 detox[24598] [90mi[39m send
+  data: {
+    "type": "waitForActive",
+    "params": {},
+    "messageId": 1
+  }
+22:18:20.422 detox[24599] [90mi[39m send message
+  data: {"type":"waitForActive","params":{},"messageId":1}
+22:18:20.422 detox[24599] [90mi[39m get message
+  data: {"messageId":-1000,"type":"ready","params":{}}
+   
+22:18:20.422 detox[24599] [90mi[39m get message
+  data: {"messageId":-1000,"type":"ready","params":{}}
+   
+22:18:20.426 detox[24598] [90mi[39m get
+  data: {"type":"waitForActiveDone","messageId":1,"params":{}}
+22:18:20.426 detox[24598] [90mi[39m send
+  data: {
+    "type": "waitForActiveDone",
+    "messageId": 1,
+    "params": {}
+  }
+22:18:20.427 detox[24599] [90mi[39m get message
+  data: {"type":"waitForActiveDone","messageId":1,"params":{}}
+   
+22:18:20.427 detox[24599] [90mB[39m onAppReady
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation","pid":24697})
+22:18:20.427 detox[24599] [90mE[39m onAppReady
+22:18:20.427 detox[24599] [90mE[39m launchApp
+22:18:20.428 detox[24599] [90mE[39m beforeAll
+22:18:20.429 detox[24599] [90mB[39m Onboarding to Meditate
+22:18:20.429 detox[24599] [90mB[39m onRunDescribeStart
+  args: ({"name":"Onboarding to Meditate"})
+22:18:20.429 detox[24599] [90mE[39m onRunDescribeStart
+22:18:20.430 detox[24599] [90mB[39m completes onboarding and lands on Meditate
+22:18:20.430 detox[24599] [90mi[39m Onboarding to Meditate: completes onboarding and lands on Meditate
+22:18:20.433 detox[24599] [90mB[39m onTestStart
+  args: ({"title":"completes onboarding and lands on Meditate","fullName":"Onboarding to Meditate completes onboarding and lands on Meditate","status":"running","invocations":1})
+22:18:20.433 detox[24599] [90mi[39m stopping SimulatorLogRecording
+22:18:20.487 detox[24599] [90mi[39m sending SIGINT to: /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app"
+22:18:20.496 detox[24599] [90mi[39m /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app\"" exited with code #0
+22:18:20.498 detox[24599] [90mi[39m starting SimulatorLogRecording
+22:18:20.499 detox[24599] [90mi[39m /usr/bin/xcrun simctl get_app_container A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:18:20.635 detox[24599] [90mi[39m /Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app
+
+22:18:20.636 detox[24599] [90mi[39m /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app\""
+22:18:20.686 detox[24599] [90mi[39m starting SimulatorScreenshot
+22:18:20.686 detox[24599] [90mi[39m /usr/bin/xcrun simctl io A90F393D-72AC-4F90-BBE5-9C3B184A3157 screenshot "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-fyQ3Lr.detox.png"
+22:18:20.687 detox[24599] [90mi[39m starting SimulatorInstrumentsRecording
+22:18:20.689 detox[24598] [90mi[39m get
+  data: {"type":"setRecordingState","params":{"recordingPath":"/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-5rcVti.detox.dtxrec","samplingInterval":0.25},"messageId":2}
+22:18:20.689 detox[24598] [90mi[39m send
+  data: {
+    "type": "setRecordingState",
+    "params": {
+      "recordingPath": "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-5rcVti.detox.dtxrec",
+      "samplingInterval": 0.25
+    },
+    "messageId": 2
+  }
+22:18:20.689 detox[24599] [90mi[39m send message
+  data: {"type":"setRecordingState","params":{"recordingPath":"/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-5rcVti.detox.dtxrec","samplingInterval":0.25},"messageId":2}
+22:18:20.691 detox[24598] [90mi[39m get
+  data: {"type":"setRecordingStateDone","params":{},"messageId":2}
+22:18:20.691 detox[24598] [90mi[39m send
+  data: {
+    "type": "setRecordingStateDone",
+    "params": {},
+    "messageId": 2
+  }
+22:18:20.691 detox[24599] [90mi[39m get message
+  data: {"type":"setRecordingStateDone","params":{},"messageId":2}
+   
+22:18:20.852 detox[24599] [90mi[39m Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-fyQ3Lr.detox.png
+
+22:18:20.852 detox[24599] [90mi[39m stopping SimulatorScreenshot
+22:18:20.852 detox[24599] [90mE[39m onTestStart
+22:18:20.852 detox[24599] [90mB[39m beforeEach
+22:18:20.852 detox[24599] [90mE[39m beforeEach
+22:18:20.853 detox[24599] [90mB[39m test_fn
+22:18:20.854 detox[24598] [90mi[39m get
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Next","isRegex":false},"expectation":"toBeVisible","timeout":5000},"messageId":3}
+22:18:20.854 detox[24598] [90mi[39m send
+  data: {
+    "type": "invoke",
+    "params": {
+      "type": "expectation",
+      "predicate": {
+        "type": "text",
+        "value": "Next",
+        "isRegex": false
+      },
+      "expectation": "toBeVisible",
+      "timeout": 5000
+    },
+    "messageId": 3
+  }
+22:18:20.854 detox[24599] [90mi[39m send message
+  data: {"type":"invoke","params":{"type":"expectation","predicate":{"type":"text","value":"Next","isRegex":false},"expectation":"toBeVisible","timeout":5000},"messageId":3}
+22:18:20.854 detox[24599] [90mB[39m wait until timeout (5000 ms) with timeout (5000 ms)
+  data: {
+    "type": "expectation",
+    "predicate": {
+      "type": "text",
+      "value": "Next",
+      "isRegex": false
+    },
+    "expectation": "toBeVisible",
+    "timeout": 5000
+  }
+22:18:25.899 detox[24598] [90mi[39m get
+  data: {"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"852\" ptr=\"0x10920eb20\" visibility=\"visible\" width=\"393\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109558e80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"852\" ptr=\"0x10931bf20\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"852\" ptr=\"0x1094103d0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                    <_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_\" focused=\"false\" height=\"852\" ptr=\"0x1094141c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                        <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__\" focused=\"false\" height=\"852\" ptr=\"0x109415a00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x1094161a0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109416550\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109429400\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_\" focused=\"false\" height=\"852\" ptr=\"0x109581660\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__\" focused=\"false\" height=\"852\" ptr=\"0x109319980\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x10921f910\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                    <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x1093145f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                        <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109129590\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView alpha=\"1.0\" class=\"_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView\" focused=\"false\" height=\"852\" ptr=\"0x109316a70\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"111\" ptr=\"0x109245e90\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" \/>\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"32\" ptr=\"0x1092466a0\" visibility=\"visible\" width=\"32\" x=\"16\" y=\"69\" \/>\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109246bd0\" visibility=\"visible\" width=\"103\" x=\"60\" y=\"67\" \/>\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x1092473d0\" visibility=\"visible\" width=\"106\" x=\"60\" y=\"89\" \/>\n                                                                <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"36\" ptr=\"0x1092476a0\" visibility=\"visible\" width=\"36\" x=\"341\" y=\"67\" \/>\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"20\" ptr=\"0x109239f00\" visibility=\"visible\" width=\"20\" x=\"349\" y=\"75\" \/>\n                                                                <_TtCC7SwiftUI17HostingScrollView17PlatformContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView17PlatformContainer\" focused=\"false\" height=\"740\" ptr=\"0x109131d50\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"111\">\n                                                                    <SwiftUI.HostingScrollView alpha=\"1.0\" class=\"SwiftUI.HostingScrollView\" focused=\"false\" height=\"740\" ptr=\"0x10c86fe00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                        <_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer\" focused=\"false\" height=\"173\" ptr=\"0x10912ed10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248770\" visibility=\"visible\" width=\"145\" x=\"16\" y=\"16\" \/>\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248b70\" visibility=\"visible\" width=\"28\" x=\"348\" y=\"16\" \/>\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109248f70\" visibility=\"visible\" width=\"234\" x=\"32\" y=\"58\" \/>\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"0\" ptr=\"0x109249370\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"100\" \/>\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"49\" ptr=\"0x109249750\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"107\" \/>\n                                                                            <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"15\" ptr=\"0x10924a260\" visibility=\"visible\" width=\"9\" x=\"35\" y=\"124\" \/>\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"17\" ptr=\"0x10924abe0\" visibility=\"visible\" width=\"126\" x=\"53\" y=\"123\" \/>\n                                                                        <\/_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer>\n                                                                        <_UIScrollViewScrollIndicator alpha=\"0.0\" class=\"_UIScrollViewScrollIndicator\" focused=\"false\" height=\"142\" label=\"Vertical scroll bar, 1 page\" ptr=\"0x109247a50\" value=\"0%\" visibility=\"visible\" width=\"3\" x=\"387\" y=\"511\">\n                                                                            <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"142\" ptr=\"0x109247e00\" visibility=\"visible\" width=\"3\" x=\"0\" y=\"0\" \/>\n                                                                        <\/_UIScrollViewScrollIndicator>\n                                                                    <\/SwiftUI.HostingScrollView>\n                                                                <\/_TtCC7SwiftUI17HostingScrollView17PlatformContainer>\n                                                            <\/_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView>\n                                                        <\/UIViewControllerWrapperView>\n                                                    <\/UITransitionView>\n                                                    <UITabBar alpha=\"1.0\" class=\"UITabBar\" focused=\"false\" height=\"83\" label=\"Tab Bar\" ptr=\"0x10921ff80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"769\">\n                                                        <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1092203c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"83\" ptr=\"0x109127be0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" \/>\n                                                            <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10912ef10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10912fbf0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" \/>\n                                                            <\/_UIBarBackgroundShadowView>\n                                                        <\/_UIBarBackground>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Home\" ptr=\"0x10911af30\" visibility=\"visible\" width=\"127\" x=\"2\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"house.fill\" label=\"home\" ptr=\"0x10911fc30\" visibility=\"visible\" width=\"33\" x=\"46\" y=\"3\" \/>\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Home\" ptr=\"0x10911b380\" text=\"Home\" visibility=\"visible\" width=\"29\" x=\"49\" y=\"34\" \/>\n                                                        <\/UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Updates\" ptr=\"0x109122f40\" visibility=\"visible\" width=\"127\" x=\"133\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"27\" id=\"arrow.trianglehead.2.clockwise.rotate.90\" label=\"arrow.trianglehead.2.clockwise.rotate.90\" ptr=\"0x109123560\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" \/>\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Updates\" ptr=\"0x109123210\" text=\"Updates\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" \/>\n                                                        <\/UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Settings\" ptr=\"0x109126030\" visibility=\"visible\" width=\"127\" x=\"264\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"gearshape.fill\" label=\"gearshape.fill\" ptr=\"0x109126f80\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" \/>\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Settings\" ptr=\"0x109126640\" text=\"Settings\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" \/>\n                                                        <\/UITabBarButton>\n                                                    <\/UITabBar>\n                                                <\/UILayoutContainerView>\n                                            <\/_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__>\n                                        <\/_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_>\n                                    <\/UIViewControllerWrapperView>\n                                <\/UINavigationTransitionView>\n                                <SwiftUI.UIKitToolbar alpha=\"1.0\" class=\"SwiftUI.UIKitToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x109323fa0\" visibility=\"invisible\" width=\"393\" x=\"0\" y=\"852\">\n                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1091178f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x1091173f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x109115ed0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" \/>\n                                        <\/UIVisualEffectView>\n                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10911ad30\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10911a030\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" \/>\n                                        <\/_UIBarBackgroundShadowView>\n                                    <\/_UIBarBackground>\n                                <\/SwiftUI.UIKitToolbar>\n                            <\/UILayoutContainerView>\n                        <\/_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__>\n                    <\/_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_>\n                <\/UIView>\n            <\/UIDropShadowView>\n        <\/UITransitionView>\n    <\/UIWindow>\n<\/ViewHierarchy>","NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)","windows":["<UIWindow: 0x10920eb20; frame = (0 0; 393 852);>","<DTXTouchVisualizerWindow: 0x109129720; frame = (0 0; 393 852);>"],"visibilityFailingRectsURL":"\/Users\/russellbrown\/Library\/Developer\/CoreSimulator\/Devices\/A90F393D-72AC-4F90-BBE5-9C3B184A3157\/data\/Containers\/Data\/Application\/D6B6AE63-44B9-4BB9-9600-D84CE982A635\/tmp\/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"\/Users\/builder\/uibuilder\/work\/detox\/ios\/Detox\/Invocation\/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"visibilityFailingScreenshotsURL":"\/Users\/russellbrown\/Library\/Developer\/CoreSimulator\/Devices\/A90F393D-72AC-4F90-BBE5-9C3B184A3157\/data\/Containers\/Data\/Application\/D6B6AE63-44B9-4BB9-9600-D84CE982A635\/tmp\/visibilityFailingScreenshots","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)"},"type":"testFailed","messageId":3}
+22:18:25.900 detox[24598] [90mi[39m send
+  data: {
+    "params": {
+      "viewHierarchy": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"852\" ptr=\"0x10920eb20\" visibility=\"visible\" width=\"393\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109558e80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"852\" ptr=\"0x10931bf20\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"852\" ptr=\"0x1094103d0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                    <_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_\" focused=\"false\" height=\"852\" ptr=\"0x1094141c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                        <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__\" focused=\"false\" height=\"852\" ptr=\"0x109415a00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x1094161a0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109416550\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109429400\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_\" focused=\"false\" height=\"852\" ptr=\"0x109581660\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__\" focused=\"false\" height=\"852\" ptr=\"0x109319980\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x10921f910\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                    <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x1093145f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                        <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109129590\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView alpha=\"1.0\" class=\"_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView\" focused=\"false\" height=\"852\" ptr=\"0x109316a70\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"111\" ptr=\"0x109245e90\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"32\" ptr=\"0x1092466a0\" visibility=\"visible\" width=\"32\" x=\"16\" y=\"69\" />\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109246bd0\" visibility=\"visible\" width=\"103\" x=\"60\" y=\"67\" />\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x1092473d0\" visibility=\"visible\" width=\"106\" x=\"60\" y=\"89\" />\n                                                                <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"36\" ptr=\"0x1092476a0\" visibility=\"visible\" width=\"36\" x=\"341\" y=\"67\" />\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"20\" ptr=\"0x109239f00\" visibility=\"visible\" width=\"20\" x=\"349\" y=\"75\" />\n                                                                <_TtCC7SwiftUI17HostingScrollView17PlatformContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView17PlatformContainer\" focused=\"false\" height=\"740\" ptr=\"0x109131d50\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"111\">\n                                                                    <SwiftUI.HostingScrollView alpha=\"1.0\" class=\"SwiftUI.HostingScrollView\" focused=\"false\" height=\"740\" ptr=\"0x10c86fe00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                        <_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer\" focused=\"false\" height=\"173\" ptr=\"0x10912ed10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248770\" visibility=\"visible\" width=\"145\" x=\"16\" y=\"16\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248b70\" visibility=\"visible\" width=\"28\" x=\"348\" y=\"16\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109248f70\" visibility=\"visible\" width=\"234\" x=\"32\" y=\"58\" />\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"0\" ptr=\"0x109249370\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"100\" />\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"49\" ptr=\"0x109249750\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"107\" />\n                                                                            <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"15\" ptr=\"0x10924a260\" visibility=\"visible\" width=\"9\" x=\"35\" y=\"124\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"17\" ptr=\"0x10924abe0\" visibility=\"visible\" width=\"126\" x=\"53\" y=\"123\" />\n                                                                        </_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer>\n                                                                        <_UIScrollViewScrollIndicator alpha=\"0.0\" class=\"_UIScrollViewScrollIndicator\" focused=\"false\" height=\"142\" label=\"Vertical scroll bar, 1 page\" ptr=\"0x109247a50\" value=\"0%\" visibility=\"visible\" width=\"3\" x=\"387\" y=\"511\">\n                                                                            <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"142\" ptr=\"0x109247e00\" visibility=\"visible\" width=\"3\" x=\"0\" y=\"0\" />\n                                                                        </_UIScrollViewScrollIndicator>\n                                                                    </SwiftUI.HostingScrollView>\n                                                                </_TtCC7SwiftUI17HostingScrollView17PlatformContainer>\n                                                            </_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView>\n                                                        </UIViewControllerWrapperView>\n                                                    </UITransitionView>\n                                                    <UITabBar alpha=\"1.0\" class=\"UITabBar\" focused=\"false\" height=\"83\" label=\"Tab Bar\" ptr=\"0x10921ff80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"769\">\n                                                        <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1092203c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"83\" ptr=\"0x109127be0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                            <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10912ef10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10912fbf0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                            </_UIBarBackgroundShadowView>\n                                                        </_UIBarBackground>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Home\" ptr=\"0x10911af30\" visibility=\"visible\" width=\"127\" x=\"2\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"house.fill\" label=\"home\" ptr=\"0x10911fc30\" visibility=\"visible\" width=\"33\" x=\"46\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Home\" ptr=\"0x10911b380\" text=\"Home\" visibility=\"visible\" width=\"29\" x=\"49\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Updates\" ptr=\"0x109122f40\" visibility=\"visible\" width=\"127\" x=\"133\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"27\" id=\"arrow.trianglehead.2.clockwise.rotate.90\" label=\"arrow.trianglehead.2.clockwise.rotate.90\" ptr=\"0x109123560\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Updates\" ptr=\"0x109123210\" text=\"Updates\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Settings\" ptr=\"0x109126030\" visibility=\"visible\" width=\"127\" x=\"264\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"gearshape.fill\" label=\"gearshape.fill\" ptr=\"0x109126f80\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Settings\" ptr=\"0x109126640\" text=\"Settings\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                    </UITabBar>\n                                                </UILayoutContainerView>\n                                            </_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__>\n                                        </_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_>\n                                    </UIViewControllerWrapperView>\n                                </UINavigationTransitionView>\n                                <SwiftUI.UIKitToolbar alpha=\"1.0\" class=\"SwiftUI.UIKitToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x109323fa0\" visibility=\"invisible\" width=\"393\" x=\"0\" y=\"852\">\n                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1091178f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x1091173f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x109115ed0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                        </UIVisualEffectView>\n                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10911ad30\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10911a030\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                        </_UIBarBackgroundShadowView>\n                                    </_UIBarBackground>\n                                </SwiftUI.UIKitToolbar>\n                            </UILayoutContainerView>\n                        </_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__>\n                    </_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_>\n                </UIView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>",
+      "NSLocalizedDescription": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)",
+      "windows": [
+        "<UIWindow: 0x10920eb20; frame = (0 0; 393 852);>",
+        "<DTXTouchVisualizerWindow: 0x109129720; frame = (0 0; 393 852);>"
+      ],
+      "visibilityFailingRectsURL": "/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Data/Application/D6B6AE63-44B9-4BB9-9600-D84CE982A635/tmp/visibilityFailingRects",
+      "DetoxFailureInformation": {
+        "lineNumber": 154,
+        "file": "/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift",
+        "functionName": "evaluate_after(startDate:completionHandler:)"
+      },
+      "visibilityFailingScreenshotsURL": "/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Data/Application/D6B6AE63-44B9-4BB9-9600-D84CE982A635/tmp/visibilityFailingScreenshots",
+      "details": "Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)"
+    },
+    "type": "testFailed",
+    "messageId": 3
+  }
+22:18:25.906 detox[24599] [90mi[39m get message
+  data: {"params":{"viewHierarchy":"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ViewHierarchy>\n    <UIWindow alpha=\"1.0\" class=\"UIWindow\" focused=\"false\" height=\"852\" ptr=\"0x10920eb20\" visibility=\"visible\" width=\"393\">\n        <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109558e80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n            <UIDropShadowView alpha=\"1.0\" class=\"UIDropShadowView\" focused=\"false\" height=\"852\" ptr=\"0x10931bf20\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"852\" ptr=\"0x1094103d0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                    <_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_\" focused=\"false\" height=\"852\" ptr=\"0x1094141c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                        <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__\" focused=\"false\" height=\"852\" ptr=\"0x109415a00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                            <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x1094161a0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                <UINavigationTransitionView alpha=\"1.0\" class=\"UINavigationTransitionView\" focused=\"false\" height=\"852\" ptr=\"0x109416550\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                    <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109429400\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_ alpha=\"1.0\" class=\"_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_\" focused=\"false\" height=\"852\" ptr=\"0x109581660\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__ alpha=\"1.0\" class=\"_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__\" focused=\"false\" height=\"852\" ptr=\"0x109319980\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                <UILayoutContainerView alpha=\"1.0\" class=\"UILayoutContainerView\" focused=\"false\" height=\"852\" ptr=\"0x10921f910\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                    <UITransitionView alpha=\"1.0\" class=\"UITransitionView\" focused=\"false\" height=\"852\" ptr=\"0x1093145f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                        <UIViewControllerWrapperView alpha=\"1.0\" class=\"UIViewControllerWrapperView\" focused=\"false\" height=\"852\" ptr=\"0x109129590\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView alpha=\"1.0\" class=\"_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView\" focused=\"false\" height=\"852\" ptr=\"0x109316a70\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"111\" ptr=\"0x109245e90\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"32\" ptr=\"0x1092466a0\" visibility=\"visible\" width=\"32\" x=\"16\" y=\"69\" />\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109246bd0\" visibility=\"visible\" width=\"103\" x=\"60\" y=\"67\" />\n                                                                <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x1092473d0\" visibility=\"visible\" width=\"106\" x=\"60\" y=\"89\" />\n                                                                <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"36\" ptr=\"0x1092476a0\" visibility=\"visible\" width=\"36\" x=\"341\" y=\"67\" />\n                                                                <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"20\" ptr=\"0x109239f00\" visibility=\"visible\" width=\"20\" x=\"349\" y=\"75\" />\n                                                                <_TtCC7SwiftUI17HostingScrollView17PlatformContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView17PlatformContainer\" focused=\"false\" height=\"740\" ptr=\"0x109131d50\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"111\">\n                                                                    <SwiftUI.HostingScrollView alpha=\"1.0\" class=\"SwiftUI.HostingScrollView\" focused=\"false\" height=\"740\" ptr=\"0x10c86fe00\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                        <_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer alpha=\"1.0\" class=\"_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer\" focused=\"false\" height=\"173\" ptr=\"0x10912ed10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248770\" visibility=\"visible\" width=\"145\" x=\"16\" y=\"16\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"14\" ptr=\"0x109248b70\" visibility=\"visible\" width=\"28\" x=\"348\" y=\"16\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"20\" ptr=\"0x109248f70\" visibility=\"visible\" width=\"234\" x=\"32\" y=\"58\" />\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"0\" ptr=\"0x109249370\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"100\" />\n                                                                            <SwiftUI._UIGraphicsView alpha=\"1.0\" class=\"SwiftUI._UIGraphicsView\" focused=\"false\" height=\"49\" ptr=\"0x109249750\" visibility=\"visible\" width=\"361\" x=\"16\" y=\"107\" />\n                                                                            <_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView alpha=\"1.0\" class=\"_TtC7SwiftUIP33_A34643117F00277B93DEBAB70EC0697122_UIShapeHitTestingView\" focused=\"false\" height=\"15\" ptr=\"0x10924a260\" visibility=\"visible\" width=\"9\" x=\"35\" y=\"124\" />\n                                                                            <SwiftUI.CGDrawingView alpha=\"1.0\" class=\"SwiftUI.CGDrawingView\" focused=\"false\" height=\"17\" ptr=\"0x10924abe0\" visibility=\"visible\" width=\"126\" x=\"53\" y=\"123\" />\n                                                                        </_TtCC7SwiftUI17HostingScrollView22PlatformGroupContainer>\n                                                                        <_UIScrollViewScrollIndicator alpha=\"0.0\" class=\"_UIScrollViewScrollIndicator\" focused=\"false\" height=\"142\" label=\"Vertical scroll bar, 1 page\" ptr=\"0x109247a50\" value=\"0%\" visibility=\"visible\" width=\"3\" x=\"387\" y=\"511\">\n                                                                            <UIView alpha=\"1.0\" class=\"UIView\" focused=\"false\" height=\"142\" ptr=\"0x109247e00\" visibility=\"visible\" width=\"3\" x=\"0\" y=\"0\" />\n                                                                        </_UIScrollViewScrollIndicator>\n                                                                    </SwiftUI.HostingScrollView>\n                                                                </_TtCC7SwiftUI17HostingScrollView17PlatformContainer>\n                                                            </_TtCC7SwiftUI20TabHostingControllerP33_E387C3C47C0D2A0931533D8490A5A8B711HostingView>\n                                                        </UIViewControllerWrapperView>\n                                                    </UITransitionView>\n                                                    <UITabBar alpha=\"1.0\" class=\"UITabBar\" focused=\"false\" height=\"83\" label=\"Tab Bar\" ptr=\"0x10921ff80\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"769\">\n                                                        <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1092203c0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                            <UIImageView alpha=\"1.0\" class=\"UIImageView\" focused=\"false\" height=\"83\" ptr=\"0x109127be0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                            <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10912ef10\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                                                <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10912fbf0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                                            </_UIBarBackgroundShadowView>\n                                                        </_UIBarBackground>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Home\" ptr=\"0x10911af30\" visibility=\"visible\" width=\"127\" x=\"2\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"house.fill\" label=\"home\" ptr=\"0x10911fc30\" visibility=\"visible\" width=\"33\" x=\"46\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Home\" ptr=\"0x10911b380\" text=\"Home\" visibility=\"visible\" width=\"29\" x=\"49\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Updates\" ptr=\"0x109122f40\" visibility=\"visible\" width=\"127\" x=\"133\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"27\" id=\"arrow.trianglehead.2.clockwise.rotate.90\" label=\"arrow.trianglehead.2.clockwise.rotate.90\" ptr=\"0x109123560\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Updates\" ptr=\"0x109123210\" text=\"Updates\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                        <UITabBarButton alpha=\"1.0\" class=\"UITabBarButton\" focused=\"false\" height=\"48\" label=\"Settings\" ptr=\"0x109126030\" visibility=\"visible\" width=\"127\" x=\"264\" y=\"1\">\n                                                            <UITabBarSwappableImageView alpha=\"1.0\" class=\"UITabBarSwappableImageView\" focused=\"false\" height=\"28\" id=\"gearshape.fill\" label=\"gearshape.fill\" ptr=\"0x109126f80\" visibility=\"visible\" width=\"28\" x=\"49\" y=\"3\" />\n                                                            <UITabBarButtonLabel alpha=\"1.0\" class=\"UITabBarButtonLabel\" focused=\"false\" height=\"12\" label=\"Settings\" ptr=\"0x109126640\" text=\"Settings\" visibility=\"visible\" width=\"41\" x=\"42\" y=\"34\" />\n                                                        </UITabBarButton>\n                                                    </UITabBar>\n                                                </UILayoutContainerView>\n                                            </_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4142b1421UIKitAdaptableTabView__>\n                                        </_TtGC7SwiftUI14_UIHostingViewVVS_P10$1d4166b7821BridgedNavigationView8RootView_>\n                                    </UIViewControllerWrapperView>\n                                </UINavigationTransitionView>\n                                <SwiftUI.UIKitToolbar alpha=\"1.0\" class=\"SwiftUI.UIKitToolbar\" focused=\"false\" height=\"49\" id=\"Toolbar\" label=\"Toolbar\" ptr=\"0x109323fa0\" visibility=\"invisible\" width=\"393\" x=\"0\" y=\"852\">\n                                    <_UIBarBackground alpha=\"1.0\" class=\"_UIBarBackground\" focused=\"false\" height=\"83\" ptr=\"0x1091178f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                        <UIVisualEffectView alpha=\"1.0\" class=\"UIVisualEffectView\" focused=\"false\" height=\"83\" ptr=\"0x1091173f0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIVisualEffectBackdropView alpha=\"1.0\" class=\"_UIVisualEffectBackdropView\" focused=\"false\" height=\"83\" ptr=\"0x109115ed0\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                        </UIVisualEffectView>\n                                        <_UIBarBackgroundShadowView alpha=\"1.0\" class=\"_UIBarBackgroundShadowView\" focused=\"false\" height=\"0\" ptr=\"0x10911ad30\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\">\n                                            <_UIBarBackgroundShadowContentImageView alpha=\"1.0\" class=\"_UIBarBackgroundShadowContentImageView\" focused=\"false\" height=\"0\" ptr=\"0x10911a030\" visibility=\"visible\" width=\"393\" x=\"0\" y=\"0\" />\n                                        </_UIBarBackgroundShadowView>\n                                    </_UIBarBackground>\n                                </SwiftUI.UIKitToolbar>\n                            </UILayoutContainerView>\n                        </_TtGC7SwiftUI16PlatformViewHostGVS_42PlatformViewControllerRepresentableAdaptorVS_P10$1d4166b7821BridgedNavigationView__>\n                    </_TtGC7SwiftUI14_UIHostingViewV13EXDevLauncher19DevLauncherRootView_>\n                </UIView>\n            </UIDropShadowView>\n        </UITransitionView>\n    </UIWindow>\n</ViewHierarchy>","NSLocalizedDescription":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)","windows":["<UIWindow: 0x10920eb20; frame = (0 0; 393 852);>","<DTXTouchVisualizerWindow: 0x109129720; frame = (0 0; 393 852);>"],"visibilityFailingRectsURL":"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Data/Application/D6B6AE63-44B9-4BB9-9600-D84CE982A635/tmp/visibilityFailingRects","DetoxFailureInformation":{"lineNumber":154,"file":"/Users/builder/uibuilder/work/detox/ios/Detox/Invocation/Expectation.swift","functionName":"evaluate_after(startDate:completionHandler:)"},"visibilityFailingScreenshotsURL":"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Data/Application/D6B6AE63-44B9-4BB9-9600-D84CE982A635/tmp/visibilityFailingScreenshots","details":"Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)"},"type":"testFailed","messageId":3}
+   
+22:18:25.908 detox[24599] [90mE[39m wait until timeout (5000 ms) with timeout (5000 ms)
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+22:18:25.909 detox[24599] [90mB[39m onTestFnFailure
+  args: ({"error":{"name":"DetoxRuntimeError"}})
+22:18:25.909 detox[24599] [90mi[39m starting SimulatorScreenshot
+22:18:25.910 detox[24599] [90mi[39m /usr/bin/xcrun simctl io A90F393D-72AC-4F90-BBE5-9C3B184A3157 screenshot "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-p8UzYU.detox.png"
+22:18:26.111 detox[24599] [90mi[39m Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-p8UzYU.detox.png
+
+22:18:26.111 detox[24599] [90mi[39m stopping SimulatorScreenshot
+22:18:26.111 detox[24599] [90mE[39m onTestFnFailure
+22:18:26.111 detox[24599] [90mE[39m test_fn
+  error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Next”) TIMEOUT(5s)
+  
+  HINT: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+22:18:26.112 detox[24599] [90mB[39m onTestDone
+  args: ({"title":"completes onboarding and lands on Meditate","fullName":"Onboarding to Meditate completes onboarding and lands on Meditate","status":"failed","invocations":1,"timedOut":false})
+22:18:26.112 detox[24599] [90mi[39m starting SimulatorScreenshot
+22:18:26.112 detox[24599] [90mi[39m /usr/bin/xcrun simctl io A90F393D-72AC-4F90-BBE5-9C3B184A3157 screenshot "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-ZfPIOb.detox.png"
+22:18:26.113 detox[24598] [90mi[39m get
+  data: {"type":"setRecordingState","params":{},"messageId":4}
+22:18:26.113 detox[24598] [90mi[39m send
+  data: {
+    "type": "setRecordingState",
+    "params": {},
+    "messageId": 4
+  }
+22:18:26.113 detox[24599] [90mi[39m stopping SimulatorInstrumentsRecording
+22:18:26.113 detox[24599] [90mi[39m send message
+  data: {"type":"setRecordingState","params":{},"messageId":4}
+22:18:26.114 detox[24598] [90mi[39m get
+  data: {"messageId":4,"type":"setRecordingStateDone","params":{}}
+22:18:26.114 detox[24598] [90mi[39m send
+  data: {
+    "messageId": 4,
+    "type": "setRecordingStateDone",
+    "params": {}
+  }
+22:18:26.114 detox[24599] [90mi[39m get message
+  data: {"messageId":4,"type":"setRecordingStateDone","params":{}}
+   
+22:18:26.115 detox[24599] [90mi[39m saving SimulatorInstrumentsRecording to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/test.dtxrec
+22:18:26.115 detox[24599] [90mi[39m did not find temporary file: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-5rcVti.detox.dtxrec
+22:18:26.115 detox[24599] [90mi[39m Make sure either:
+1. You have installed Detox Instruments:
+   https://github.com/wix/DetoxInstruments#installation
+2. You have integrated Detox Instruments in your app:
+   https://github.com/wix/DetoxInstruments/blob/master/Documentation/XcodeIntegrationGuide.md
+3. You have set the environment variable with your custom Detox Instruments location:
+   export DETOX_INSTRUMENTS_PATH="/path/to/Detox Instruments.app"
+22:18:26.283 detox[24599] [90mi[39m Detected file type 'PNG' from extension
+Wrote screenshot to: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-ZfPIOb.detox.png
+
+22:18:26.283 detox[24599] [90mi[39m stopping SimulatorScreenshot
+22:18:26.283 detox[24599] [90mi[39m stopping SimulatorLogRecording
+22:18:26.283 detox[24599] [90mi[39m saving SimulatorScreenshot to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testStart.png
+22:18:26.284 detox[24599] [90mi[39m moving "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-fyQ3Lr.detox.png" to e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testStart.png
+22:18:26.285 detox[24599] [90mi[39m saving SimulatorScreenshot to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testFnFailure.png
+22:18:26.285 detox[24599] [90mi[39m moving "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-p8UzYU.detox.png" to e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testFnFailure.png
+22:18:26.285 detox[24599] [90mi[39m saving SimulatorScreenshot to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testDone.png
+22:18:26.285 detox[24599] [90mi[39m moving "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-ZfPIOb.detox.png" to e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/testDone.png
+22:18:26.336 detox[24599] [90mi[39m sending SIGINT to: /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate processImagePath beginsWith "/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app"
+22:18:26.343 detox[24599] [90mi[39m /usr/bin/xcrun simctl spawn A90F393D-72AC-4F90-BBE5-9C3B184A3157 log stream --level debug --style compact --predicate "processImagePath beginsWith \"/Users/russellbrown/Library/Developer/CoreSimulator/Devices/A90F393D-72AC-4F90-BBE5-9C3B184A3157/data/Containers/Bundle/Application/3754F486-CC6F-4D6F-8998-F0EFEE850640/TimedancersMeditation.app\"" exited with code #0
+22:18:26.343 detox[24599] [90mE[39m onTestDone
+22:18:26.343 detox[24599] [90mE[39m completes onboarding and lands on Meditate
+22:18:26.343 detox[24599] [90mi[39m Onboarding to Meditate: completes onboarding and lands on Meditate [FAIL]
+22:18:26.344 detox[24599] [90mB[39m onRunDescribeFinish
+  args: ({"name":"Onboarding to Meditate"})
+22:18:26.344 detox[24599] [90mE[39m onRunDescribeFinish
+22:18:26.344 detox[24599] [90mE[39m Onboarding to Meditate
+22:18:26.344 detox[24599] [90mB[39m onRunDescribeFinish
+  args: ({"name":"ROOT_DESCRIBE_BLOCK"})
+22:18:26.344 detox[24599] [90mE[39m onRunDescribeFinish
+22:18:26.344 detox[24599] [90mE[39m run the tests
+22:18:26.355 detox[24599] [90mB[39m tear down environment
+22:18:26.356 detox[24599] [90mB[39m onBeforeCleanup
+  args: ()
+22:18:26.356 detox[24599] [90mi[39m saving SimulatorLogRecording to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/device.log
+22:18:26.356 detox[24599] [90mi[39m moving "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-gJWvW2.detox.log" to e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/✗ Onboarding to Meditate completes onboarding and lands on Meditate/device.log
+22:18:26.356 detox[24599] [90mi[39m saving SimulatorLogRecording to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/A90F393D-72AC-4F90-BBE5-9C3B184A3157 2025-09-22 21-18-26Z.startup.log
+22:18:26.357 detox[24599] [90mi[39m moving "/private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/detox-24599-7IbAZ7.detox.log" to e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/A90F393D-72AC-4F90-BBE5-9C3B184A3157 2025-09-22 21-18-26Z.startup.log
+22:18:26.357 detox[24599] [90mi[39m saving FileArtifact to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/detox_pid_24599.json.log { append: true }
+22:18:26.357 detox[24599] [90mi[39m saving FileArtifact to: e2e/artifacts/ios.debug.2025-09-22 21-18-09Z/detox_pid_24599.log { append: true }
+22:18:26.357 detox[24599] [90mE[39m onBeforeCleanup
+22:18:26.358 detox[24598] [90mi[39m get
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+22:18:26.358 detox[24598] [90mi[39m send
+  data: {
+    "type": "cleanup",
+    "params": {
+      "stopRunner": false
+    },
+    "messageId": -49642
+  }
+22:18:26.358 detox[24599] [90mi[39m send message
+  data: {"type":"cleanup","params":{"stopRunner":false},"messageId":-49642}
+22:18:26.360 detox[24598] [90mi[39m get
+  data: {"messageId":-49642,"type":"cleanupDone","params":{}}
+22:18:26.360 detox[24598] [90mi[39m send
+  data: {
+    "messageId": -49642,
+    "type": "cleanupDone",
+    "params": {}
+  }
+22:18:26.360 detox[24599] [90mi[39m get message
+  data: {"messageId":-49642,"type":"cleanupDone","params":{}}
+   
+22:18:26.361 detox[24598] [90mi[39m tester exited session 425a5feb-5011-5af9-c9d4-59b760745d73
+22:18:26.361 detox[24598] [90mi[39m send
+  data: {
+    "type": "testerDisconnected",
+    "messageId": -1
+  }
+22:18:26.361 detox[24598] [90mE[39m connection :52887<->:52888
+22:18:26.361 detox[24598] [90mi[39m received event of :  deallocateDevice {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:18:26.361 detox[24598] [90mB[39m free: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {}
+22:18:26.361 detox[24599] [90mi[39m dispatching event to  primary-24598 /tmp/detox.primary-24598  :  deallocateDevice , {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:18:26.362 detox[24598] [90mE[39m free: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:18:26.362 detox[24598] [90mi[39m dispatching event to socket  :  deallocateDeviceDone {}
+22:18:26.362 detox[24599] [90mi[39m ## received events ##
+22:18:26.362 detox[24599] [90mi[39m detected event deallocateDeviceDone {}
+22:18:26.362 detox[24599] [90mE[39m tear down environment
+22:18:26.362 detox[24599] [90mE[39m e2e/onboarding.e2e.ts
+22:18:26.364 detox[24599] [90mi[39m dispatching event to  primary-24598 /tmp/detox.primary-24598  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: undefined,
+      isPermanentFailure: false
+    }
+  ]
+}
+22:18:26.365 detox[24598] [90mi[39m received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+22:18:26.365 detox[24598] [90mi[39m dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+22:18:26.365 detox[24598] [90mi[39m broadcasting event to all known sockets listening to  /tmp/detox.primary-24598  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+22:18:26.365 detox[24599] [90mi[39m ## received events ##
+22:18:26.365 detox[24599] [90mi[39m detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      isPermanentFailure: false
+    }
+  ]
+}
+22:18:26.366 detox[24598] [90mi[39m socket disconnected secondary-24599
+22:18:26.366 detox[24599] [90mi[39m connection closed primary-24598 /tmp/detox.primary-24598 0 tries remaining of 0
+22:18:26.366 detox[24599] [90mi[39m secondary-24599 exceeded connection rety amount of  or stopRetrying flag set.
+22:18:26.469 detox[24598] [90mE[39m Command failed with exit code = 1:
+jest --config e2e/jest.config.js
+22:18:26.470 detox[24598] [90mB[39m cleanup
+  args: ()
+22:18:26.471 detox[24598] [90mE[39m cleanup
+22:18:26.471 detox[24598] [90mi[39m Detox server has been closed gracefully
+22:18:26.472 detox[24598] [90mi[39m app exited session 425a5feb-5011-5af9-c9d4-59b760745d73
+22:18:26.472 detox[24598] [90mE[39m connection :52887<->:52902
+22:18:26.472 detox[24598] [90mE[39m node_modules/.bin/detox test -c ios.debug

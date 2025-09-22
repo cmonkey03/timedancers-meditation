@@ -2,7 +2,7 @@ import Wheel from '@/components/MeditationPage/Wheel';
 import WheelTower from '@/components/MeditationPage/WheelTower';
 import { useThemeColors } from '@/hooks/use-theme';
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
@@ -17,8 +17,24 @@ type Props = {
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
   const NextButton = (props: any) => (
-    <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}>
+    <Pressable
+      {...props}
+      testID="onboarding-next"
+      accessibilityLabel="onboarding-next"
+      style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
+    >
       <Text style={{ fontWeight: '600', color: C.text }}>Next</Text>
+    </Pressable>
+  );
+
+  const DoneButton = (props: any) => (
+    <Pressable
+      {...props}
+      testID="onboarding-done"
+      accessibilityLabel="onboarding-done"
+      style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
+    >
+      <Text style={{ fontWeight: '600', color: C.text }}>Done</Text>
     </Pressable>
   );
 
@@ -30,18 +46,20 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   ];
 
   return (
-    <Onboarding
-      onDone={() => {
-        finishOnboarding();
-      }}
-      onSkip={() => {
-        finishOnboarding();
-      }}
-      showSkip
-      showNext
-      NextButtonComponent={NextButton}
-      imageContainerStyles={{ paddingBottom: 0 }}
-      pages={[
+    <View testID="onboarding" style={{ flex: 1 }}>
+      <Onboarding
+        onDone={() => {
+          finishOnboarding();
+        }}
+        onSkip={() => {
+          finishOnboarding();
+        }}
+        showSkip
+        showNext
+        NextButtonComponent={NextButton}
+        DoneButtonComponent={DoneButton}
+        imageContainerStyles={{ paddingBottom: 0 }}
+        pages={[
         {
           backgroundColor: C.background,
           image: <WelcomeImage />,
@@ -88,8 +106,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
           subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
         },
-      ]}
-    />
+        ]}
+      />
+    </View>
   );
 };
 

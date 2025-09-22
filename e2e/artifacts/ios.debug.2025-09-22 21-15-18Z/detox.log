@@ -1,0 +1,704 @@
+22:15:18.361 detox[23580] [90mB[39m node_modules/.bin/detox test -c ios.debug
+  data: {
+    "id": "9c603dfa-0a2f-fa0a-3070-1a6092479c62",
+    "detoxConfig": {
+      "configurationName": "ios.debug",
+      "apps": {
+        "default": {
+          "type": "ios.app",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+          "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+        }
+      },
+      "artifacts": {
+        "rootDir": "e2e/artifacts/ios.debug.2025-09-22 21-15-18Z",
+        "plugins": {
+          "log": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "screenshot": {
+            "shouldTakeAutomaticSnapshots": true,
+            "keepOnlyFailedTestsArtifacts": true,
+            "enabled": true
+          },
+          "video": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "instruments": {
+            "enabled": true,
+            "keepOnlyFailedTestsArtifacts": false
+          },
+          "uiHierarchy": {
+            "enabled": false,
+            "keepOnlyFailedTestsArtifacts": false
+          }
+        }
+      },
+      "behavior": {
+        "init": {
+          "keepLockFile": false,
+          "reinstallApp": true,
+          "exposeGlobals": true
+        },
+        "cleanup": {
+          "shutdownDevice": false
+        },
+        "launchApp": "auto"
+      },
+      "cli": {
+        "configuration": "ios.debug",
+        "start": true
+      },
+      "commands": [
+        {
+          "appName": "default",
+          "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
+        }
+      ],
+      "device": {
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 16"
+        }
+      },
+      "logger": {
+        "level": "info",
+        "overrideConsole": true,
+        "options": {
+          "showLoggerName": true,
+          "showPid": true,
+          "showLevel": false,
+          "showMetadata": false,
+          "basepath": "/Users/russellbrown/Developer/timedancers-meditation/node_modules/detox/src",
+          "prefixers": {},
+          "stringifiers": {}
+        }
+      },
+      "testRunner": {
+        "retries": 0,
+        "forwardEnv": false,
+        "detached": false,
+        "bail": false,
+        "noRetryArgs": [
+          "shard"
+        ],
+        "jest": {
+          "setupTimeout": 300000,
+          "teardownTimeout": 30000,
+          "retryAfterCircusRetries": false,
+          "reportWorkerAssign": true
+        },
+        "args": {
+          "$0": "jest",
+          "_": [],
+          "config": "e2e/jest.config.js",
+          "--": []
+        },
+        "$0": "jest"
+      },
+      "session": {
+        "autoStart": true,
+        "debugSynchronization": 10000
+      }
+    },
+    "detoxIPCServer": "primary-23580",
+    "testResults": [],
+    "testSessionIndex": 0,
+    "workersCount": 0
+  }
+22:15:18.363 detox[23580] [90mi[39m Server path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + ipc.config.id /tmp/detox.primary-23580
+22:15:18.364 detox[23580] [90mi[39m starting server on  /tmp/detox.primary-23580 
+22:15:18.364 detox[23580] [90mi[39m starting TLS server false
+22:15:18.364 detox[23580] [90mi[39m starting server as Unix || Windows Socket
+22:15:18.366 detox[23580] [90mi[39m Detox server listening on localhost:52188...
+22:15:18.367 detox[23580] [90mi[39m Serialized the session state at: /private/var/folders/tt/916p_lms6lnf31hx0kmlsmjh0000gn/T/9c603dfa-0a2f-fa0a-3070-1a6092479c62.detox.json
+22:15:18.368 detox[23580] [90mB[39m jest --config e2e/jest.config.js
+22:15:18.653 detox[23581] [90mi[39m Service path not specified, so defaulting to ipc.config.socketRoot + ipc.config.appspace + id 
+22:15:18.653 detox[23581] [90mi[39m requested connection to  primary-23580 /tmp/detox.primary-23580
+22:15:18.653 detox[23581] [90mi[39m Connecting client on Unix Socket : /tmp/detox.primary-23580
+22:15:18.654 detox[23580] [90mi[39m ## socket connection to server detected ##
+22:15:18.654 detox[23581] [90mi[39m retrying reset
+22:15:18.655 detox[23581] [90mi[39m dispatching event to  primary-23580 /tmp/detox.primary-23580  :  registerContext , { id: 'secondary-23581' }
+22:15:18.656 detox[23580] [90mi[39m received event of :  registerContext { id: 'secondary-23581' }
+22:15:18.656 detox[23580] [90mi[39m dispatching event to socket  :  registerContextDone {
+  testResults: [],
+  testSessionIndex: 0,
+  unsafe_earlyTeardown: undefined
+}
+22:15:18.656 detox[23581] [90mi[39m ## received events ##
+22:15:18.656 detox[23581] [90mi[39m detected event registerContextDone { testResults: [], testSessionIndex: 0 }
+22:15:18.685 detox[23581] [90mB[39m e2e/onboarding.e2e.ts
+22:15:18.692 detox[23581] [90mB[39m set up environment
+22:15:18.693 detox[23580] [90mi[39m received event of :  registerWorker { workerId: 'w1' }
+22:15:18.693 detox[23580] [90mi[39m dispatching event to socket  :  registerWorkerDone { workersCount: 1 }
+22:15:18.693 detox[23580] [90mi[39m broadcasting event to all known sockets listening to  /tmp/detox.primary-23580  :   sessionStateUpdate { workersCount: 1 }
+22:15:18.693 detox[23581] [90mi[39m dispatching event to  primary-23580 /tmp/detox.primary-23580  :  registerWorker , { workerId: 'w1' }
+22:15:18.693 detox[23581] [90mi[39m ## received events ##
+22:15:18.693 detox[23581] [90mi[39m detected event registerWorkerDone { workersCount: 1 }
+22:15:18.765 detox[23581] [90mi[39m ## received events ##
+22:15:18.765 detox[23581] [90mi[39m detected event sessionStateUpdate { workersCount: 1 }
+22:15:18.768 detox[23580] [90mB[39m connection :52188<->:52190
+22:15:18.768 detox[23581] [90mi[39m opened web socket to: ws://localhost:52188
+22:15:18.769 detox[23581] [90mi[39m send message
+  data: {"type":"login","params":{"sessionId":"93aea264-fdfe-7280-b961-0ea40f99840d","role":"tester"},"messageId":0}
+22:15:18.770 detox[23580] [90mi[39m get
+  data: {"type":"login","params":{"sessionId":"93aea264-fdfe-7280-b961-0ea40f99840d","role":"tester"},"messageId":0}
+22:15:18.770 detox[23580] [90mi[39m created session 93aea264-fdfe-7280-b961-0ea40f99840d
+22:15:18.770 detox[23580] [90mi[39m send
+  data: {
+    "type": "loginSuccess",
+    "params": {
+      "testerConnected": true,
+      "appConnected": false
+    },
+    "messageId": 0
+  }
+22:15:18.770 detox[23580] [90mi[39m tester joined session 93aea264-fdfe-7280-b961-0ea40f99840d
+22:15:18.770 detox[23581] [90mi[39m get message
+  data: {"type":"loginSuccess","params":{"testerConnected":true,"appConnected":false},"messageId":0}
+   
+22:15:18.839 detox[23580] [90mi[39m received event of :  allocateDevice {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16' } }
+}
+22:15:18.839 detox[23581] [90mi[39m dispatching event to  primary-23580 /tmp/detox.primary-23580  :  allocateDevice , {
+  deviceConfig: { type: 'ios.simulator', device: { type: 'iPhone 16' } }
+}
+22:15:18.841 detox[23580] [90mB[39m init
+  args: ()
+22:15:18.843 detox[23580] [90mE[39m init
+22:15:18.843 detox[23580] [90mB[39m allocate
+  data: {
+    "type": "ios.simulator",
+    "device": {
+      "type": "iPhone 16"
+    }
+  }
+22:15:19.030 detox[23580] [90mi[39m applesimutils --list --byType "iPhone 16" --fields udid,os,identifier
+22:15:19.030 detox[23580] [90mi[39m Searching for device by type = "iPhone 16" ...
+22:15:19.253 detox[23580] [90mi[39m [
+  {
+    "os" : {
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-4"
+    },
+    "udid" : "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  },
+  {
+    "os" : {
+      "identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-18-0"
+    },
+    "udid" : "BF1CAF3D-3B23-4ECA-B8A2-5A9086487A78"
+  }
+]
+
+22:15:19.254 detox[23580] [90mi[39m settled on A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {
+    "id": "A90F393D-72AC-4F90-BBE5-9C3B184A3157",
+    "udid": "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  }
+22:15:19.254 detox[23580] [90mE[39m allocate
+22:15:19.254 detox[23580] [90mB[39m post-allocate: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {
+    "id": "A90F393D-72AC-4F90-BBE5-9C3B184A3157",
+    "udid": "A90F393D-72AC-4F90-BBE5-9C3B184A3157"
+  }
+22:15:19.254 detox[23580] [90mi[39m applesimutils --list --byId A90F393D-72AC-4F90-BBE5-9C3B184A3157 --maxResults 1 --fields udid,os,version,state
+22:15:19.356 detox[23580] [90mi[39m [
+  {
+    "os" : {
+      "version" : "18.4"
+    },
+    "udid" : "A90F393D-72AC-4F90-BBE5-9C3B184A3157",
+    "state" : "Shutdown"
+  }
+]
+
+22:15:19.356 detox[23580] [90mi[39m /usr/bin/xcrun simctl boot A90F393D-72AC-4F90-BBE5-9C3B184A3157 
+22:15:19.356 detox[23580] [90mi[39m Booting device A90F393D-72AC-4F90-BBE5-9C3B184A3157...
+22:15:20.939 detox[23580] [90mi[39m 
+22:15:20.939 detox[23580] [90mi[39m /usr/bin/xcrun simctl bootstatus A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:15:36.941 detox[23580] [90mi[39m Monitoring boot status for iPhone 16 (A90F393D-72AC-4F90-BBE5-9C3B184A3157).
+[2025-09-22 21:15:23 +0000] Status=2, isTerminal=NO, Elapsed=00:03.
+	Waiting on Data Migration
+		Reason:(null)
+		Migration Elapsed:00:00 seconds
+
+[2025-09-22 21:15:23 +0000] Status=2, isTerminal=NO, Elapsed=00:03.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:00 seconds
+
+[2025-09-22 21:15:24 +0000] Status=2, isTerminal=NO, Elapsed=00:04.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:01 seconds
+
+[2025-09-22 21:15:25 +0000] Status=2, isTerminal=NO, Elapsed=00:05.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:02 seconds
+
+[2025-09-22 21:15:26 +0000] Status=2, isTerminal=NO, Elapsed=00:06.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:03 seconds
+
+[2025-09-22 21:15:27 +0000] Status=2, isTerminal=NO, Elapsed=00:07.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:04 seconds
+
+[2025-09-22 21:15:28 +0000] Status=2, isTerminal=NO, Elapsed=00:08.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:05 seconds
+
+[2025-09-22 21:15:29 +0000] Status=2, isTerminal=NO, Elapsed=00:09.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:06 seconds
+
+[2025-09-22 21:15:30 +0000] Status=2, isTerminal=NO, Elapsed=00:10.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:07 seconds
+
+[2025-09-22 21:15:31 +0000] Status=2, isTerminal=NO, Elapsed=00:11.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:08 seconds
+
+[2025-09-22 21:15:32 +0000] Status=2, isTerminal=NO, Elapsed=00:12.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:09 seconds
+
+[2025-09-22 21:15:33 +0000] Status=2, isTerminal=NO, Elapsed=00:13.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:10 seconds
+
+[2025-09-22 21:15:34 +0000] Status=2, isTerminal=NO, Elapsed=00:14.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:11 seconds
+
+[2025-09-22 21:15:35 +0000] Status=2, isTerminal=NO, Elapsed=00:15.
+	Waiting on Data Migration
+		Reason:Gathering plugins
+		Migration Elapsed:00:12 seconds
+
+[2025-09-22 21:15:36 +0000] Status=4294967295, isTerminal=YES, Elapsed=00:16.
+	Finished
+
+
+22:15:36.941 detox[23580] [90mi[39m open -a Simulator --args -CurrentDeviceUDID A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:15:37.012 detox[23580] [90mi[39m 
+22:15:37.012 detox[23580] [90mE[39m post-allocate: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:15:37.012 detox[23580] [90mi[39m dispatching event to socket  :  allocateDeviceDone {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator',
+    bootArgs: undefined,
+    headless: undefined
+  }
+}
+22:15:37.013 detox[23581] [90mi[39m ## received events ##
+22:15:37.013 detox[23581] [90mi[39m detected event allocateDeviceDone {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:15:37.036 detox[23581] [90mB[39m onBootDevice
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157"})
+22:15:37.037 detox[23581] [90mE[39m onBootDevice
+22:15:37.039 detox[23581] [90mB[39m installUtilBinaries
+  args: ()
+22:15:37.040 detox[23581] [90mE[39m installUtilBinaries
+22:15:37.041 detox[23581] [90mB[39m selectApp
+  args: ("default")
+22:15:37.062 detox[23581] [90mE[39m selectApp
+22:15:37.063 detox[23581] [90mB[39m uninstallApp
+  args: ()
+22:15:37.063 detox[23581] [90mB[39m onBeforeUninstallApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:15:37.064 detox[23581] [90mE[39m onBeforeUninstallApp
+22:15:37.064 detox[23581] [90mi[39m /usr/bin/xcrun simctl uninstall A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:15:37.064 detox[23581] [90mi[39m Uninstalling org.timedancers.meditation...
+22:15:38.802 detox[23581] [90mi[39m org.timedancers.meditation uninstalled
+22:15:38.802 detox[23581] [90mE[39m uninstallApp
+22:15:38.802 detox[23581] [90mB[39m selectApp
+  args: ("default")
+22:15:38.803 detox[23581] [90mB[39m terminateApp
+  args: ()
+22:15:38.804 detox[23581] [90mB[39m onBeforeTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:15:38.804 detox[23581] [90mE[39m onBeforeTerminateApp
+22:15:38.804 detox[23581] [90mi[39m /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:15:38.804 detox[23581] [90mi[39m Terminating org.timedancers.meditation...
+22:15:40.016 detox[23581] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:15:40.016 detox[23581] [90mi[39m Terminating org.timedancers.meditation...
+22:15:40.163 detox[23581] [90mi[39m "/usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+22:15:40.163 detox[23581] [90mi[39m 
+22:15:40.163 detox[23581] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:15:40.163 detox[23581] [90mB[39m onTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:15:40.163 detox[23581] [90mE[39m onTerminateApp
+22:15:40.163 detox[23581] [90mE[39m terminateApp
+22:15:40.164 detox[23581] [90mE[39m selectApp
+22:15:40.164 detox[23581] [90mB[39m installApp
+  args: ()
+22:15:40.164 detox[23581] [90mi[39m /usr/bin/xcrun simctl install A90F393D-72AC-4F90-BBE5-9C3B184A3157 "/Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app"
+22:15:40.164 detox[23581] [90mi[39m Installing /Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app...
+22:15:45.435 detox[23581] [90mi[39m /Users/russellbrown/Developer/timedancers-meditation/ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app installed
+22:15:45.435 detox[23581] [90mE[39m installApp
+22:15:45.435 detox[23581] [90mB[39m selectApp
+  args: ("default")
+22:15:45.436 detox[23581] [90mB[39m terminateApp
+  args: ()
+22:15:45.436 detox[23581] [90mB[39m onBeforeTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:15:45.436 detox[23581] [90mE[39m onBeforeTerminateApp
+22:15:45.436 detox[23581] [90mi[39m /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+22:15:45.436 detox[23581] [90mi[39m Terminating org.timedancers.meditation...
+22:15:46.724 detox[23581] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:15:46.724 detox[23581] [90mi[39m Terminating org.timedancers.meditation...
+22:15:46.895 detox[23581] [90mi[39m "/usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation" failed with error = Error: Command failed: /usr/bin/xcrun simctl terminate A90F393D-72AC-4F90-BBE5-9C3B184A3157 org.timedancers.meditation
+An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+ (code=3), stdout and stderr:
+
+22:15:46.895 detox[23581] [90mi[39m 
+22:15:46.895 detox[23581] [90mi[39m An error was encountered processing the command (domain=NSPOSIXErrorDomain, code=3):
+Simulator device failed to terminate org.timedancers.meditation.
+found nothing to terminate
+Underlying error (domain=NSPOSIXErrorDomain, code=3):
+	The request to terminate "org.timedancers.meditation" failed. found nothing to terminate
+	found nothing to terminate
+
+22:15:46.895 detox[23581] [90mB[39m onTerminateApp
+  args: ({"deviceId":"A90F393D-72AC-4F90-BBE5-9C3B184A3157","bundleId":"org.timedancers.meditation"})
+22:15:46.895 detox[23581] [90mE[39m onTerminateApp
+22:15:46.895 detox[23581] [90mE[39m terminateApp
+22:15:46.895 detox[23581] [90mE[39m selectApp
+22:15:46.895 detox[23581] [90mE[39m set up environment
+22:15:47.315 detox[23581] [90mB[39m tear down environment
+22:15:47.315 detox[23581] [90mB[39m onBeforeCleanup
+  args: ()
+22:15:47.318 detox[23581] [90mi[39m saving FileArtifact to: e2e/artifacts/ios.debug.2025-09-22 21-15-18Z/detox_pid_23581.json.log { append: true }
+22:15:47.318 detox[23581] [90mi[39m saving FileArtifact to: e2e/artifacts/ios.debug.2025-09-22 21-15-18Z/detox_pid_23581.log { append: true }
+22:15:47.318 detox[23581] [90mE[39m onBeforeCleanup
+22:15:47.321 detox[23580] [90mi[39m tester exited session 93aea264-fdfe-7280-b961-0ea40f99840d
+22:15:47.321 detox[23580] [90mE[39m connection :52188<->:52190
+22:15:47.321 detox[23580] [90mi[39m received event of :  deallocateDevice {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:15:47.321 detox[23580] [90mB[39m free: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+  data: {}
+22:15:47.321 detox[23581] [90mi[39m dispatching event to  primary-23580 /tmp/detox.primary-23580  :  deallocateDevice , {
+  deviceCookie: {
+    id: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    udid: 'A90F393D-72AC-4F90-BBE5-9C3B184A3157',
+    type: 'ios.simulator'
+  }
+}
+22:15:47.322 detox[23580] [90mE[39m free: A90F393D-72AC-4F90-BBE5-9C3B184A3157
+22:15:47.323 detox[23580] [90mi[39m dispatching event to socket  :  deallocateDeviceDone {}
+22:15:47.323 detox[23581] [90mi[39m ## received events ##
+22:15:47.323 detox[23581] [90mi[39m detected event deallocateDeviceDone {}
+22:15:47.324 detox[23581] [90mE[39m tear down environment
+22:15:47.324 detox[23581] [90mE[39m e2e/onboarding.e2e.ts
+22:15:47.338 detox[23581] [90mi[39m dispatching event to  primary-23580 /tmp/detox.primary-23580  :  reportTestResults , {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: {
+        name: 'SyntaxError',
+        message: 'Cannot use import statement outside a module',
+        stack: '\x1B[1m\x1B[31mJest encountered an unexpected token\x1B[39m\x1B[22m\n' +
+          '\n' +
+          'Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.\n' +
+          '\n' +
+          'Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.\n' +
+          '\n' +
+          'By default "node_modules" folder is ignored by transformers.\n' +
+          '\n' +
+          "Here's what you can do:\n" +
+          ' • If you are trying to use ECMAScript Modules, see \x1B[4mhttps://jestjs.io/docs/ecmascript-modules\x1B[24m for how to enable it.\n' +
+          ' • If you are trying to use TypeScript, see \x1B[4mhttps://jestjs.io/docs/getting-started#using-typescript\x1B[24m\n' +
+          ' • To have some of your "node_modules" files transformed, you can specify a custom \x1B[1m"transformIgnorePatterns"\x1B[22m in your config.\n' +
+          ' • If you need a custom transformation specify a \x1B[1m"transform"\x1B[22m option in your config.\n' +
+          ' • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the \x1B[1m"moduleNameMapper"\x1B[22m config option.\n' +
+          '\n' +
+          "You'll find more details and examples of these config options in the docs:\n" +
+          '\x1B[36mhttps://jestjs.io/docs/configuration\x1B[39m\n' +
+          'For information about custom transformations, see:\n' +
+          '\x1B[36mhttps://jestjs.io/docs/code-transformation\x1B[39m\n' +
+          '\n' +
+          '\x1B[1m\x1B[31mDetails:\x1B[39m\x1B[22m\n' +
+          '\n' +
+          '/Users/russellbrown/Developer/timedancers-meditation/e2e/init.ts:2\n' +
+          "import { device } from 'detox';\n" +
+          '^^^^^^\n' +
+          '\n' +
+          'SyntaxError: Cannot use import statement outside a module\n' +
+          '    at new Script (node:vm:117:7)\n' +
+          '    at Runtime.createScriptFromCode (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1505:14)\n' +
+          '    at Runtime._execModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1399:25)\n' +
+          '    at Runtime._loadModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1022:12)\n' +
+          '    at Runtime.requireModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:882:12)\n' +
+          '    at jestAdapter (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:70:15)\n' +
+          '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+          '    at runTestInternal (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:367:16)\n' +
+          '    at runTest (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:444:34)'
+      },
+      isPermanentFailure: false
+    }
+  ]
+}
+22:15:47.339 detox[23580] [90mi[39m received event of :  reportTestResults {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: {
+        name: 'SyntaxError',
+        message: 'Cannot use import statement outside a module',
+        stack: '\x1B[1m\x1B[31mJest encountered an unexpected token\x1B[39m\x1B[22m\n' +
+          '\n' +
+          'Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.\n' +
+          '\n' +
+          'Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.\n' +
+          '\n' +
+          'By default "node_modules" folder is ignored by transformers.\n' +
+          '\n' +
+          "Here's what you can do:\n" +
+          ' • If you are trying to use ECMAScript Modules, see \x1B[4mhttps://jestjs.io/docs/ecmascript-modules\x1B[24m for how to enable it.\n' +
+          ' • If you are trying to use TypeScript, see \x1B[4mhttps://jestjs.io/docs/getting-started#using-typescript\x1B[24m\n' +
+          ' • To have some of your "node_modules" files transformed, you can specify a custom \x1B[1m"transformIgnorePatterns"\x1B[22m in your config.\n' +
+          ' • If you need a custom transformation specify a \x1B[1m"transform"\x1B[22m option in your config.\n' +
+          ' • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the \x1B[1m"moduleNameMapper"\x1B[22m config option.\n' +
+          '\n' +
+          "You'll find more details and examples of these config options in the docs:\n" +
+          '\x1B[36mhttps://jestjs.io/docs/configuration\x1B[39m\n' +
+          'For information about custom transformations, see:\n' +
+          '\x1B[36mhttps://jestjs.io/docs/code-transformation\x1B[39m\n' +
+          '\n' +
+          '\x1B[1m\x1B[31mDetails:\x1B[39m\x1B[22m\n' +
+          '\n' +
+          '/Users/russellbrown/Developer/timedancers-meditation/e2e/init.ts:2\n' +
+          "import { device } from 'detox';\n" +
+          '^^^^^^\n' +
+          '\n' +
+          'SyntaxError: Cannot use import statement outside a module\n' +
+          '    at new Script (node:vm:117:7)\n' +
+          '    at Runtime.createScriptFromCode (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1505:14)\n' +
+          '    at Runtime._execModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1399:25)\n' +
+          '    at Runtime._loadModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1022:12)\n' +
+          '    at Runtime.requireModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:882:12)\n' +
+          '    at jestAdapter (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:70:15)\n' +
+          '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+          '    at runTestInternal (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:367:16)\n' +
+          '    at runTest (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:444:34)'
+      },
+      isPermanentFailure: false
+    }
+  ]
+}
+22:15:47.340 detox[23580] [90mi[39m dispatching event to socket  :  reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: {
+        name: 'SyntaxError',
+        message: 'Cannot use import statement outside a module',
+        stack: '\x1B[1m\x1B[31mJest encountered an unexpected token\x1B[39m\x1B[22m\n' +
+          '\n' +
+          'Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.\n' +
+          '\n' +
+          'Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.\n' +
+          '\n' +
+          'By default "node_modules" folder is ignored by transformers.\n' +
+          '\n' +
+          "Here's what you can do:\n" +
+          ' • If you are trying to use ECMAScript Modules, see \x1B[4mhttps://jestjs.io/docs/ecmascript-modules\x1B[24m for how to enable it.\n' +
+          ' • If you are trying to use TypeScript, see \x1B[4mhttps://jestjs.io/docs/getting-started#using-typescript\x1B[24m\n' +
+          ' • To have some of your "node_modules" files transformed, you can specify a custom \x1B[1m"transformIgnorePatterns"\x1B[22m in your config.\n' +
+          ' • If you need a custom transformation specify a \x1B[1m"transform"\x1B[22m option in your config.\n' +
+          ' • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the \x1B[1m"moduleNameMapper"\x1B[22m config option.\n' +
+          '\n' +
+          "You'll find more details and examples of these config options in the docs:\n" +
+          '\x1B[36mhttps://jestjs.io/docs/configuration\x1B[39m\n' +
+          'For information about custom transformations, see:\n' +
+          '\x1B[36mhttps://jestjs.io/docs/code-transformation\x1B[39m\n' +
+          '\n' +
+          '\x1B[1m\x1B[31mDetails:\x1B[39m\x1B[22m\n' +
+          '\n' +
+          '/Users/russellbrown/Developer/timedancers-meditation/e2e/init.ts:2\n' +
+          "import { device } from 'detox';\n" +
+          '^^^^^^\n' +
+          '\n' +
+          'SyntaxError: Cannot use import statement outside a module\n' +
+          '    at new Script (node:vm:117:7)\n' +
+          '    at Runtime.createScriptFromCode (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1505:14)\n' +
+          '    at Runtime._execModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1399:25)\n' +
+          '    at Runtime._loadModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1022:12)\n' +
+          '    at Runtime.requireModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:882:12)\n' +
+          '    at jestAdapter (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:70:15)\n' +
+          '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+          '    at runTestInternal (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:367:16)\n' +
+          '    at runTest (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:444:34)'
+      },
+      isPermanentFailure: false
+    }
+  ]
+}
+22:15:47.340 detox[23581] [90mi[39m ## received events ##
+22:15:47.341 detox[23580] [90mi[39m broadcasting event to all known sockets listening to  /tmp/detox.primary-23580  :   sessionStateUpdate {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: {
+        name: 'SyntaxError',
+        message: 'Cannot use import statement outside a module',
+        stack: '\x1B[1m\x1B[31mJest encountered an unexpected token\x1B[39m\x1B[22m\n' +
+          '\n' +
+          'Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.\n' +
+          '\n' +
+          'Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.\n' +
+          '\n' +
+          'By default "node_modules" folder is ignored by transformers.\n' +
+          '\n' +
+          "Here's what you can do:\n" +
+          ' • If you are trying to use ECMAScript Modules, see \x1B[4mhttps://jestjs.io/docs/ecmascript-modules\x1B[24m for how to enable it.\n' +
+          ' • If you are trying to use TypeScript, see \x1B[4mhttps://jestjs.io/docs/getting-started#using-typescript\x1B[24m\n' +
+          ' • To have some of your "node_modules" files transformed, you can specify a custom \x1B[1m"transformIgnorePatterns"\x1B[22m in your config.\n' +
+          ' • If you need a custom transformation specify a \x1B[1m"transform"\x1B[22m option in your config.\n' +
+          ' • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the \x1B[1m"moduleNameMapper"\x1B[22m config option.\n' +
+          '\n' +
+          "You'll find more details and examples of these config options in the docs:\n" +
+          '\x1B[36mhttps://jestjs.io/docs/configuration\x1B[39m\n' +
+          'For information about custom transformations, see:\n' +
+          '\x1B[36mhttps://jestjs.io/docs/code-transformation\x1B[39m\n' +
+          '\n' +
+          '\x1B[1m\x1B[31mDetails:\x1B[39m\x1B[22m\n' +
+          '\n' +
+          '/Users/russellbrown/Developer/timedancers-meditation/e2e/init.ts:2\n' +
+          "import { device } from 'detox';\n" +
+          '^^^^^^\n' +
+          '\n' +
+          'SyntaxError: Cannot use import statement outside a module\n' +
+          '    at new Script (node:vm:117:7)\n' +
+          '    at Runtime.createScriptFromCode (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1505:14)\n' +
+          '    at Runtime._execModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1399:25)\n' +
+          '    at Runtime._loadModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1022:12)\n' +
+          '    at Runtime.requireModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:882:12)\n' +
+          '    at jestAdapter (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:70:15)\n' +
+          '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+          '    at runTestInternal (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:367:16)\n' +
+          '    at runTest (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:444:34)'
+      },
+      isPermanentFailure: false
+    }
+  ]
+}
+22:15:47.341 detox[23581] [90mi[39m detected event reportTestResultsDone {
+  testResults: [
+    {
+      success: false,
+      testFilePath: '/Users/russellbrown/Developer/timedancers-meditation/e2e/onboarding.e2e.ts',
+      testExecError: {
+        name: 'SyntaxError',
+        message: 'Cannot use import statement outside a module',
+        stack: '\x1B[1m\x1B[31mJest encountered an unexpected token\x1B[39m\x1B[22m\n' +
+          '\n' +
+          'Jest failed to parse a file. This happens e.g. when your code or its dependencies use non-standard JavaScript syntax, or when Jest is not configured to support such syntax.\n' +
+          '\n' +
+          'Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.\n' +
+          '\n' +
+          'By default "node_modules" folder is ignored by transformers.\n' +
+          '\n' +
+          "Here's what you can do:\n" +
+          ' • If you are trying to use ECMAScript Modules, see \x1B[4mhttps://jestjs.io/docs/ecmascript-modules\x1B[24m for how to enable it.\n' +
+          ' • If you are trying to use TypeScript, see \x1B[4mhttps://jestjs.io/docs/getting-started#using-typescript\x1B[24m\n' +
+          ' • To have some of your "node_modules" files transformed, you can specify a custom \x1B[1m"transformIgnorePatterns"\x1B[22m in your config.\n' +
+          ' • If you need a custom transformation specify a \x1B[1m"transform"\x1B[22m option in your config.\n' +
+          ' • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the \x1B[1m"moduleNameMapper"\x1B[22m config option.\n' +
+          '\n' +
+          "You'll find more details and examples of these config options in the docs:\n" +
+          '\x1B[36mhttps://jestjs.io/docs/configuration\x1B[39m\n' +
+          'For information about custom transformations, see:\n' +
+          '\x1B[36mhttps://jestjs.io/docs/code-transformation\x1B[39m\n' +
+          '\n' +
+          '\x1B[1m\x1B[31mDetails:\x1B[39m\x1B[22m\n' +
+          '\n' +
+          '/Users/russellbrown/Developer/timedancers-meditation/e2e/init.ts:2\n' +
+          "import { device } from 'detox';\n" +
+          '^^^^^^\n' +
+          '\n' +
+          'SyntaxError: Cannot use import statement outside a module\n' +
+          '    at new Script (node:vm:117:7)\n' +
+          '    at Runtime.createScriptFromCode (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1505:14)\n' +
+          '    at Runtime._execModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1399:25)\n' +
+          '    at Runtime._loadModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:1022:12)\n' +
+          '    at Runtime.requireModule (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runtime/build/index.js:882:12)\n' +
+          '    at jestAdapter (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js:70:15)\n' +
+          '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+          '    at runTestInternal (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:367:16)\n' +
+          '    at runTest (/Users/russellbrown/Developer/timedancers-meditation/node_modules/jest-runner/build/runTest.js:444:34)'
+      },
+      isPermanentFailure: false
+    }
+  ]
+}
+22:15:47.344 detox[23580] [90mi[39m socket disconnected secondary-23581
+22:15:47.344 detox[23581] [90mi[39m connection closed primary-23580 /tmp/detox.primary-23580 0 tries remaining of 0
+22:15:47.344 detox[23581] [90mi[39m secondary-23581 exceeded connection rety amount of  or stopRetrying flag set.
+22:15:47.439 detox[23580] [90mE[39m Command failed with exit code = 1:
+jest --config e2e/jest.config.js
+22:15:47.439 detox[23580] [90mB[39m cleanup
+  args: ()
+22:15:47.440 detox[23580] [90mE[39m cleanup
+22:15:47.441 detox[23580] [90mi[39m Detox server has been closed gracefully
+22:15:47.442 detox[23580] [90mE[39m node_modules/.bin/detox test -c ios.debug
