@@ -11,7 +11,7 @@ const WelcomeImage = () => {
       style={{
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 40,
+        paddingBottom: 28,
       }}
     >
       <Image
@@ -19,7 +19,7 @@ const WelcomeImage = () => {
         style={{
           width: 120,
           height: 120,
-          marginBottom: 20,
+          marginBottom: 5,
         }}
       />
       <Hyperlink 

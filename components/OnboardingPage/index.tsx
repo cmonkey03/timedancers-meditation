@@ -4,6 +4,7 @@ import { useThemeColors } from '@/hooks/use-theme';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
@@ -16,6 +17,15 @@ type Props = {
 
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
+  const insets = useSafeAreaInsets();
+  
+  // Calculate actual content area by subtracting UI elements
+  const tabBarHeight = 83; // Standard iOS tab bar height
+  const onboardingControlsHeight = 80; // Skip/Next/Done buttons area
+
+  
+  // Calculate how much to shift content up to center it in available space
+  const contentShift = (tabBarHeight + onboardingControlsHeight) / 1.3;
   const NextButton = (props: any) => (
     <Pressable
       {...props}
@@ -46,7 +56,11 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   ];
 
   return (
-    <View testID="onboarding" style={{ flex: 1 }}>
+    <View testID="onboarding" style={{ 
+      flex: 1, 
+      marginTop: -contentShift,
+      paddingTop: Math.max(insets.top, 20)
+    }}>
       <Onboarding
         onDone={() => {
           finishOnboarding();

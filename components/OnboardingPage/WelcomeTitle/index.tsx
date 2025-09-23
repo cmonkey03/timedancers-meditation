@@ -43,7 +43,7 @@ const WelcomeTitle = () => {
           fontSize: 32,
           fontWeight: '300',
           color: '#1a5632',
-          marginBottom: 20
+          marginBottom: 5
         }}>is here.</Text>
       </View>
     </View>
