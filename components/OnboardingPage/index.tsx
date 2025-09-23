@@ -63,7 +63,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         {
           backgroundColor: C.background,
           image: <WelcomeImage />,
-          subtitle: 'Hello',
+          subtitle: 'Begin your journey',
           title: <WelcomeTitle />,
         },
         {

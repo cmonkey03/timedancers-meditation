@@ -15,7 +15,10 @@ export default function HomeScreen() {
     useCallback(() => {
       // Return cleanup function that runs when screen loses focus
       return () => {
-        setKey(prev => prev + 1);
+        // Delay the reset so it happens after navigation is complete
+        setTimeout(() => {
+          setKey(prev => prev + 1);
+        }, 300); // 300ms delay to avoid flash during transition
       };
     }, [])
   );

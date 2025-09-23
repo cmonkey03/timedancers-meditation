@@ -22,43 +22,29 @@ const WelcomeTitle = () => {
       }}
     >
       <View style={{ maxWidth: 650 }}>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 6,
-            fontWeight: 'bold',
-            color: '#1a5632',
-            marginBottom: 1,
-            marginTop: 1,
-          }}
-        >
-          A great
-        </Text>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 6,
-            fontWeight: 'bold',
-            color: eventColor[index],
-            marginBottom: 1,
-            marginTop: 1,
-            textTransform: 'uppercase',
-          }}
-        >
-          {eventText[index]}
-        </Text>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: '#1a5632',
-            marginBottom: 4,
-            marginTop: 4,
-          }}
-        >
-          is here.
-        </Text>
+        <Text style={{
+          textAlign: 'center',
+          fontSize: 32,
+          fontWeight: '300',
+          color: '#1a5632',
+          marginBottom: 8,
+        }}>A great</Text>
+        <Text style={{
+          textAlign: 'center',
+          fontSize: 36,
+          fontWeight: 'bold',
+          color: eventColor[index],
+          marginBottom: 8,
+          textTransform: 'uppercase',
+          letterSpacing: 2,
+        }}>{eventText[index]}</Text>
+        <Text style={{
+          textAlign: 'center',
+          fontSize: 32,
+          fontWeight: '300',
+          color: '#1a5632',
+          marginBottom: 20
+        }}>is here.</Text>
       </View>
     </View>
   );
