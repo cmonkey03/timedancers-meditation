@@ -9,6 +9,8 @@ const ImageWrapper = ({ children }: Props) => (
   <View
     style={{
       paddingBottom: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
     }}
   >
     {children}

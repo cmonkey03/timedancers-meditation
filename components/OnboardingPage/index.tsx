@@ -2,8 +2,9 @@ import Wheel from '@/components/MeditationPage/Wheel';
 import WheelTower from '@/components/MeditationPage/WheelTower';
 import { useThemeColors } from '@/hooks/use-theme';
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
@@ -16,9 +17,34 @@ type Props = {
 
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
+  const insets = useSafeAreaInsets();
+  
+  // Calculate actual content area by subtracting UI elements
+  const tabBarHeight = 83; // Standard iOS tab bar height
+  const onboardingControlsHeight = 80; // Skip/Next/Done buttons area
+
+  
+  // Calculate how much to shift content up to center it in available space
+  const contentShift = (tabBarHeight + onboardingControlsHeight) / 1.3;
   const NextButton = (props: any) => (
-    <Pressable {...props} style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}>
+    <Pressable
+      {...props}
+      testID="onboarding-next"
+      accessibilityLabel="onboarding-next"
+      style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
+    >
       <Text style={{ fontWeight: '600', color: C.text }}>Next</Text>
+    </Pressable>
+  );
+
+  const DoneButton = (props: any) => (
+    <Pressable
+      {...props}
+      testID="onboarding-done"
+      accessibilityLabel="onboarding-done"
+      style={[{ paddingHorizontal: 16, paddingVertical: 8 }, props?.style]}
+    >
+      <Text style={{ fontWeight: '600', color: C.text }}>Done</Text>
     </Pressable>
   );
 
@@ -30,22 +56,28 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   ];
 
   return (
-    <Onboarding
-      onDone={() => {
-        finishOnboarding();
-      }}
-      onSkip={() => {
-        finishOnboarding();
-      }}
-      showSkip
-      showNext
-      NextButtonComponent={NextButton}
-      imageContainerStyles={{ paddingBottom: 0 }}
-      pages={[
+    <View testID="onboarding" style={{ 
+      flex: 1, 
+      marginTop: -contentShift,
+      paddingTop: Math.max(insets.top, 20)
+    }}>
+      <Onboarding
+        onDone={() => {
+          finishOnboarding();
+        }}
+        onSkip={() => {
+          finishOnboarding();
+        }}
+        showSkip
+        showNext
+        NextButtonComponent={NextButton}
+        DoneButtonComponent={DoneButton}
+        imageContainerStyles={{ paddingBottom: 0 }}
+        pages={[
         {
           backgroundColor: C.background,
           image: <WelcomeImage />,
-          subtitle: 'Hello',
+          subtitle: 'Begin your journey',
           title: <WelcomeTitle />,
         },
         {
@@ -88,8 +120,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
           subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
         },
-      ]}
-    />
+        ]}
+      />
+    </View>
   );
 };
 

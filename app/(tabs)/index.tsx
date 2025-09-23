@@ -1,20 +1,27 @@
 import OnboardingPage from '@/components/OnboardingPage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { TabActions, useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
 
 export default function HomeScreen() {
-  const router = useRouter();
+  const navigation = useNavigation();
+  const [key, setKey] = useState(0);
 
   const finishOnboarding = useCallback(async () => {
-    try {
-      await AsyncStorage.setItem(
-        'hasOnboarded',
-        JSON.stringify({ hasOnboarded: true })
-      );
-    } catch {}
-    router.replace('/(tabs)/meditate');
-  }, [router]);
+    navigation.dispatch(TabActions.jumpTo('meditate'));
+  }, [navigation]);
 
-  return <OnboardingPage finishOnboarding={finishOnboarding} />;
+  // Re-mount onboarding component when this screen loses focus (blur event)
+  useFocusEffect(
+    useCallback(() => {
+      // Return cleanup function that runs when screen loses focus
+      return () => {
+        // Delay the reset so it happens after navigation is complete
+        setTimeout(() => {
+          setKey(prev => prev + 1);
+        }, 300); // 300ms delay to avoid flash during transition
+      };
+    }, [])
+  );
+
+  return <OnboardingPage key={key} finishOnboarding={finishOnboarding} />;
 }

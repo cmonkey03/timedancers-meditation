@@ -45,6 +45,8 @@ app-example
 # Local build artifacts (ignore local builds)
 build/
 .eas/
+e2e/artifacts/
+
 # Android build outputs and caches
 android/app/build/
 android/build/

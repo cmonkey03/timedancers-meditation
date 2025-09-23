@@ -5,7 +5,7 @@ interface Props {
   text: string;
 }
 
-const SubtitleWrapper = ({ color, text }: Props): JSX.Element => (
+const SubtitleWrapper = ({ color, text }: Props) => (
   <Text
     style={{
       color,
