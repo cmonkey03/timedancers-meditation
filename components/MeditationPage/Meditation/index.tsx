@@ -282,7 +282,7 @@ const Meditation = () => {
         
         return wheelOrder.map((i) => {
           const wheel = WHEELS[i];
-          const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0;
+          const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
           const justReleased = 
             i === prevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;
           const isDone = i < timer.now.currentIndex || timer.now.done;
@@ -302,7 +302,7 @@ const Meditation = () => {
           const big = isActive && timer.started;
           
           return (
-            <View key={wheel.key} style={{ alignItems: "center", marginVertical: 8 }}>
+            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 20 }}>
               <Wheel
                 size={big ? 200 : 120}
                 label={capitalize(wheel.key)}

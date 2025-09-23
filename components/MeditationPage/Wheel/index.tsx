@@ -45,8 +45,10 @@ const Wheel = (props: Props) => {
   const isSimple = 'backgroundColor' in props;
   
   // Always call hooks at the top level - use conditional logic inside
-  const progress = useSharedValue(0);
+  const progress = useSharedValue(1);
+  const smoothProgress = useSharedValue(1);
   const breath = useSharedValue(0);
+  const backgroundSpin = useSharedValue(0);
   const spin = useSharedValue(0);
   const glow = useSharedValue(0);
   
@@ -77,17 +79,32 @@ const Wheel = (props: Props) => {
   // Progress from 1 → 0 with smooth animation
   const targetProgress = Math.max(0, Math.min(1, remaining / Math.max(1, total)));
   
-  // Animate progress smoothly when it changes (only for meditation wheels)
+  // Smooth continuous progress animation - only starts when wheel becomes active
   React.useEffect(() => {
-    if (!isSimple) {
-      progress.value = withTiming(targetProgress, {
-        duration: 500,
-        easing: Easing.out(Easing.cubic),
+    if (!isSimple && state === "active" && total > 0) {
+      // Start a continuous animation from current progress to 0
+      const currentProgress = remaining / total;
+      
+      // Start from current progress and animate to 0
+      smoothProgress.value = currentProgress;
+      smoothProgress.value = withTiming(0, {
+        duration: remaining * 1000, // Animate for remaining time
+        easing: Easing.linear,
       });
+    } else {
+      // For non-active wheels, just set the progress directly
+      smoothProgress.value = targetProgress;
     }
-  }, [targetProgress, progress, isSimple]);
+  }, [state, total, remaining, smoothProgress, targetProgress, isSimple]);
 
-  // Breathing animation for active wheel and gentle pulse for starting wheel
+  // Update progress for non-active wheels
+  React.useEffect(() => {
+    if (!isSimple && state !== "active") {
+      progress.value = targetProgress;
+    }
+  }, [targetProgress, progress, isSimple, state]);
+
+  // Breathing animation
   React.useEffect(() => {
     if (!isSimple) {
       if (state === "active") {
@@ -117,6 +134,23 @@ const Wheel = (props: Props) => {
     }
   }, [state, label, breath, isSimple]);
 
+  // Background spinning animation (only when timer is running)
+  React.useEffect(() => {
+    if (!isSimple) {
+      if (state === "active") {
+        // continuous spinning for active wheel background
+        backgroundSpin.value = withRepeat(
+          withTiming(1, { duration: 4000, easing: Easing.linear }),
+          -1,
+          false
+        );
+      } else {
+        // no spinning when timer is not running
+        backgroundSpin.value = withTiming(0, { duration: 300 });
+      }
+    }
+  }, [state, backgroundSpin, isSimple]);
+
   // Release animation (one spin + glow)
   React.useEffect(() => {
     if (!isSimple && state === "releasing") {
@@ -133,23 +167,31 @@ const Wheel = (props: Props) => {
 
   const aProps = useAnimatedProps(() => {
     if (isSimple) return { strokeDashoffset: 0 };
-    // progress ring dashoffset - smooth animation
-    const dash = circumference * progress.value;
+    // progress ring dashoffset - use smooth progress for active, regular for others
+    const progressValue = state === "active" ? smoothProgress.value : progress.value;
+    const dash = circumference * progressValue;
     return { strokeDashoffset: dash };
   });
 
   const breathScale = useDerivedValue(() => {
     if (isSimple) return 1;
     if (state === "active") {
-      return 1 + interpolate(breath.value, [0, 1], [0, 0.05]); // 5% breathing for active
+      return 1 + interpolate(breath.value, [0, 1], [0, 0.08]); // 8% breathing for active
     } else if (state === "idle" && label.toLowerCase() === "power") {
-      return 1 + interpolate(breath.value, [0, 1], [0, 0.02]); // 2% gentle pulse for power when idle
+      return 1 + interpolate(breath.value, [0, 1], [0, 0.06]); // 6% gentle pulse for power when idle
     } else {
       return 1; // no animation for other wheels
     }
   });
 
-  const spinDeg = useDerivedValue(() => isSimple ? "0deg" : `${spin.value * 360}deg`);
+  const backgroundSpinDeg = useDerivedValue(() => {
+    if (isSimple) return "0deg";
+    // Background spinning rotation
+    const rotation = backgroundSpin.value * 360;
+    return `${rotation}deg`;
+  });
+
+  const releaseSpinDeg = useDerivedValue(() => isSimple ? "0deg" : `${spin.value * 360}deg`);
   const glowOpacity = useDerivedValue(() => isSimple ? 0 : glow.value);
 
   // Time mm:ss
@@ -183,16 +225,12 @@ const Wheel = (props: Props) => {
 
   return (
     <View style={{ alignItems: "center" }}>
-      <Animated.View
+      <View
         style={[
           styles.wheelWrap,
           {
             width: size,
             height: size,
-            transform: [
-              { scale: breathScale as any },
-              state === "releasing" ? ({ rotate: spinDeg } as any) : ({ rotate: "0deg" } as any),
-            ],
             opacity: dimmed ? 0.9 : 1,
           },
         ]}
@@ -215,48 +253,75 @@ const Wheel = (props: Props) => {
           ]}
         />
 
-        <Svg width={size} height={size}>
-          <Defs>
-            <SvgLinearGradient id={gid} x1="0%" y1="0%" x2="100%" y2="100%">
-              <Stop offset="0%" stopColor={c0} />
-              <Stop offset="100%" stopColor={c1} />
-            </SvgLinearGradient>
-          </Defs>
+        {/* Spinning and breathing background */}
+        <Animated.View
+          style={[
+            {
+              position: "absolute",
+              width: size,
+              height: size,
+              transform: [
+                { scale: breathScale as any },
+                { rotate: backgroundSpinDeg as any },
+              ],
+            },
+          ]}
+        >
+          <Svg width={size} height={size}>
+            <Defs>
+              <SvgLinearGradient id={gid} x1="0%" y1="0%" x2="100%" y2="100%">
+                <Stop offset="0%" stopColor={c0} />
+                <Stop offset="100%" stopColor={c1} />
+              </SvgLinearGradient>
+            </Defs>
+            {/* Base circle - this spins and breathes */}
+            <Circle cx={size / 2} cy={size / 2} r={r} fill={`url(#${gid})` } />
+          </Svg>
+        </Animated.View>
 
-          {/* Base circle */}
-          <Circle cx={size / 2} cy={size / 2} r={r} fill={`url(#${gid})` } />
+        {/* Static elements (progress ring and track) - no breathing! */}
+        <Animated.View
+          style={[
+            {
+              position: "absolute",
+              width: size,
+              height: size,
+              transform: [{ rotate: releaseSpinDeg as any }],
+            },
+          ]}
+        >
+          <Svg width={size} height={size}>
+            {/* Track */}
+            <Circle
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              stroke="rgba(255, 255, 255, 0.3)"
+              strokeWidth={stroke}
+              fill="none"
+            />
 
-          {/* Track */}
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            stroke="rgba(255, 255, 255, 0.3)"
-            strokeWidth={stroke}
-            fill="none"
-          />
+            {/* Progress ring */}
+            <AnimatedCircle
+              animatedProps={aProps}
+              cx={size / 2}
+              cy={size / 2}
+              r={r}
+              stroke="rgba(255, 255, 255, 0.9)"
+              strokeWidth={stroke}
+              strokeLinecap="round"
+              fill="none"
+              strokeDasharray={circumference}
+              rotation="-90"
+              originX={size / 2}
+              originY={size / 2}
+            />
+          </Svg>
+        </Animated.View>
 
-          {/* Progress ring */}
-          <AnimatedCircle
-            animatedProps={aProps}
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            stroke="rgba(255, 255, 255, 0.9)"
-            strokeWidth={stroke}
-            strokeLinecap="round"
-            fill="none"
-            strokeDasharray={circumference}
-            rotation="-90"
-            originX={size / 2}
-            originY={size / 2}
-          />
-        </Svg>
-
+        {/* Static text - no breathing! */}
         <Text style={styles.time}>{state === "done" ? "✓" : `${mm}:${ss}` }</Text>
-      </Animated.View>
-
-      <Text style={[styles.label, dimmed && { opacity: 0.8 }]}>{label}</Text>
+      </View>
     </View>
   );
 };
