@@ -60,7 +60,7 @@ export default function SettingsScreen() {
       <DailyReminder />
 
       {/* Reset to defaults */}
-      <View style={{ marginTop: 24, alignSelf: 'flex-start' }}>
+      <View style={{ marginTop: 8, alignSelf: 'flex-start' }}>
         <Button
           onPress={resetDefaults}
           text="Reset to defaults"

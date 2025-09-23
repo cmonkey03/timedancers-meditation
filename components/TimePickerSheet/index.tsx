@@ -74,7 +74,7 @@ export default function TimePickerSheet({
               display={Platform.OS === 'ios' ? 'spinner' : 'default'}
               themeVariant={colorScheme === 'dark' ? 'dark' : 'light'}
               style={styles.timePicker}
-              textColor="#1a5632"
+              textColor={C.text}
             />
           </View>
         </View>

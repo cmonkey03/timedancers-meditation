@@ -6,6 +6,7 @@ import Animated, {
   withSpring, 
   withTiming 
 } from 'react-native-reanimated';
+import { useThemeColors } from '@/hooks/use-theme';
 
 interface Props {
   onPress(): void;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const Button = ({ onPress, text, variant = "primary" }: Props) => {
+  const C = useThemeColors();
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
@@ -42,12 +44,13 @@ const Button = ({ onPress, text, variant = "primary" }: Props) => {
         style={[
           styles.btn,
           variant === "primary" ? styles.btnPrimary : styles.btnGhost,
+          variant === "ghost" && { borderColor: C.text },
           animatedStyle,
         ]}
       >
         <Text style={[
           styles.btnText,
-          variant === "ghost" && { color: "#2d5a3d" },
+          variant === "ghost" && { color: C.text },
         ]}>
           {text}
         </Text>
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     minWidth: 120, 
     paddingHorizontal: 24, 
     paddingVertical: 16, 
-    borderRadius: 12, 
+    borderRadius: 24, 
     alignItems: 'center', 
     justifyContent: 'center',
     shadowColor: '#000',
@@ -76,7 +79,6 @@ const styles = StyleSheet.create({
   btnGhost: { 
     backgroundColor: 'transparent', 
     borderWidth: 2, 
-    borderColor: '#2d5a3d',
     shadowOpacity: 0.05,
   },
   btnText: { 

@@ -1,10 +1,10 @@
-import Button from '@/components/Button';
 import { useAlerts } from '@/hooks/use-alerts';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Switch, Text, View, Pressable } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
 const MODES: { key: AlertMode; label: string }[] = [
   { key: 'chime', label: 'Chime' },
@@ -12,6 +12,53 @@ const MODES: { key: AlertMode; label: string }[] = [
   { key: 'haptic', label: 'Vibrate' },
   { key: 'silent', label: 'Silent' },
 ];
+
+const TestButton = ({ onPress }: { onPress: () => void }) => {
+  const C = useThemeColors();
+  const scale = useSharedValue(1);
+  
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <Animated.View
+        style={[
+          {
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: 16,
+            borderWidth: 1,
+            borderColor: C.text,
+            backgroundColor: 'transparent',
+          },
+          animatedStyle,
+        ]}
+      >
+        <Text style={{ 
+          color: C.text, 
+          fontWeight: '600',
+          fontSize: 14,
+        }}>
+          Test alert
+        </Text>
+      </Animated.View>
+    </Pressable>
+  );
+};
 
 type Props = {
   allowBackgroundAlerts: boolean;
@@ -38,50 +85,70 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
     AsyncStorage.setItem('alertMode', mode).catch(() => {});
   }, [mode]);
 
-  const buttons = useMemo(
-    () =>
-      MODES.map((m) => {
-        const selected = m.key === mode;
-        return (
-          <TouchableOpacity
-            key={m.key}
-            onPress={() => setMode(m.key)}
-            style={[
-              s.pill,
-              {
-                borderColor: selected ? C.primary : C.border,
-                backgroundColor: selected ? C.background : 'transparent',
-              },
-            ]}
-          >
-            <Text style={{ color: C.text, fontWeight: selected ? '700' : '500' }}>{m.label}</Text>
-          </TouchableOpacity>
-        );
-      }),
-    [mode, C]
-  );
+  const PillButton = ({ m }: { m: { key: AlertMode; label: string } }) => {
+    const selected = m.key === mode;
+    const scale = useSharedValue(1);
+    
+    const animatedStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
+    }));
+
+    const handlePressIn = () => {
+      scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
+    };
+
+    const handlePressOut = () => {
+      scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+    };
+
+    return (
+      <Pressable
+        key={m.key}
+        onPress={() => setMode(m.key)}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+      >
+        <Animated.View
+          style={[
+            s.pill,
+            {
+              borderColor: selected ? '#2d5a3d' : C.border,
+              backgroundColor: selected ? '#2d5a3d' : 'transparent',
+            },
+            animatedStyle,
+          ]}
+        >
+          <Text style={{ 
+            color: selected ? '#ffffff' : C.text, 
+            fontWeight: selected ? '600' : '500',
+            fontSize: 14,
+          }}>
+            {m.label}
+          </Text>
+        </Animated.View>
+      </Pressable>
+    );
+  };
+
+  const buttons = MODES.map((m) => <PillButton key={m.key} m={m} />);
 
   return (
     <View style={[s.card, { backgroundColor: C.surface }]}
     >
-      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10 }}>Alerts</Text>
+      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>Alerts</Text>
       <View style={s.row}>{buttons}</View>
-      <Text style={{ color: C.mutedText, marginBottom: 8 }}>Choose how the app alerts you throughout your session.</Text>
+      <Text style={{ color: C.mutedText, marginBottom: 8, fontSize: 14 }}>Choose how the app alerts you throughout your session.</Text>
 
       <View style={{ alignSelf: 'flex-start', marginTop: 4, marginBottom: 12 }}>
-        <Button
-          onPress={() => playStartAlert()}
-          text="Test alert"
-          variant="ghost"
-        />
+        <TestButton onPress={() => playStartAlert()} />
       </View>
 
       {/* Play alerts in background toggle */}
       <View style={[s.bgToggleRow, { borderColor: C.border }]}>
-        <Text style={{ color: C.text, fontWeight: '600' }}>Play alerts in background</Text>
+        <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>Play alerts in background</Text>
         <Switch value={allowBackgroundAlerts} onValueChange={onToggleAllowBackgroundAlerts} />
       </View>
-      <Text style={{ color: C.mutedText, marginTop: 6, marginBottom: 12 }}>
+      <Text style={{ color: C.mutedText, marginTop: 6, marginBottom: 12, fontSize: 14 }}>
         Chimes & haptics still play if the app is in the background or the screen is locked.
       </Text>
 
@@ -109,11 +176,16 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   pill: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: 2,
     marginRight: 8,
     marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
 });
