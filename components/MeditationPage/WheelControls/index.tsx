@@ -40,9 +40,14 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             variant="ghost" 
           />
         </View>
-        <Text style={[styles.title, { color: C.text }]}>
-          {counting ? 'Meditation in progress' : 'Meditation paused'}
-        </Text>
+        <View style={styles.statusContainer}>
+          <View style={[styles.statusDot, { 
+            backgroundColor: counting ? '#4ade80' : '#fbbf24' 
+          }]} />
+          <Text style={[styles.statusText, { color: C.text }]}>
+            {counting ? 'Meditation in progress' : 'Meditation paused'}
+          </Text>
+        </View>
       </Animated.View>
     );
   }
@@ -64,9 +69,11 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           onValueChange={handleInput}
         />
       </View>
-      <Text style={[styles.title, { color: C.text }]}>
-        Select meditation time
-      </Text>
+      <View style={styles.instructionContainer}>
+        <Text style={[styles.instructionText, { color: C.text }]}>
+          Select meditation time
+        </Text>
+      </View>
     </Animated.View>
   );
 };
@@ -95,6 +102,40 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     marginVertical: 8,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginRight: 8,
+  },
+  statusText: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  instructionContainer: {
+    marginTop: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
+  },
+  instructionText: {
+    fontSize: 15,
+    fontWeight: '500',
+    textAlign: 'center',
+    opacity: 0.8,
   },
 });
 
