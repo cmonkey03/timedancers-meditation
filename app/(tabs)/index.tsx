@@ -1,10 +1,10 @@
 import OnboardingPage from '@/components/OnboardingPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { TabActions, useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 export default function HomeScreen() {
-  const router = useRouter();
+  const navigation = useNavigation();
 
   const finishOnboarding = useCallback(async () => {
     try {
@@ -13,8 +13,8 @@ export default function HomeScreen() {
         JSON.stringify({ hasOnboarded: true })
       );
     } catch {}
-    router.replace('/(tabs)/meditate');
-  }, [router]);
+    navigation.dispatch(TabActions.jumpTo('meditate'));
+  }, [navigation]);
 
   return <OnboardingPage finishOnboarding={finishOnboarding} />;
 }

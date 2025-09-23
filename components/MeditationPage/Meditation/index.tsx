@@ -16,17 +16,12 @@ import { AppState, Text, View } from 'react-native';
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
 
-type Props = {
-  handler: React.Dispatch<React.SetStateAction<any>>;
-  onboarded: boolean;
-};
-
 function capitalize(s: string): string {
   if (!s) return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-const Meditation = ({ handler: _handler, onboarded: _onboarded }: Props) => {
+const Meditation = () => {
   useKeepAwakeSafe();
   const C = useThemeColors();
   const [input, setInput] = useState('3');
