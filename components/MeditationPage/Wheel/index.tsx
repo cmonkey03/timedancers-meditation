@@ -1,19 +1,19 @@
-import React, { useMemo } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
 import { useThemeColors } from '@/hooks/use-theme';
-import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Circle } from "react-native-svg";
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useMemo } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import Animated, {
-  useSharedValue,
-  useAnimatedProps,
-  useDerivedValue,
-  withTiming,
-  withRepeat,
-  withDelay,
-  withSequence,
   Easing,
   interpolate,
+  useAnimatedProps,
+  useDerivedValue,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
 } from "react-native-reanimated";
+import Svg, { Circle, Defs, Stop, LinearGradient as SvgLinearGradient } from "react-native-svg";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -216,7 +216,7 @@ const Wheel = (props: Props) => {
         }}
         colors={backgroundColor as any}
       >
-        <Text style={{ color: textColor, fontWeight: '600' }}>{text}</Text>
+        <Text style={{ color: textColor, fontWeight: '600', fontSize: 16 }}>{text}</Text>
       </LinearGradient>
     );
   }
@@ -334,8 +334,8 @@ const styles = StyleSheet.create({
   },
   time: {
     position: "absolute",
-    fontSize: 22,
-    fontWeight: "800",
+    fontSize: 20,
+    fontWeight: "700",
     color: "#FFFFFF",
     textShadowColor: "rgba(0, 0, 0, 0.8)",
     textShadowOffset: { width: 1, height: 1 },

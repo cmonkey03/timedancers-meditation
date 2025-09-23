@@ -1,8 +1,8 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   counting: boolean;
@@ -26,20 +26,22 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
     // Timer is running - show pause/resume and cancel
     return (
       <View style={styles.container}>
-        <View style={styles.buttonRow}>
+        <View style={styles.horizontalSection}>
           <Button
             onPress={() => (counting ? onPress('pause') : onPress('counting'))}
             text={buttonText}
             variant="primary"
           />
-        </View>
-        <View style={styles.buttonRow}>
+          <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
             text="Cancel" 
             variant="ghost" 
           />
         </View>
+        <Text style={[styles.title, { color: C.text }]}>
+          {counting ? 'Meditation in progress' : 'Meditation paused'}
+        </Text>
       </View>
     );
   }
@@ -47,16 +49,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
   // Timer not started - show picker and start button
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: C.text }]}>
-        Select meditation time
-      </Text>
-      
       <View style={styles.horizontalSection}>
-        <TimerWheelPicker
-          value={input}
-          onValueChange={handleInput}
-        />
-        <View style={styles.spacer} />
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => onPress('counting')}
@@ -64,7 +57,15 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             variant="primary"
           />
         </View>
+        <View style={styles.spacer} />
+        <TimerWheelPicker
+          value={input}
+          onValueChange={handleInput}
+        />
       </View>
+      <Text style={[styles.title, { color: C.text }]}>
+        Select meditation time
+      </Text>
     </View>
   );
 };
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
-    marginBottom: 16,
+    marginTop: 12,
   },
   horizontalSection: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useThemeColors } from '@/hooks/use-theme';
 
@@ -16,7 +16,6 @@ const TimerWheelPicker = ({ value, onValueChange }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: C.text }]}>Minutes</Text>
       <View style={[styles.pickerContainer, { backgroundColor: C.surface, borderColor: C.border }]}>
         <Picker
           selectedValue={value}
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   iosItem: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '600',
     height: 140,
   },
