@@ -38,11 +38,11 @@ const TestButton = ({ onPress }: { onPress: () => void }) => {
       <Animated.View
         style={[
           {
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            borderRadius: 16,
-            borderWidth: 1,
-            borderColor: C.text,
+            paddingHorizontal: 16,
+            paddingVertical: 10,
+            borderRadius: 20,
+            borderWidth: 2,
+            borderColor: `${C.text}4D`,
             backgroundColor: 'transparent',
           },
           animatedStyle,
@@ -112,7 +112,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
           style={[
             s.pill,
             {
-              borderColor: selected ? '#2d5a3d' : C.border,
+              borderColor: selected ? '#2d5a3d' : `${C.text}30`,
               backgroundColor: selected ? '#2d5a3d' : 'transparent',
             },
             animatedStyle,
@@ -137,7 +137,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
     >
       <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>Alerts</Text>
       <View style={s.row}>{buttons}</View>
-      <Text style={{ color: C.mutedText, marginBottom: 8, fontSize: 14 }}>Choose how the app alerts you throughout your session.</Text>
+      <Text style={{ color: C.text, opacity: 0.75, marginBottom: 8, fontSize: 14 }}>Choose how the app alerts you throughout your session.</Text>
 
       <View style={{ alignSelf: 'flex-start', marginTop: 4, marginBottom: 12 }}>
         <TestButton onPress={() => playStartAlert()} />
@@ -148,7 +148,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
         <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>Play alerts in background</Text>
         <Switch value={allowBackgroundAlerts} onValueChange={onToggleAllowBackgroundAlerts} />
       </View>
-      <Text style={{ color: C.mutedText, marginTop: 6, marginBottom: 12, fontSize: 14 }}>
+      <Text style={{ color: C.text, opacity: 0.75, marginTop: 6, marginBottom: 12, fontSize: 14 }}>
         Chimes & haptics still play if the app is in the background or the screen is locked.
       </Text>
 
@@ -176,9 +176,9 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   pill: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: 22,
     borderWidth: 2,
     marginRight: 8,
     marginBottom: 8,

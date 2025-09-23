@@ -44,7 +44,7 @@ const Button = ({ onPress, text, variant = "primary" }: Props) => {
         style={[
           styles.btn,
           variant === "primary" ? styles.btnPrimary : styles.btnGhost,
-          variant === "ghost" && { borderColor: C.text },
+          variant === "ghost" && { borderColor: `${C.text}4D` },
           animatedStyle,
         ]}
       >
@@ -62,15 +62,15 @@ const Button = ({ onPress, text, variant = "primary" }: Props) => {
 const styles = StyleSheet.create({
   btn: { 
     minWidth: 120, 
-    paddingHorizontal: 24, 
-    paddingVertical: 16, 
-    borderRadius: 24, 
+    paddingHorizontal: 20, 
+    paddingVertical: 14, 
+    borderRadius: 22, 
     alignItems: 'center', 
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
     elevation: 2,
   },
   btnPrimary: { 
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   btnGhost: { 
     backgroundColor: 'transparent', 
     borderWidth: 2, 
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.04,
   },
   btnText: { 
     fontSize: 16, 

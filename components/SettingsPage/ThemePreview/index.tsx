@@ -33,11 +33,11 @@ const ThemePillButton = ({ opt, selected, onPress }: {
       <Animated.View
         style={[
           {
-            paddingHorizontal: 16,
+            paddingHorizontal: 18,
             paddingVertical: 12,
-            borderRadius: 20,
+            borderRadius: 22,
             borderWidth: 2,
-            borderColor: selected ? '#2d5a3d' : C.border,
+            borderColor: selected ? '#2d5a3d' : `${C.text}30`,
             backgroundColor: selected ? '#2d5a3d' : 'transparent',
             marginRight: 8,
             marginBottom: 8,
@@ -98,7 +98,7 @@ export default function ThemePreview() {
           );
         })}
       </View>
-      <Text style={{ color: C.mutedText, fontSize: 14 }}>Choose your preferred appearance theme.</Text>
+      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>Choose your preferred appearance theme.</Text>
     </View>
   );
 }

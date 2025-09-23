@@ -37,10 +37,10 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       <Animated.View
         style={[
           {
-            borderColor: enabled ? C.text : C.border,
+            borderColor: enabled ? `${C.text}80` : `${C.text}30`,
             borderWidth: 2,
-            borderRadius: 20,
-            paddingHorizontal: 16,
+            borderRadius: 22,
+            paddingHorizontal: 18,
             paddingVertical: 12,
             flex: 0.5,
             opacity: enabled ? 1 : 0.5,
@@ -110,7 +110,7 @@ export default function DailyReminder() {
           onPress={() => enabled && setShowPicker(true)} 
         />
       </View>
-      <Text style={{ color: C.mutedText, fontSize: 14 }}>Schedule a local notification (24-hour).</Text>
+      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>Schedule a local notification (24-hour).</Text>
 
       {/* Bottom-sheet time picker */}
       <TimePickerSheet
