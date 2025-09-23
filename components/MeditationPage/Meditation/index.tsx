@@ -1,5 +1,5 @@
 import WheelControls from '@/components/MeditationPage/WheelControls';
-import MeditationWheel from '@/components/MeditationPage/MeditationWheel';
+import Wheel from '@/components/MeditationPage/Wheel';
 import { useAlerts } from '@/hooks/use-alerts';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
@@ -21,11 +21,11 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// Wheel definitions with rainbow colors (bottom to top: red → violet)
+// Wheel definitions with rainbow colors (bottom to top: yellow/red → blue/green → purple/indigo)
 const WHEELS = [
-  { key: "power",  seconds: 60, colors: ["#FF4444", "#CC0000"] as [string, string] }, // Red (bottom)
-  { key: "heart",   seconds: 60, colors: ["#44FF44", "#00AA00"] as [string, string] }, // Green (middle)  
-  { key: "wisdom", seconds: 60, colors: ["#8844FF", "#4400AA"] as [string, string] }, // Violet (top)
+  { key: "power",  seconds: 60, colors: ["yellow", "red"] as [string, string] }, // Yellow to Red (bottom)
+  { key: "heart",   seconds: 60, colors: ["blue", "green"] as [string, string] }, // Blue to Green (middle)  
+  { key: "wisdom", seconds: 60, colors: ["purple", "indigo"] as [string, string] }, // Purple to Indigo (top)
 ] as const;
 
 const Meditation = () => {
@@ -299,12 +299,12 @@ const Meditation = () => {
             return total;
           })();
 
-          const big = isActive;
+          const big = isActive && timer.started;
           
           return (
-            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 8 : 12 }}>
-              <MeditationWheel
-                size={big ? 200 : 140}
+            <View key={wheel.key} style={{ alignItems: "center", marginVertical: 8 }}>
+              <Wheel
+                size={big ? 200 : 120}
                 label={capitalize(wheel.key)}
                 remaining={remaining}
                 total={total}
