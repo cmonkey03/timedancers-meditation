@@ -1,8 +1,9 @@
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 
 interface Props {
   counting: boolean;
@@ -25,7 +26,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
   if (started) {
     // Timer is running - show pause/resume and cancel
     return (
-      <View style={styles.container}>
+      <Animated.View style={styles.container} entering={FadeInUp} exiting={FadeOutUp}>
         <View style={styles.horizontalSection}>
           <Button
             onPress={() => (counting ? onPress('pause') : onPress('counting'))}
@@ -42,13 +43,13 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
         <Text style={[styles.title, { color: C.text }]}>
           {counting ? 'Meditation in progress' : 'Meditation paused'}
         </Text>
-      </View>
+      </Animated.View>
     );
   }
 
   // Timer not started - show picker and start button
   return (
-    <View style={styles.container}>
+    <Animated.View style={styles.container} entering={FadeInUp} exiting={FadeOutUp}>
       <View style={styles.horizontalSection}>
         <View style={styles.buttonContainer}>
           <Button
@@ -66,20 +67,20 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
       <Text style={[styles.title, { color: C.text }]}>
         Select meditation time
       </Text>
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 16,
   },
   title: {
     fontSize: 16,
     fontWeight: '600',
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: 16,
   },
   horizontalSection: {
     flexDirection: 'row',
@@ -87,15 +88,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   spacer: {
-    width: 24,
+    width: 16,
   },
   buttonContainer: {
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonRow: {
-    marginBottom: 8,
-    minWidth: 200,
-    alignItems: 'center',
+    marginVertical: 8,
   },
 });
 

@@ -31,8 +31,8 @@ const WHEELS = [
 const Meditation = () => {
   useKeepAwakeSafe();
   const C = useThemeColors();
-  const [input, setInput] = useState('3');
-  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(3), []);
+  const [input, setInput] = useState('5');
+  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
   const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>(() => 'chime');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
@@ -302,7 +302,7 @@ const Meditation = () => {
           const big = isActive && timer.started;
           
           return (
-            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 20 }}>
+            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 16 }}>
               <Wheel
                 size={big ? 200 : 120}
                 label={capitalize(wheel.key)}
