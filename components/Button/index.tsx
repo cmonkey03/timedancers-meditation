@@ -1,39 +1,45 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { useThemeColors } from '@/hooks/use-theme';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 interface Props {
-  backgroundColor?: string;
   onPress(): void;
   text: string;
+  variant?: "primary" | "ghost";
 }
 
-const Button = ({ backgroundColor, onPress, text }: Props) => {
-  const C = useThemeColors();
-  const bg = backgroundColor ?? C.surface;
+const Button = ({ onPress, text, variant = "primary" }: Props) => {
   return (
-    <View>
-      <Pressable onPress={onPress}>
-        <View
-          style={{
-            backgroundColor: bg,
-            borderRadius: 10,
-            padding: 12,
-          }}
-        >
-          <Text
-            style={{
-              color: C.text,
-              fontWeight: 'bold',
-              textAlign: 'center',
-            }}
-          >
-            {text}
-          </Text>
-        </View>
-      </Pressable>
-    </View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.btn,
+        variant === "primary" ? styles.btnPrimary : styles.btnGhost,
+      ]}
+    >
+      <Text style={[
+        styles.btnText, 
+        variant === "ghost" && { color: "#1a5632" },
+      ]}>
+        {text}
+      </Text>
+    </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  btn: { 
+    minWidth: 140, 
+    paddingVertical: 12, 
+    paddingHorizontal: 20, 
+    borderRadius: 14, 
+    borderWidth: 1, 
+    borderColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnPrimary: { backgroundColor: "#1a5632" },
+  btnGhost: { backgroundColor: "#ecf2ef", borderColor: "#1a5632" },
+  btnText: { color: "#fff", fontWeight: "700", textAlign: "center", fontSize: 16 },
+});
 
 export default Button;

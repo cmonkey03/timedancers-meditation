@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, Platform, StyleSheet, ColorSchemeName } from 'react-native';
+import { Modal, View, TouchableOpacity, Platform, StyleSheet, ColorSchemeName } from 'react-native';
 import DateTimePicker, { AndroidNativeProps, IOSNativeProps } from '@react-native-community/datetimepicker';
+import Button from '@/components/Button';
+import { useThemeColors } from '@/hooks/use-theme';
 import * as Haptics from 'expo-haptics';
 
-const GREEN = '#1a5632';
 const BG = 'rgba(0,0,0,0.3)';
 
 export default function TimePickerSheet({
@@ -19,6 +20,7 @@ export default function TimePickerSheet({
   onCancel: () => void;
   colorScheme?: ColorSchemeName;
 }) {
+  const C = useThemeColors();
   const initial = useMemo(() => {
     const parts = (time || '').split(':');
     const h = parseInt(parts[0] || '8', 10);
@@ -51,23 +53,28 @@ export default function TimePickerSheet({
     <Modal transparent visible={visible} animationType="fade" onRequestClose={onCancel}>
       <View style={styles.overlay}>
         <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={onCancel} />
-        <View style={[styles.sheet, Platform.OS === 'ios' && (colorScheme === 'dark' ? styles.sheetDark : undefined)]}>
-          <View style={[styles.toolbar, Platform.OS === 'ios' && (colorScheme === 'dark' ? styles.toolbarDark : undefined)]}>
-            <TouchableOpacity onPress={onCancel} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-              <Text style={[styles.btn, { color: '#6b6f6c' }]}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={confirm} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-              <Text style={[styles.btn, { color: GREEN }]}>Done</Text>
-            </TouchableOpacity>
+        <View style={[styles.sheet, { backgroundColor: C.surface }]}>
+          <View style={[styles.toolbar, { borderBottomColor: C.border }]}>
+            <Button
+              onPress={onCancel}
+              text="Cancel"
+              variant="ghost"
+            />
+            <Button
+              onPress={confirm}
+              text="Done"
+              variant="primary"
+            />
           </View>
 
-          <View style={{ paddingHorizontal: 8, paddingBottom: 12 }}>
+          <View style={styles.pickerContainer}>
             <DateTimePicker
               {...commonProps}
               value={date}
               display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              // Keep styling minimal for maximum compatibility across versions
               themeVariant={colorScheme === 'dark' ? 'dark' : 'light'}
+              style={styles.timePicker}
+              textColor="#1a5632"
             />
           </View>
         </View>
@@ -77,27 +84,34 @@ export default function TimePickerSheet({
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: BG, justifyContent: 'flex-end' },
+  overlay: { 
+    flex: 1, 
+    backgroundColor: BG, 
+    justifyContent: 'flex-end' 
+  },
   sheet: {
-    backgroundColor: '#fff',
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
     overflow: 'hidden',
   },
-  sheetDark: {
-    backgroundColor: '#1b1b1b',
-  },
   toolbar: {
     paddingHorizontal: 16,
-    height: 48,
+    paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#e6e6e6',
+    gap: 12,
   },
-  toolbarDark: {
-    borderBottomColor: '#333',
+  pickerContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+    alignItems: 'center',
   },
-  btn: { fontSize: 16, fontWeight: '700' },
+  timePicker: {
+    width: '100%',
+    height: Platform.OS === 'ios' ? 200 : 60,
+    fontWeight: '700',
+    fontSize: 16,
+  },
 });

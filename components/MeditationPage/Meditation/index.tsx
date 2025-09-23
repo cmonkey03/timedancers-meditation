@@ -1,15 +1,15 @@
 import WheelControls from '@/components/MeditationPage/WheelControls';
-import WheelTower from '@/components/MeditationPage/WheelTower';
+import MeditationWheel from '@/components/MeditationPage/MeditationWheel';
 import { useAlerts } from '@/hooks/use-alerts';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
-import displayTime from '@/utils/display-time';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAudioModeAsync } from 'expo-audio';
+import * as Haptics from 'expo-haptics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Text, View } from 'react-native';
 
@@ -20,6 +20,13 @@ function capitalize(s: string): string {
   if (!s) return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+// Wheel definitions with rainbow colors (bottom to top: red → violet)
+const WHEELS = [
+  { key: "power",  seconds: 60, colors: ["#FF4444", "#CC0000"] as [string, string] }, // Red (bottom)
+  { key: "heart",   seconds: 60, colors: ["#44FF44", "#00AA00"] as [string, string] }, // Green (middle)  
+  { key: "wisdom", seconds: 60, colors: ["#8844FF", "#4400AA"] as [string, string] }, // Violet (top)
+] as const;
 
 const Meditation = () => {
   useKeepAwakeSafe();
@@ -239,12 +246,22 @@ const Meditation = () => {
     };
   }, []);
 
+  // Haptic feedback on wheel change
+  const prevIndex = useRef(timer.now.currentIndex);
+  useEffect(() => {
+    if (timer.now.currentIndex !== prevIndex.current && !timer.now.done) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      prevIndex.current = timer.now.currentIndex;
+    }
+  }, [timer.now.currentIndex, timer.now.done]);
+
   // Reset phase index when timer resets
   useEffect(() => {
     if (!timer.started) {
       startChimeDoneRef.current = false;
       completionChimeDoneRef.current = false;
       setShowCompleted(false);
+      prevIndex.current = 0;
     }
   }, [timer.started]);
 
@@ -260,38 +277,49 @@ const Meditation = () => {
       }}
     >
       {(() => {
-        const getPhaseRemainingMs = (i: number): number => {
-          const phaseMs = (timer.phases[i]?.seconds ?? 0) * 1000;
-          if (!timer.started) return phaseMs; // not started yet
-          if (timer.now.done) return 0;
-          if (timer.now.currentIndex === i) return timer.now.phaseRemainingMs;
-          if (timer.now.currentIndex > i) return 0;
-          return phaseMs;
-        };
+        // Create wheel cards in correct order (wisdom at top, power at bottom)
+        const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
+        
+        return wheelOrder.map((i) => {
+          const wheel = WHEELS[i];
+          const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0;
+          const justReleased = 
+            i === prevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;
+          const isDone = i < timer.now.currentIndex || timer.now.done;
 
-        const t1 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(0)));
-        const t2 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(1)));
-        const t3 = displayTime(Timer.getRemainingSeconds(getPhaseRemainingMs(2)));
+          const wheelState: "idle" | "active" | "releasing" | "done" =
+            isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
 
-        return (
-          <WheelTower
-            large={true}
-            text1={t1}
-            text2={t2}
-            text3={t3}
-            label1={capitalize(timer.phases[0]?.key ?? '')}
-            label2={capitalize(timer.phases[1]?.key ?? '')}
-            label3={capitalize(timer.phases[2]?.key ?? '')}
-            past1={timer.now.currentIndex > 0 || timer.now.done}
-            past2={timer.now.currentIndex > 1 || timer.now.done}
-            past3={timer.now.currentIndex > 2 || timer.now.done}
-          />
-        );
+          const total = timer.phases[i]?.seconds ?? wheel.seconds;
+          const remaining = (() => {
+            if (i === timer.now.currentIndex) {
+              return Timer.getRemainingSeconds(timer.now.phaseRemainingMs);
+            }
+            if (isDone) return 0;
+            return total;
+          })();
+
+          const big = isActive;
+          
+          return (
+            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 8 : 12 }}>
+              <MeditationWheel
+                size={big ? 200 : 140}
+                label={capitalize(wheel.key)}
+                remaining={remaining}
+                total={total}
+                state={wheelState}
+                colors={wheel.colors}
+              />
+            </View>
+          );
+        });
       })()}
-      {/* Per-phase overrides removed: using equal-division only */}
+      
       {showCompleted && (
         <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
       )}
+      
       <WheelControls
         counting={timer.running}
         handleInput={handleInput}

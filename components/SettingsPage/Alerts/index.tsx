@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import { useAlerts } from '@/hooks/use-alerts';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
@@ -67,12 +68,13 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
       <View style={s.row}>{buttons}</View>
       <Text style={{ color: C.mutedText, marginBottom: 8 }}>Choose how the app alerts you throughout your session.</Text>
 
-      <TouchableOpacity
-        onPress={() => playStartAlert()}
-        style={[s.testBtn, { backgroundColor: C.surface, borderColor: C.border }]}
-      >
-        <Text style={{ color: C.text, fontWeight: '700' }}>Test alert</Text>
-      </TouchableOpacity>
+      <View style={{ alignSelf: 'flex-start', marginTop: 4, marginBottom: 12 }}>
+        <Button
+          onPress={() => playStartAlert()}
+          text="Test alert"
+          variant="ghost"
+        />
+      </View>
 
       {/* Play alerts in background toggle */}
       <View style={[s.bgToggleRow, { borderColor: C.border }]}>
@@ -113,14 +115,5 @@ const s = StyleSheet.create({
     borderWidth: 1,
     marginRight: 8,
     marginBottom: 8,
-  },
-  testBtn: {
-    alignSelf: 'flex-start',
-    borderWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 4,
-    marginBottom: 12,
   },
 });

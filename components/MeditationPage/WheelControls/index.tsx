@@ -1,6 +1,7 @@
-import { Text, TextInput, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
+import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
 
 interface Props {
@@ -21,61 +22,80 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
     if (!counting && started) setButtonText('Resume');
   }, [counting, started]);
 
+  if (started) {
+    // Timer is running - show pause/resume and cancel
+    return (
+      <View style={styles.container}>
+        <View style={styles.buttonRow}>
+          <Button
+            onPress={() => (counting ? onPress('pause') : onPress('counting'))}
+            text={buttonText}
+            variant="primary"
+          />
+        </View>
+        <View style={styles.buttonRow}>
+          <Button 
+            onPress={() => onPress('cancel')} 
+            text="Cancel" 
+            variant="ghost" 
+          />
+        </View>
+      </View>
+    );
+  }
+
+  // Timer not started - show picker and start button
   return (
-    <>
-      <View style={{ flexDirection: 'row' }}>
-        {!started && (
-          <>
-            <View>
-              {!started && (
-                <TextInput
-                  keyboardType="numeric"
-                  placeholder="Minutes"
-                  placeholderTextColor={C.mutedText}
-                  onChangeText={handleInput}
-                  value={input}
-                  maxLength={3}
-                  textAlign={'center'}
-                  style={{
-                    fontSize: 16,
-                    color: C.text,
-                    fontWeight: 'bold',
-                    borderWidth: 1,
-                    maxWidth: 56,
-                    padding: 10,
-                    borderColor: C.border,
-                  }}
-                />
-              )}
-            </View>
-            <View style={{ width: 32 }} />
-          </>
-        )}
-        <Button
-          backgroundColor="#e4ede7"
-          onPress={() => (counting ? onPress('pause') : onPress('counting'))}
-          text={buttonText}
+    <View style={styles.container}>
+      <Text style={[styles.title, { color: C.text }]}>
+        Select meditation time
+      </Text>
+      
+      <View style={styles.horizontalSection}>
+        <TimerWheelPicker
+          value={input}
+          onValueChange={handleInput}
         />
+        <View style={styles.spacer} />
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={() => onPress('counting')}
+            text="Start"
+            variant="primary"
+          />
+        </View>
       </View>
-      <View style={{ height: 16 }} />
-      <View>
-        {started ? (
-          <Button backgroundColor="#e4ede7" onPress={() => onPress('cancel')} text="Cancel" />
-        ) : (
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 20,
-              textAlign: 'center',
-              color: C.text,
-            }}
-          >
-            Enter time in minutes
-          </Text>
-        )}
-      </View>
-    </>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  horizontalSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spacer: {
+    width: 24,
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+  },
+  buttonRow: {
+    marginBottom: 8,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+});
 
 export default WheelControls;
