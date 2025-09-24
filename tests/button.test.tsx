@@ -1,6 +1,7 @@
 import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, fireEvent } from '@testing-library/react-native';
+import { View } from 'react-native';
 import Button from '@/components/Button';
 
 // Mock the theme hook
@@ -9,9 +10,14 @@ vi.mock('@/hooks/use-theme', () => ({
   useThemeColors: mockUseThemeColors,
 }));
 
+// Mock the fonts hook
+const mockUseCustomFonts = vi.fn();
+vi.mock('@/hooks/use-fonts', () => ({
+  useCustomFonts: mockUseCustomFonts,
+}));
+
 // Mock react-native-reanimated
 vi.mock('react-native-reanimated', () => {
-  const View = require('react-native').View;
   return {
     default: {
       View,
@@ -29,8 +35,18 @@ describe('components/Button', () => {
     background: '#ffffff',
   };
 
+  const mockFonts = {
+    fontsLoaded: true,
+    fonts: {
+      inter: {
+        semiBold: 'Inter_600SemiBold',
+      },
+    },
+  };
+
   beforeEach(() => {
     mockUseThemeColors.mockReturnValue(mockColors);
+    mockUseCustomFonts.mockReturnValue(mockFonts);
   });
 
   afterEach(() => {
@@ -177,5 +193,34 @@ describe('components/Button', () => {
     
     fireEvent.press(button);
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles font loading states correctly', () => {
+    const onPress = vi.fn();
+    
+    // Test when fonts are not loaded
+    mockUseCustomFonts.mockReturnValue({
+      fontsLoaded: false,
+      fonts: {},
+    });
+
+    const { getByText, rerender } = render(
+      <Button onPress={onPress} text="Font Test Button" />
+    );
+
+    expect(getByText('Font Test Button')).toBeTruthy();
+
+    // Test when fonts are loaded
+    mockUseCustomFonts.mockReturnValue({
+      fontsLoaded: true,
+      fonts: {
+        inter: {
+          semiBold: 'Inter_600SemiBold',
+        },
+      },
+    });
+
+    rerender(<Button onPress={onPress} text="Font Test Button" />);
+    expect(getByText('Font Test Button')).toBeTruthy();
   });
 });

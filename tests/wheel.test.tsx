@@ -48,6 +48,18 @@ vi.mock('@/hooks/use-theme', () => ({
   })),
 }));
 
+// Mock the fonts hook
+vi.mock('@/hooks/use-fonts', () => ({
+  useCustomFonts: vi.fn(() => ({
+    fontsLoaded: true,
+    fonts: {
+      inter: {
+        semiBold: 'Inter_600SemiBold',
+      },
+    },
+  })),
+}));
+
 // Component imported at top
 
 describe('components/Wheel', () => {
