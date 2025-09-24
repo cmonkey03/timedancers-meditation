@@ -110,7 +110,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
       >
         <Animated.View
           style={[
-            s.pill,
+            styles.pill,
             {
               borderColor: selected ? '#2d5a3d' : `${C.text}30`,
               backgroundColor: selected ? '#2d5a3d' : 'transparent',
@@ -133,10 +133,10 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
   const buttons = MODES.map((m) => <PillButton key={m.key} m={m} />);
 
   return (
-    <View style={[s.card, { backgroundColor: C.surface }]}
+    <View style={[styles.card, { backgroundColor: C.surface }]}
     >
       <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>Alerts</Text>
-      <View style={s.row}>{buttons}</View>
+      <View style={styles.row}>{buttons}</View>
       <Text style={{ color: C.text, opacity: 0.75, marginBottom: 8, fontSize: 14 }}>Choose how the app alerts you throughout your session.</Text>
 
       <View style={{ alignSelf: 'flex-start', marginTop: 4, marginBottom: 12 }}>
@@ -144,7 +144,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
       </View>
 
       {/* Play alerts in background toggle */}
-      <View style={[s.bgToggleRow, { borderColor: C.border }]}>
+      <View style={[styles.bgToggleRow, { borderColor: C.border }]}>
         <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>Play alerts in background</Text>
         <Switch value={allowBackgroundAlerts} onValueChange={onToggleAllowBackgroundAlerts} />
       </View>
@@ -156,7 +156,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
   );
 }
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
     padding: 12,
