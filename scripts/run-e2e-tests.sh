@@ -207,7 +207,6 @@ else
     SUITE_NAMES=("Onboarding" "Meditation" "Settings")
     SUITE_FILES=("e2e/onboarding.e2e.ts" "e2e/meditation.e2e.ts" "e2e/settings.e2e.ts")
     
-    TOTAL_SUITES=${#SUITE_NAMES[@]}
     
     for i in "${!SUITE_NAMES[@]}"; do
         suite_name="${SUITE_NAMES[$i]}"
