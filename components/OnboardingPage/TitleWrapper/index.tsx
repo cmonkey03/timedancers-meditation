@@ -10,11 +10,13 @@ const TitleWrapper = ({ color, text }: Props) => (
   <Text
     style={{
       color,
-      fontSize: 20,
-      fontWeight: 'bold',
-      paddingLeft: 28,
-      paddingRight: 28,
+      fontSize: 24,
+      fontWeight: '700',
+      paddingLeft: 32,
+      paddingRight: 32,
       textAlign: 'center',
+      letterSpacing: 0.5,
+      lineHeight: 32,
     }}
   >
     {text}

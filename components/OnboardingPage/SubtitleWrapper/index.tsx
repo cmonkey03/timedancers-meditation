@@ -8,10 +8,14 @@ interface Props {
 const SubtitleWrapper = ({ color, text }: Props) => (
   <Text
     style={{
-      color,
-      fontSize: 14,
-      padding: 28,
+      color: color ? `${color}BF` : undefined, // 75% opacity for better readability
+      fontSize: 16,
+      fontWeight: '400',
+      paddingHorizontal: 32,
+      paddingVertical: 16,
       textAlign: 'center',
+      lineHeight: 24,
+      letterSpacing: 0.2,
     }}
   >
     {text}
