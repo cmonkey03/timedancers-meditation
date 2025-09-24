@@ -33,6 +33,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={!enabled}
+      testID="daily-reminder-time-button"
     >
       <Animated.View
         style={[
@@ -102,6 +103,7 @@ export default function DailyReminder() {
               if (v && t !== res.time) setTime(res.time);
             } catch {}
           }}
+          testID="daily-reminder-switch"
         />
         <View style={{ width: 16 }} />
         <TimeButton 

@@ -43,7 +43,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: C.background }}>
+    <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-settings">
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: insets.bottom + 20 }}
@@ -65,6 +65,7 @@ export default function SettingsScreen() {
           onPress={resetDefaults}
           text="Reset to defaults"
           variant="ghost"
+          testID="reset-defaults-button"
         />
       </View>
       </ScrollView>

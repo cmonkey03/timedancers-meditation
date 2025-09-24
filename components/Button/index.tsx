@@ -12,9 +12,10 @@ interface Props {
   onPress(): void;
   text: string;
   variant?: "primary" | "ghost";
+  testID?: string;
 }
 
-const Button = ({ onPress, text, variant = "primary" }: Props) => {
+const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
   const C = useThemeColors();
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
@@ -39,6 +40,7 @@ const Button = ({ onPress, text, variant = "primary" }: Props) => {
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      testID={testID}
     >
       <Animated.View
         style={[

@@ -6,17 +6,34 @@
  * - Trigger appropriate haptic feedback via expo-haptics
  * - Provide simple APIs to fire alerts for start and completion
  */
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Platform, Vibration } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
 import { AlertMode } from '@/hooks/use-notifications';
+import { getChimeVolume } from '@/utils/settings';
 
 export function useAlerts(alertMode: AlertMode) {
   const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
   const chime2 = useAudioPlayer(require('@/assets/sounds/chime2.mp3'));
+  const [volume, setVolume] = useState(0.7);
 
   const delay = useCallback((ms: number) => new Promise((res) => setTimeout(res, ms)), []);
+
+  // Load volume setting on mount
+  useEffect(() => {
+    getChimeVolume().then(setVolume);
+  }, []);
+
+  // Update audio player volumes when volume changes
+  useEffect(() => {
+    if (chime1) {
+      chime1.volume = volume;
+    }
+    if (chime2) {
+      chime2.volume = volume;
+    }
+  }, [volume, chime1, chime2]);
 
   const strongImpact = useCallback(async () => {
     try {
@@ -81,5 +98,10 @@ export function useAlerts(alertMode: AlertMode) {
     }
   }, [alertMode, playChime, delay]);
 
-  return { playStartAlert, playCompletionAlert };
+  const updateVolume = useCallback(async (newVolume: number) => {
+    setVolume(newVolume);
+    // Volume will be applied to audio players via the useEffect above
+  }, []);
+
+  return { playStartAlert, playCompletionAlert, volume, updateVolume };
 }
