@@ -1,0 +1,49 @@
+name: Basic PR Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # Simple checks - Expo GitHub integration handles the heavy lifting
+  basic-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.4'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Run Linting
+        run: npm run lint
+
+      - name: PR Summary
+        run: |
+          echo "## 📋 Pull Request Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Unit Tests**: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Linting**: Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Expo GitHub Integration Status:**" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔍 Expo will run additional checks automatically" >> $GITHUB_STEP_SUMMARY
+          echo "- 📱 Build status will appear in PR checks" >> $GITHUB_STEP_SUMMARY
+          echo "- 🚀 Auto-deployment configured for main branch" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**TimeDancers Meditation App Features:**" >> $GITHUB_STEP_SUMMARY
+          echo "- 🧘‍♀️ Magical chakra orb meditation timer" >> $GITHUB_STEP_SUMMARY
+          echo "- ⏱️ Phase-based timing with drift prevention" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔊 Volume controls for meditation chimes" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎨 Polished UI with smooth animations" >> $GITHUB_STEP_SUMMARY

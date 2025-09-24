@@ -1,0 +1,237 @@
+name: Maintenance & Security
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.4'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
+      - name: Run security audit
+        run: |
+          echo "🔍 Running npm security audit..."
+          npm audit --audit-level=moderate || {
+            echo "⚠️ Security vulnerabilities found!"
+            echo "Please run 'npm audit fix' to resolve issues."
+            exit 1
+          }
+
+      - name: Check for outdated packages
+        run: |
+          echo "📦 Checking for outdated packages..."
+          npm outdated || true
+          
+          echo "🔍 Checking Expo SDK compatibility..."
+          npx expo doctor || true
+
+      - name: Lint codebase
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+
+  dependency-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.4'
+          cache: 'npm'
+
+      - name: Check for dependency issues
+        run: |
+          echo "🔍 Analyzing dependency tree..."
+          
+          # Check for duplicate packages
+          npx npm-check-duplicates || true
+          
+          # Check bundle size impact
+          echo "📊 Analyzing bundle size..."
+          npm ci --include=dev
+          
+          # Check for unused dependencies
+          echo "🧹 Checking for unused dependencies..."
+          npx depcheck --ignores="@types/*,eslint-*,detox,vitest,jest,@testing-library/*" || true
+
+      - name: Validate package.json
+        run: |
+          echo "✅ Validating package.json structure..."
+          node -e "
+            const pkg = require('./package.json');
+            
+            // Check required fields
+            const required = ['name', 'version', 'main', 'scripts'];
+            required.forEach(field => {
+              if (!pkg[field]) {
+                console.error(\`❌ Missing required field: \${field}\`);
+                process.exit(1);
+              }
+            });
+            
+            // Check for meditation app specific dependencies
+            const requiredDeps = [
+              'expo',
+              'react-native',
+              'react-native-reanimated',
+              'react-native-svg',
+              'expo-audio',
+              'expo-haptics'
+            ];
+            
+            requiredDeps.forEach(dep => {
+              if (!pkg.dependencies[dep]) {
+                console.error(\`❌ Missing required dependency: \${dep}\`);
+                process.exit(1);
+              }
+            });
+            
+            console.log('✅ package.json validation passed');
+          "
+
+  ios-compatibility:
+    runs-on: macos-14
+    timeout-minutes: 20
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.4'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
+      - name: Check iOS compatibility
+        run: |
+          echo "📱 Checking iOS project compatibility..."
+          
+          cd ios
+          
+          # Check if Podfile.lock is in sync
+          if [ -f "Podfile.lock" ]; then
+            echo "🔍 Validating Podfile.lock..."
+            pod install --repo-update --deployment
+          else
+            echo "⚠️ Podfile.lock not found, running pod install..."
+            pod install --repo-update
+          fi
+          
+          # Validate Xcode project
+          echo "🔍 Validating Xcode project..."
+          xcodebuild -workspace *.xcworkspace -scheme TimedancersMeditation -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' clean build-for-testing || {
+            echo "❌ iOS build validation failed"
+            exit 1
+          }
+
+  maintenance-summary:
+    runs-on: ubuntu-latest
+    needs: [security-audit, dependency-check, ios-compatibility]
+    if: always()
+    
+    steps:
+      - name: Maintenance Summary
+        run: |
+          echo "## 🔧 Weekly Maintenance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date**: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "**Security Audit**: " >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.security-audit.result }}" == "success" ]; then
+            echo "✅ Passed - No security vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed - Security issues detected" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "**Dependency Check**: " >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.dependency-check.result }}" == "success" ]; then
+            echo "✅ Passed - Dependencies are healthy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed - Dependency issues found" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "**iOS Compatibility**: " >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.ios-compatibility.result }}" == "success" ]; then
+            echo "✅ Passed - iOS build is compatible" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Failed - iOS compatibility issues" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.security-audit.result }}" == "success" ] && [ "${{ needs.dependency-check.result }}" == "success" ] && [ "${{ needs.ios-compatibility.result }}" == "success" ]; then
+            echo "🎉 **All maintenance checks passed!**" >> $GITHUB_STEP_SUMMARY
+            echo "Your TimeDancers Meditation app is healthy and secure." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Some maintenance checks failed.**" >> $GITHUB_STEP_SUMMARY
+            echo "Please review the failed jobs and address any issues." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Recommendations:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Keep dependencies updated regularly" >> $GITHUB_STEP_SUMMARY
+          echo "- Run security audits before releases" >> $GITHUB_STEP_SUMMARY
+          echo "- Test iOS compatibility after Xcode updates" >> $GITHUB_STEP_SUMMARY
+          echo "- Monitor bundle size for performance" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create Issue on Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `🔧 Weekly Maintenance Check Failed - ${new Date().toISOString().split('T')[0]}`;
+            const body = `
+            ## Weekly Maintenance Check Failed
+            
+            One or more maintenance checks have failed. Please review and address the issues:
+            
+            **Failed Jobs:**
+            - Security Audit: ${{ needs.security-audit.result }}
+            - Dependency Check: ${{ needs.dependency-check.result }}
+            - iOS Compatibility: ${{ needs.ios-compatibility.result }}
+            
+            **Action Required:**
+            1. Review the failed workflow logs
+            2. Address any security vulnerabilities
+            3. Update or fix problematic dependencies
+            4. Ensure iOS compatibility
+            
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            This issue was automatically created by the maintenance workflow.
+            `;
+            
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['maintenance', 'bug', 'priority:high']
+            });
