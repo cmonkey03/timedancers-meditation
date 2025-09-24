@@ -27,6 +27,7 @@ interface MeditationWheelProps {
   total: number;
   state: WheelState;
   colors: [string, string];
+  displayText?: string; // Optional custom text to display instead of timer
 }
 
 // Simple wheel props (for onboarding/tower)
@@ -70,6 +71,7 @@ const Wheel = (props: Props) => {
     total,
     state,
     colors,
+    displayText,
   } = meditationProps;
 
   const stroke = 10;
@@ -320,7 +322,9 @@ const Wheel = (props: Props) => {
         </Animated.View>
 
         {/* Static text - no breathing! */}
-        <Text style={styles.time}>{state === "done" ? "✓" : `${mm}:${ss}` }</Text>
+        <Text style={styles.time}>
+          {displayText || (state === "done" ? "✓" : `${mm}:${ss}`)}
+        </Text>
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import Wheel from '@/components/MeditationPage/Wheel';
-import WheelTower from '@/components/MeditationPage/WheelTower';
+import AnimatedWheel from './AnimatedWheel';
 import { useThemeColors } from '@/hooks/use-theme';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -84,7 +84,35 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <WheelTower large={false} text1="Power" text2="Heart" text3="Wisdom" />
+              <View style={{ alignItems: 'center', gap: 12 }}>
+                <Wheel 
+                  size={120}
+                  label="Wisdom"
+                  remaining={300}
+                  total={300}
+                  state="idle"
+                  colors={['purple', 'indigo']}
+                  displayText="Wisdom"
+                />
+                <Wheel 
+                  size={120}
+                  label="Heart"
+                  remaining={300}
+                  total={300}
+                  state="idle"
+                  colors={['blue', 'green']}
+                  displayText="Heart"
+                />
+                <Wheel 
+                  size={120}
+                  label="Power"
+                  remaining={300}
+                  total={300}
+                  state="idle"
+                  colors={['yellow', 'red']}
+                  displayText="Power"
+                />
+              </View>
             </ImageWrapper>
           ),
           title: <TitleWrapper color={C.text} text="We begin by turning the three wheels" />,
@@ -94,7 +122,13 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel backgroundColor={['yellow', 'red']} text={''} />
+              <AnimatedWheel 
+                size={180}
+                label="Power"
+                startTime={180}
+                total={180}
+                colors={['yellow', 'red']}
+              />
             </ImageWrapper>
           ),
           title: <TitleWrapper text="Wheel of Power" color={C.text} />,
@@ -104,7 +138,13 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel backgroundColor={['blue', 'green']} text={''} />
+              <AnimatedWheel 
+                size={180}
+                label="Heart"
+                startTime={180}
+                total={180}
+                colors={['blue', 'green']}
+              />
             </ImageWrapper>
           ),
           title: <TitleWrapper text="Wheel of Heart" color={C.text} />,
@@ -114,7 +154,13 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <Wheel backgroundColor={['purple', 'indigo']} text={''} />
+              <AnimatedWheel 
+                size={180}
+                label="Wisdom"
+                startTime={180}
+                total={180}
+                colors={['purple', 'indigo']}
+              />
             </ImageWrapper>
           ),
           title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
