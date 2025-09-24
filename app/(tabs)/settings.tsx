@@ -1,9 +1,10 @@
 import { DailyReminder, ThemePreview } from '@/components/SettingsPage';
 import Alerts from '@/components/SettingsPage/Alerts';
+import Button from '@/components/Button';
 import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -59,19 +60,13 @@ export default function SettingsScreen() {
       <DailyReminder />
 
       {/* Reset to defaults */}
-      <TouchableOpacity
-        onPress={resetDefaults}
-        style={{
-          marginTop: 24,
-          alignSelf: 'flex-start',
-          backgroundColor: C.surface,
-          paddingHorizontal: 12,
-          paddingVertical: 10,
-          borderRadius: 8,
-        }}
-      >
-        <Text style={{ color: C.text, fontWeight: '700' }}>Reset to defaults</Text>
-      </TouchableOpacity>
+      <View style={{ marginTop: 8, alignSelf: 'flex-start' }}>
+        <Button
+          onPress={resetDefaults}
+          text="Reset to defaults"
+          variant="ghost"
+        />
+      </View>
       </ScrollView>
     </View>
   );
