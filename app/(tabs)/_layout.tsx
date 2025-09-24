@@ -4,6 +4,7 @@ import { withLayoutContext } from 'expo-router';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeColors } from '@/hooks/use-theme';
+import { useCustomFonts } from '@/hooks/use-fonts';
 
 // Create a Tabs component backed by Material Top Tabs (native swipe)
 const { Navigator } = createMaterialTopTabNavigator();
@@ -12,6 +13,7 @@ export const Tabs = withLayoutContext(Navigator);
 export default function Layout() {
   const insets = useSafeAreaInsets();
   const C = useThemeColors();
+  const { fontsLoaded, fonts } = useCustomFonts();
   const bottomPad = Math.min(insets.bottom, 8); // clamp for compact spacing
   return (
     <Tabs
@@ -37,7 +39,13 @@ export default function Layout() {
           paddingBottom: bottomPad + 2,
         },
         tabBarItemStyle: { height: 58, paddingVertical: 0 },
-        tabBarLabelStyle: { fontSize: 12, lineHeight: 16, fontWeight: '600', marginTop: 0 },
+        tabBarLabelStyle: { 
+          fontSize: 12, 
+          lineHeight: 16, 
+          fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+          fontWeight: fontsLoaded ? undefined : '600', // fallback for when fonts aren't loaded
+          marginTop: 0 
+        },
       }}
     >
         <Tabs.Screen

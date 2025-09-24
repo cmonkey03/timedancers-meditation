@@ -37,7 +37,23 @@ export function useAlerts(alertMode: AlertMode) {
     getChimeVolume().then(setVolume);
   }, []);
 
-  // Update audio player volumes when volume changes or alert mode changes
+  // Listen for volume changes in storage (check every 2 seconds to reduce overhead)
+  useEffect(() => {
+    const checkVolumeChanges = setInterval(async () => {
+      try {
+        const currentVolume = await getChimeVolume();
+        if (Math.abs(currentVolume - volume) > 0.01) { // Only update if significantly different
+          setVolume(currentVolume);
+        }
+      } catch {
+        // Silently handle storage errors
+      }
+    }, 2000); // Check every 2 seconds
+
+    return () => clearInterval(checkVolumeChanges);
+  }, [volume]);
+
+  // Update audio player volumes when volume changes or players become available
   useEffect(() => {
     if (chime1) {
       chime1.volume = volume;
@@ -45,7 +61,7 @@ export function useAlerts(alertMode: AlertMode) {
     if (chime2) {
       chime2.volume = volume;
     }
-  }, [volume, chime1, chime2, alertMode]);
+  }, [volume, chime1, chime2]);
 
   const strongImpact = useCallback(async () => {
     try {
@@ -71,11 +87,17 @@ export function useAlerts(alertMode: AlertMode) {
       try {
         const p = which === 1 ? chime1 : chime2;
         if (!p) return;
-        // Ensure volume is set right before playing
-        p.volume = volume;
+        
+        // Stop any current playback
+        await p.pause();
         await p.seekTo(0);
+        
+        // Set volume and play
+        p.volume = volume;
         await p.play();
-      } catch {}
+      } catch {
+        // Silently handle errors
+      }
     },
     [chime1, chime2, volume]
   );
@@ -116,6 +138,10 @@ export function useAlerts(alertMode: AlertMode) {
 
   const updateVolume = useCallback(async (newVolume: number) => {
     setVolume(newVolume);
+    // Persist to storage
+    try {
+      await AsyncStorage.setItem('chimeVolume', newVolume.toString());
+    } catch {}
     // Volume will be applied to audio players via the useEffect above
   }, []);
 

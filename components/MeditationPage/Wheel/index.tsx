@@ -1,4 +1,5 @@
 import { useThemeColors } from '@/hooks/use-theme';
+import { useCustomFonts } from '@/hooks/use-fonts';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -41,6 +42,7 @@ type Props = MeditationWheelProps | SimpleWheelProps;
 
 const Wheel = (props: Props) => {
   const C = useThemeColors();
+  const { fontsLoaded, fonts } = useCustomFonts();
   
   // Determine if this is simple or meditation wheel
   const isSimple = 'backgroundColor' in props;
@@ -322,7 +324,10 @@ const Wheel = (props: Props) => {
         </Animated.View>
 
         {/* Static text - no breathing! */}
-        <Text style={styles.time}>
+        <Text style={[
+          styles.time,
+          fontsLoaded && { fontFamily: fonts.inter.semiBold }
+        ]}>
           {displayText || (state === "done" ? "✓" : `${mm}:${ss}`)}
         </Text>
       </View>

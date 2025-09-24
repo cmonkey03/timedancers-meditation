@@ -9,7 +9,6 @@ import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
-import WelcomeTitle from './WelcomeTitle';
 import AnimatedWelcomeText from './AnimatedWelcomeText';
 
 type Props = {
@@ -39,6 +38,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           borderRadius: 20,
           backgroundColor: 'transparent',
           borderWidth: 0,
+          marginHorizontal: 8,
+          marginVertical: 4,
         },
         props?.style
       ]}
@@ -66,6 +67,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: 'transparent',
           borderWidth: 1,
           borderColor: `${C.text}30`, // 19% opacity for subtle border
+          marginHorizontal: 8,
+          marginVertical: 4,
         },
         props?.style
       ]}
@@ -96,6 +99,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           shadowOpacity: 0.3,
           shadowRadius: 6,
           elevation: 4,
+          marginHorizontal: 8,
+          marginVertical: 4,
         },
         props?.style
       ]}
@@ -143,7 +148,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         SkipButtonComponent={SkipButton}
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
-        imageContainerStyles={{ paddingBottom: 0 }}
+        imageContainerStyles={{ paddingBottom: 20 }}
         pages={[
         {
           backgroundColor: C.background,

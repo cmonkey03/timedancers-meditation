@@ -1,7 +1,6 @@
 import { useAlerts } from '@/hooks/use-alerts';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
-import { setChimeVolume } from '@/utils/settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Switch, Text, View, Pressable } from 'react-native';
@@ -91,7 +90,18 @@ const VolumeSlider = ({
     }
   }, [volume, sliderWidth, knobSize, translateX, isDragging]);
 
+  const [localVolume, setLocalVolume] = useState(volume);
+  
+  // Update local volume when prop changes
+  React.useEffect(() => {
+    setLocalVolume(volume);
+  }, [volume]);
+  
   const updateVolume = (newVolume: number) => {
+    setLocalVolume(newVolume);
+  };
+  
+  const commitVolume = (newVolume: number) => {
     onVolumeChange(newVolume);
   };
 
@@ -113,6 +123,8 @@ const VolumeSlider = ({
     })
     .onEnd(() => {
       isDragging.value = false;
+      const finalVolume = translateX.value / (sliderWidth - knobSize);
+      runOnJS(commitVolume)(finalVolume);
     });
 
   const tapGesture = Gesture.Tap()
@@ -123,7 +135,7 @@ const VolumeSlider = ({
       translateX.value = withSpring(newTranslateX);
       
       const newVolume = newTranslateX / (sliderWidth - knobSize);
-      runOnJS(updateVolume)(newVolume);
+      runOnJS(commitVolume)(newVolume);
     });
 
   const knobAnimatedStyle = useAnimatedStyle(() => ({
@@ -134,7 +146,7 @@ const VolumeSlider = ({
     width: translateX.value + knobSize / 2,
   }));
 
-  const volumePercentage = Math.round(volume * 100);
+  const volumePercentage = Math.round(localVolume * 100);
 
   return (
     <View style={styles.volumeContainer}>
@@ -219,7 +231,6 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
 
   const handleVolumeChange = async (newVolume: number) => {
     await updateVolume(newVolume);
-    await setChimeVolume(newVolume);
   };
 
   const PillButton = ({ m }: { m: { key: AlertMode; label: string } }) => {
