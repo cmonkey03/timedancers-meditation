@@ -2,6 +2,7 @@ import { DailyReminder, ThemePreview } from '@/components/SettingsPage';
 import Alerts from '@/components/SettingsPage/Alerts';
 import Button from '@/components/Button';
 import { useThemeColors } from '@/hooks/use-theme';
+import { useCustomFonts } from '@/hooks/use-fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -9,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
   const C = useThemeColors();
+  const { fontsLoaded, fonts } = useCustomFonts();
   const insets = useSafeAreaInsets();
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
 
@@ -50,7 +52,14 @@ export default function SettingsScreen() {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-      <Text style={{ fontSize: 22, fontWeight: '700', color: C.text, marginBottom: 12 }}>Settings</Text>
+      <Text style={{ 
+        fontSize: 22, 
+        fontFamily: fontsLoaded ? fonts.cinzel.regular : undefined,
+        fontWeight: fontsLoaded ? undefined : '700', 
+        color: C.text, 
+        marginBottom: 12,
+        letterSpacing: 0.5,
+      }}>Settings</Text>
 
       <ThemePreview />
       <Alerts

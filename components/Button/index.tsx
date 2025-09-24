@@ -7,6 +7,7 @@ import Animated, {
   withTiming 
 } from 'react-native-reanimated';
 import { useThemeColors } from '@/hooks/use-theme';
+import { useCustomFonts } from '@/hooks/use-fonts';
 
 interface Props {
   onPress(): void;
@@ -17,6 +18,7 @@ interface Props {
 
 const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
   const C = useThemeColors();
+  const { fontsLoaded, fonts } = useCustomFonts();
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
@@ -53,6 +55,7 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
         <Text style={[
           styles.btnText,
           variant === "ghost" && { color: C.text },
+          fontsLoaded && { fontFamily: fonts.inter.semiBold },
         ]}>
           {text}
         </Text>
