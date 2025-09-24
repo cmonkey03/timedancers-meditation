@@ -5,6 +5,7 @@ const KEYS = {
   reminderEnabled: 'dailyReminderEnabled',
   reminderTime: 'dailyReminderTime',
   reminderId: 'dailyReminderId',
+  chimeVolume: 'chimeVolume',
 } as const;
 
 export type DailyReminder = {
@@ -49,4 +50,30 @@ export async function setDailyReminderEnabled(enabled: boolean, time: string): P
   await AsyncStorage.setItem(KEYS.reminderTime, time);
   if (id) await AsyncStorage.setItem(KEYS.reminderId, id);
   return { enabled: true, time, id: id || undefined };
+}
+
+/**
+ * Get the chime volume setting (0.0 to 1.0)
+ */
+export async function getChimeVolume(): Promise<number> {
+  try {
+    const volume = await AsyncStorage.getItem(KEYS.chimeVolume);
+    if (volume === null) return 0.7; // Default volume
+    const parsed = parseFloat(volume);
+    return isNaN(parsed) ? 0.7 : Math.max(0, Math.min(1, parsed));
+  } catch {
+    return 0.7; // Default volume
+  }
+}
+
+/**
+ * Set the chime volume (0.0 to 1.0)
+ */
+export async function setChimeVolume(volume: number): Promise<void> {
+  try {
+    const clampedVolume = Math.max(0, Math.min(1, volume));
+    await AsyncStorage.setItem(KEYS.chimeVolume, clampedVolume.toString());
+  } catch {
+    // Ignore storage errors
+  }
 }

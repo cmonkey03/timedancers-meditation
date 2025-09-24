@@ -6,17 +6,46 @@
  * - Trigger appropriate haptic feedback via expo-haptics
  * - Provide simple APIs to fire alerts for start and completion
  */
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Platform, Vibration } from 'react-native';
 import { useAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
 import { AlertMode } from '@/hooks/use-notifications';
+import { getChimeVolume } from '@/utils/settings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function useAlerts(alertMode: AlertMode) {
   const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
   const chime2 = useAudioPlayer(require('@/assets/sounds/chime2.mp3'));
+  const [volume, setVolume] = useState(0.7);
 
   const delay = useCallback((ms: number) => new Promise((res) => setTimeout(res, ms)), []);
+
+  // Helper to get current alert mode from storage
+  const getCurrentAlertMode = useCallback(async (): Promise<AlertMode> => {
+    try {
+      const saved = await AsyncStorage.getItem('alertMode');
+      if (saved === 'chime' || saved === 'chime_haptic' || saved === 'haptic' || saved === 'silent') {
+        return saved;
+      }
+    } catch {}
+    return alertMode; // fallback to prop
+  }, [alertMode]);
+
+  // Load volume setting on mount
+  useEffect(() => {
+    getChimeVolume().then(setVolume);
+  }, []);
+
+  // Update audio player volumes when volume changes or alert mode changes
+  useEffect(() => {
+    if (chime1) {
+      chime1.volume = volume;
+    }
+    if (chime2) {
+      chime2.volume = volume;
+    }
+  }, [volume, chime1, chime2, alertMode]);
 
   const strongImpact = useCallback(async () => {
     try {
@@ -42,27 +71,31 @@ export function useAlerts(alertMode: AlertMode) {
       try {
         const p = which === 1 ? chime1 : chime2;
         if (!p) return;
+        // Ensure volume is set right before playing
+        p.volume = volume;
         await p.seekTo(0);
         await p.play();
       } catch {}
     },
-    [chime1, chime2]
+    [chime1, chime2, volume]
   );
 
-  const playStartAlert = useCallback(async () => {
-    if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+  const playStartAlert = useCallback(async (modeOverride?: AlertMode) => {
+    const currentMode = modeOverride || await getCurrentAlertMode();
+    if (currentMode === 'chime' || currentMode === 'chime_haptic') {
       await playChime(1);
     }
-    if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+    if (currentMode === 'haptic' || currentMode === 'chime_haptic') {
       await strongImpact();
     }
-  }, [alertMode, playChime, strongImpact]);
+  }, [getCurrentAlertMode, playChime, strongImpact]);
 
-  const playCompletionAlert = useCallback(async () => {
-    if (alertMode === 'chime' || alertMode === 'chime_haptic') {
+  const playCompletionAlert = useCallback(async (modeOverride?: AlertMode) => {
+    const currentMode = modeOverride || await getCurrentAlertMode();
+    if (currentMode === 'chime' || currentMode === 'chime_haptic') {
       await playChime(2);
     }
-    if (alertMode === 'haptic' || alertMode === 'chime_haptic') {
+    if (currentMode === 'haptic' || currentMode === 'chime_haptic') {
       try {
         if (Platform.OS === 'android') {
           // Strongest completion pattern (~1800ms)
@@ -79,7 +112,12 @@ export function useAlerts(alertMode: AlertMode) {
         }
       } catch {}
     }
-  }, [alertMode, playChime, delay]);
+  }, [getCurrentAlertMode, playChime, delay]);
 
-  return { playStartAlert, playCompletionAlert };
+  const updateVolume = useCallback(async (newVolume: number) => {
+    setVolume(newVolume);
+    // Volume will be applied to audio players via the useEffect above
+  }, []);
+
+  return { playStartAlert, playCompletionAlert, volume, updateVolume };
 }

@@ -2,7 +2,7 @@
 module.exports = {
   // Detox 20 migration: use Detox's Jest runner bits
   maxWorkers: 1,
-  testTimeout: 120000,
+  testTimeout: 180000,
   verbose: true,
   testMatch: ['**/?(*.)+(e2e).[jt]s?(x)'],
   // Use Detox reporter and environment

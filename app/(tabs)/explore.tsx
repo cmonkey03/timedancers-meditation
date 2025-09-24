@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { useThemeColors } from '@/hooks/use-theme';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
 const links = [
   { label: 'Timedancers.org', url: 'https://timedancers.org' },
@@ -8,15 +9,42 @@ const links = [
   { label: 'Newsletter', url: 'https://newsletter.timedancers.org' },
 ];
 
+const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
+  const C = useThemeColors();
+  const scale = useSharedValue(1);
+  
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 300 });
+  };
+
+  return (
+    <Pressable
+      onPress={() => WebBrowser.openBrowserAsync(link.url)}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <Animated.View style={[s.link, { borderBottomColor: C.border }, animatedStyle]}>
+        <Text style={[s.linkText, { color: C.text }]}>{link.label}</Text>
+      </Animated.View>
+    </Pressable>
+  );
+};
+
 export default function Explore() {
   const C = useThemeColors();
   return (
     <View style={[s.wrap, { backgroundColor: C.background }]}>
       <Text style={[s.title, { color: C.text }]}>Explore</Text>
       {links.map((l) => (
-        <TouchableOpacity key={l.url} style={[s.link, { borderBottomColor: C.border }]} onPress={() => WebBrowser.openBrowserAsync(l.url)}>
-          <Text style={[s.linkText, { color: C.text }]}>{l.label}</Text>
-        </TouchableOpacity>
+        <LinkButton key={l.url} link={l} />
       ))}
     </View>
   );

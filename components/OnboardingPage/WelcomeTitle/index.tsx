@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { useThemeColors } from '@/hooks/use-theme';
 
 const WelcomeTitle = () => {
-  const eventText = ['reckoning', 'awakening'];
-  const eventColor = ['#a12b2a', '#1a5632'];
+  const C = useThemeColors();
+  const eventText = ['timedance', 'awakening'];
+  const eventColor = ['#2d5a3d', '#1a5632'];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -26,9 +28,10 @@ const WelcomeTitle = () => {
           textAlign: 'center',
           fontSize: 32,
           fontWeight: '300',
-          color: '#1a5632',
+          color: C.text,
+          opacity: 0.8,
           marginBottom: 8,
-        }}>A great</Text>
+        }}>Your</Text>
         <Text style={{
           textAlign: 'center',
           fontSize: 36,
@@ -42,9 +45,10 @@ const WelcomeTitle = () => {
           textAlign: 'center',
           fontSize: 32,
           fontWeight: '300',
-          color: '#1a5632',
+          color: C.text,
+          opacity: 0.8,
           marginBottom: 5
-        }}>is here.</Text>
+        }}>is here</Text>
       </View>
     </View>
   );
