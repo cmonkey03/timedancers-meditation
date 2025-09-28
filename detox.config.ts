@@ -1,6 +1,4 @@
-import type { DetoxConfig } from 'detox';
-
-const config: DetoxConfig = {
+const config = {
   testRunner: 'jest',
   runnerConfig: 'e2e/jest.config.js',
   specs: 'e2e',

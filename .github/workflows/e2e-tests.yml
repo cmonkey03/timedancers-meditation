@@ -31,28 +31,30 @@ jobs:
 
       - name: Setup iOS Simulator
         run: |
-          # Install iOS 18.4 runtime if not available
-          xcrun simctl list runtimes | grep "iOS 18.4" || {
-            echo "iOS 18.4 runtime not found, installing..."
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-            xcodebuild -downloadPlatform iOS
-          }
+          # List what's available
+          echo "Available iOS runtimes:"
+          xcrun simctl list runtimes | grep iOS
           
-          # Create iPhone 16 simulator if it doesn't exist
-          DEVICE_ID=$(xcrun simctl list devices | grep "iPhone 16" | grep "iOS 18.4" | head -1 | sed 's/.*(\([^)]*\)).*/\1/')
+          # Use iPhone 16 with whatever iOS runtime is available
+          DEVICE_NAME="iPhone 16"
+          
+          # Find existing iPhone 16 simulator or create one
+          DEVICE_ID=$(xcrun simctl list devices | grep "iPhone 16" | head -1 | grep -o '([^)]*)'| tr -d '()')
+          
           if [ -z "$DEVICE_ID" ]; then
-            echo "Creating iPhone 16 simulator..."
-            xcrun simctl create "iPhone 16" "iPhone 16" "iOS18.4"
+            echo "No iPhone 16 found, creating one..."
+            DEVICE_ID=$(xcrun simctl create "iPhone 16" "iPhone 16")
           fi
           
-          # Boot the simulator
-          DEVICE_ID=$(xcrun simctl list devices | grep "iPhone 16" | grep "iOS 18.4" | head -1 | sed 's/.*(\([^)]*\)).*/\1/')
-          echo "Booting simulator: $DEVICE_ID"
-          xcrun simctl boot "$DEVICE_ID" || true
+          echo "Using simulator: $DEVICE_ID"
           
-          # Wait for simulator to boot
-          echo "Waiting for simulator to boot..."
-          xcrun simctl bootstatus "$DEVICE_ID" -b
+          # Boot the simulator
+          echo "Booting simulator..."
+          xcrun simctl boot "$DEVICE_ID" || echo "Simulator already booted or boot failed"
+          
+          # Wait for simulator to be ready
+          echo "Waiting for simulator to be ready..."
+          sleep 10
 
       - name: Cache iOS build
         uses: actions/cache@v4
