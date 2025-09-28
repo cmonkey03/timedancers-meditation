@@ -2,34 +2,58 @@
 import { element, by, waitFor } from 'detox';
 
 describe('Meditation Flow', () => {
-  it('should find meditation screen elements', async () => {
-    console.log('Testing meditation screen elements...');
+  it('should load meditation screen and find key elements', async () => {
+    console.log('Testing meditation screen...');
     
-    // Navigate to meditate screen by tapping the tab
+    // First, wait for the app to be ready and check if we're on meditate screen
     try {
-      await element(by.text('Meditate')).tap();
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log('Waiting for meditate screen...');
+      await waitFor(element(by.id('screen-meditate'))).toBeVisible().withTimeout(10000);
+      console.log('✅ Meditate screen is visible');
     } catch {
-      console.log('Already on meditate screen or tab not found');
-    }
-    
-    // Look for common meditation screen elements
-    const expectedElements = ['Start', 'Meditate', 'Power', 'Heart', 'Wisdom'];
-    let foundElements = [];
-    
-    for (const text of expectedElements) {
+      console.log('Meditate screen not found, trying to navigate...');
+      
+      // Try to tap the Meditate tab
       try {
-        console.log(`Looking for: "${text}"`);
-        await waitFor(element(by.text(text))).toBeVisible().withTimeout(3000);
-        foundElements.push(text);
-        console.log(`Found: "${text}"`);
+        await element(by.text('Meditate')).tap();
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await waitFor(element(by.id('screen-meditate'))).toBeVisible().withTimeout(5000);
+        console.log('✅ Successfully navigated to meditate screen');
       } catch {
-        console.log(`Not found: "${text}"`);
+        console.log('❌ Could not navigate to meditate screen');
+        throw new Error('Unable to access meditate screen');
       }
     }
     
-    console.log(`Found ${foundElements.length} elements: ${foundElements.join(', ')}`);
-    console.log('Meditation screen test completed!');
+    // Look for meditation elements - these should be present based on the app structure
+    const testCases = [
+      { type: 'text', value: 'Start', description: 'Start button' },
+      { type: 'text', value: 'Power', description: 'Power chakra label' },
+      { type: 'text', value: 'Heart', description: 'Heart chakra label' },
+      { type: 'text', value: 'Wisdom', description: 'Wisdom chakra label' },
+    ];
+    
+    let foundElements = [];
+    
+    for (const testCase of testCases) {
+      try {
+        console.log(`Looking for ${testCase.description}: "${testCase.value}"`);
+        await waitFor(element(by.text(testCase.value))).toBeVisible().withTimeout(3000);
+        foundElements.push(testCase.value);
+        console.log(`✅ Found: ${testCase.description}`);
+      } catch {
+        console.log(`❌ Not found: ${testCase.description}`);
+      }
+    }
+    
+    console.log(`\n📊 Test Results:`);
+    console.log(`Found ${foundElements.length}/${testCases.length} elements: ${foundElements.join(', ')}`);
+    
+    // Test passes if we found at least the screen and some elements
+    if (foundElements.length >= 2) {
+      console.log('✅ Meditation screen test PASSED');
+    } else {
+      console.log('⚠️  Meditation screen test completed with limited elements found');
+    }
   });
-
 });

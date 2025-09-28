@@ -4,19 +4,21 @@ import { device } from 'detox';
 beforeAll(async () => {
   console.log('Starting E2E test initialization...');
   
-  // Don't uninstall/reinstall - this might be causing the reboots
-  console.log('Launching app without reinstall...');
+  // Set global E2E flag for the app to detect
+  (global as any).__E2E__ = true;
   
-  // Launch the app with minimal configuration
+  console.log('Launching app for E2E testing...');
+  
+  // Launch the app with clean state
   await device.launchApp({
-    newInstance: false, // Don't force new instance
+    newInstance: true,
     permissions: { notifications: 'YES' },
   });
   
-  console.log('App launched, waiting for stability...');
+  console.log('App launched, waiting for initialization...');
   
-  // Give the app time to fully initialize
-  await new Promise(resolve => setTimeout(resolve, 15000));
+  // Give the app time to detect E2E mode and navigate
+  await new Promise(resolve => setTimeout(resolve, 8000));
   
   console.log('E2E initialization complete');
 }, 60000);
