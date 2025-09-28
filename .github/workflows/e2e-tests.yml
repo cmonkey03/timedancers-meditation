@@ -7,7 +7,7 @@ on:
 
 jobs:
   e2e-tests:
-    runs-on: macos-14 # Use latest macOS for iOS simulator
+    runs-on: macos-15 # Use macOS 15 for Xcode 16+ support
     timeout-minutes: 60
     
     steps:
@@ -71,7 +71,8 @@ jobs:
           # Generate native iOS project if it doesn't exist
           if [ ! -d "ios" ]; then
             echo "Generating iOS project with expo prebuild..."
-            npx expo prebuild --platform ios --clean
+            # Skip auto-linking to avoid version conflicts
+            npx expo prebuild --platform ios --clean --skip-dependency-update
           fi
           
           # Install iOS dependencies
