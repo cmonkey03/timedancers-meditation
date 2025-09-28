@@ -66,8 +66,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ios-build-
 
-      - name: Install iOS dependencies
+      - name: Generate iOS project and install dependencies
         run: |
+          # Generate native iOS project if it doesn't exist
+          if [ ! -d "ios" ]; then
+            echo "Generating iOS project with expo prebuild..."
+            npx expo prebuild --platform ios --clean
+          fi
+          
+          # Install iOS dependencies
           cd ios
           pod install --repo-update
 
