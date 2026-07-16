@@ -1,60 +1,72 @@
 // @ts-nocheck
 import { element, by, waitFor } from 'detox';
 
-describe('App Launch and Navigation', () => {
-  it('should launch app and verify basic functionality', async () => {
-    console.log('Testing app launch and basic navigation...');
+describe('Onboarding Flow', () => {
+  it('should complete onboarding and reach meditation screen', async () => {
+    console.log('🚀 Testing onboarding flow...');
     
-    // In E2E mode, the app should auto-navigate to meditate screen
-    // But let's check for any visible UI first
-    console.log('Checking for app UI elements...');
+    // Wait for app to load
+    await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Look for tab navigation elements
-    const tabElements = ['Home', 'Meditate', 'Settings', 'Explore'];
-    let foundTabs = [];
-    
-    for (const tab of tabElements) {
-      try {
-        console.log(`Looking for tab: "${tab}"`);
-        await waitFor(element(by.text(tab))).toBeVisible().withTimeout(2000);
-        foundTabs.push(tab);
-        console.log(`✅ Found tab: "${tab}"`);
-      } catch {
-        console.log(`❌ Tab not found: "${tab}"`);
-      }
-    }
-    
-    // Check if we can find the E2E loading screen or meditate screen
+    // Check if we're on onboarding or already past it
     try {
-      console.log('Checking for E2E loading screen...');
-      await waitFor(element(by.id('e2e-loading'))).toBeVisible().withTimeout(3000);
-      console.log('✅ Found E2E loading screen');
-    } catch {
-      console.log('E2E loading screen not found, checking for meditate screen...');
+      // Look for onboarding elements
+      await waitFor(element(by.id('onboarding-skip'))).toBeVisible().withTimeout(3000);
+      console.log('✅ Found onboarding - completing it...');
       
+      // Skip onboarding for faster testing
+      await element(by.id('onboarding-skip')).tap();
+      console.log('✅ Tapped Skip button');
+      
+      // Wait for navigation to complete
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+    } catch {
+      console.log('ℹ️  No onboarding found - may already be past it');
+    }
+    
+    // Verify we're on the meditate screen by looking for Start button
+    await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(10000);
+    console.log('✅ Successfully reached meditate screen and found Start button');
+    
+    // Test tab navigation
+    console.log('🔍 Testing tab navigation...');
+    
+    // Check what tabs are actually visible (using only text since that's what works)
+    const tabTexts = ['Home', 'Meditate', 'Settings', 'Explore'];
+    
+    console.log('🔍 Checking which tabs are visible...');
+    for (const tabText of tabTexts) {
       try {
-        await waitFor(element(by.id('screen-meditate'))).toBeVisible().withTimeout(5000);
-        console.log('✅ Found meditate screen');
+        await waitFor(element(by.text(tabText))).toBeVisible().withTimeout(1000);
+        console.log(`✅ Found tab: ${tabText}`);
       } catch {
-        console.log('❌ Neither E2E loading nor meditate screen found');
+        console.log(`❌ Not found: ${tabText}`);
       }
     }
     
-    console.log(`\n📊 App Launch Results:`);
-    console.log(`Found ${foundTabs.length} tabs: ${foundTabs.join(', ')}`);
+    // Navigate to settings
+    await waitFor(element(by.text('Settings'))).toBeVisible().withTimeout(3000);
+    await element(by.text('Settings')).tap();
+    console.log('✅ Tapped Settings tab');
     
-    // Test basic navigation if tabs are available
-    if (foundTabs.includes('Settings')) {
-      try {
-        console.log('Testing navigation to Settings...');
-        await element(by.text('Settings')).tap();
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log('✅ Successfully tapped Settings tab');
-      } catch {
-        console.log('❌ Could not tap Settings tab');
-      }
-    }
+    // Wait for navigation and verify settings screen
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    console.log('✅ App launch test completed successfully!');
+    // Verify we're on settings screen by looking for Settings title
+    await waitFor(element(by.text('Settings'))).toBeVisible().withTimeout(3000);
+    console.log('✅ Successfully navigated to settings screen');
+    
+    // Navigate back to meditate
+    await element(by.text('Meditate')).tap();
+    console.log('✅ Tapped Meditate tab');
+    
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Verify we're back on meditate screen
+    await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(3000);
+    console.log('✅ Successfully navigated back to meditate screen');
+    
+    console.log('✅ Onboarding and navigation test completed successfully!');
   });
 });
