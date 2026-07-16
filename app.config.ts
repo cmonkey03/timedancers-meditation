@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Timedancers Meditation',
   slug: 'timedancers-meditation',
-  owner: "timedancers",
+  owner: "rustlemediallc",
   version: '1.0.0',
   android: {
     ...config.android,
