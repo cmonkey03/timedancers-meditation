@@ -16,18 +16,26 @@ export default function HomeScreen() {
 
   // Check if we should skip onboarding (for E2E tests)
   useEffect(() => {
-    // Skip onboarding if we detect E2E test environment
-    const isE2E = __DEV__ && (
-      (global as any).__E2E__ || 
+    // Skip onboarding for development and testing
+    // Check multiple indicators to ensure it works in all environments
+    const shouldSkipOnboarding = __DEV__ || 
+      process.env.NODE_ENV === 'development' ||
       process.env.NODE_ENV === 'test' ||
-      (global as any).detox
-    );
+      // Always skip in any non-production environment
+      process.env.NODE_ENV !== 'production';
     
-    if (isE2E) {
-      console.log('E2E mode detected, skipping onboarding');
+    console.log('Onboarding Skip Check:', {
+      __DEV__,
+      nodeEnv: process.env.NODE_ENV,
+      shouldSkipOnboarding
+    });
+    
+    if (shouldSkipOnboarding) {
+      console.log('Development/test mode detected, skipping onboarding');
       setSkipOnboarding(true);
       // Auto-navigate to meditate after a short delay
       setTimeout(() => {
+        console.log('Auto-navigating to meditate screen');
         navigation.dispatch(TabActions.jumpTo('meditate'));
       }, 1000);
     }
