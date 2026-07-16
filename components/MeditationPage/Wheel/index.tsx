@@ -316,9 +316,6 @@ const Wheel = (props: Props) => {
               strokeLinecap="round"
               fill="none"
               strokeDasharray={circumference}
-              rotation="-90"
-              originX={size / 2}
-              originY={size / 2}
             />
           </Svg>
         </Animated.View>
