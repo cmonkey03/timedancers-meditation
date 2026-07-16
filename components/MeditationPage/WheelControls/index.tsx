@@ -32,12 +32,14 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             onPress={() => (counting ? onPress('pause') : onPress('counting'))}
             text={buttonText}
             variant="primary"
+            testID={counting ? "pause-button" : "resume-button"}
           />
           <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
             text="Cancel" 
             variant="ghost" 
+            testID="cancel-button"
           />
         </View>
         <View style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}>
@@ -61,6 +63,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             onPress={() => onPress('counting')}
             text="Start"
             variant="primary"
+            testID="start-button"
           />
         </View>
         <View style={styles.spacer} />
