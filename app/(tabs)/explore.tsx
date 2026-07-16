@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import { useThemeColors } from '@/hooks/use-theme';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import * as WebBrowser from 'expo-web-browser';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const links = [
   { label: 'Timedancers.org', url: 'https://timedancers.org' },
-  { label: 'Research: Intimate Violence', url: 'https://timedancers.org/research/intimate-violence' },
+  { label: 'Research: Intimate Violence', url: 'https://timedancers.org/research/feeling-impact' },
   { label: 'Newsletter', url: 'https://newsletter.timedancers.org' },
 ];
 
