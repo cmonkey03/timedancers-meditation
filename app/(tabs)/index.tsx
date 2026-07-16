@@ -1,18 +1,18 @@
 import OnboardingPage from '@/components/OnboardingPage';
-import { TabActions, useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useCallback, useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useThemeColors } from '@/hooks/use-theme';
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [key, setKey] = useState(0);
   const [skipOnboarding, setSkipOnboarding] = useState(false);
   const C = useThemeColors();
 
   const finishOnboarding = useCallback(async () => {
-    navigation.dispatch(TabActions.jumpTo('meditate'));
-  }, [navigation]);
+    router.push('/meditate');
+  }, [router]);
 
   // Check if we should skip onboarding (for E2E tests)
   useEffect(() => {
@@ -36,10 +36,10 @@ export default function HomeScreen() {
       // Auto-navigate to meditate after a short delay
       setTimeout(() => {
         console.log('Auto-navigating to meditate screen');
-        navigation.dispatch(TabActions.jumpTo('meditate'));
+        router.push('/meditate');
       }, 1000);
     }
-  }, [navigation]);
+  }, [router]);
 
   // Re-mount onboarding component when this screen loses focus (blur event)
   useFocusEffect(
