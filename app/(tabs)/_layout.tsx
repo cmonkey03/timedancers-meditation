@@ -52,6 +52,8 @@ export default function Layout() {
           name="index"
           options={{
             title: 'Home',
+            tabBarTestID: 'tab-home',
+            tabBarAccessibilityLabel: 'Home tab',
             tabBarIcon: ({ color }: { color: string }) => (
               <Ionicons name="home-outline" size={24} color={color} />
             ),
@@ -61,6 +63,8 @@ export default function Layout() {
           name="meditate"
           options={{
             title: 'Meditate',
+            tabBarTestID: 'tab-meditate',
+            tabBarAccessibilityLabel: 'Meditate tab',
             tabBarIcon: ({ color }: { color: string }) => (
               <Ionicons name="aperture-outline" size={24} color={color} />
             ),
@@ -70,6 +74,8 @@ export default function Layout() {
           name="settings"
           options={{
             title: 'Settings',
+            tabBarTestID: 'tab-settings',
+            tabBarAccessibilityLabel: 'Settings tab',
             tabBarIcon: ({ color }: { color: string }) => (
               <Ionicons name="settings-outline" size={24} color={color} />
             ),
@@ -79,6 +85,8 @@ export default function Layout() {
           name="explore"
           options={{
             title: 'Explore',
+            tabBarTestID: 'tab-explore',
+            tabBarAccessibilityLabel: 'Explore tab',
             tabBarIcon: ({ color }: { color: string }) => (
               <Ionicons name="compass-outline" size={24} color={color} />
             ),
