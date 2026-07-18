@@ -15,17 +15,3 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-
-  # E2E tests disabled — require Detox build + iOS simulator
-  # To run locally: npm run detox:build && npm run detox:test
-  # e2e:
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: npm
-  #     - run: npm ci
-  #     - run: npm run detox:build
-  #     - run: npm run detox:test
