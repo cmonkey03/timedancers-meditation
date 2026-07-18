@@ -2,12 +2,12 @@ import Wheel from '@/components/MeditationPage/Wheel';
 import { useThemeColors } from '@/hooks/use-theme';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
+import AnimatedWelcomeText from './AnimatedWelcomeText';
 import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
-import AnimatedWelcomeText from './AnimatedWelcomeText';
 
 type Props = {
   finishOnboarding: () => void;
@@ -105,8 +105,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
 
   const instructions = [
     `Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.`,
-    `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natura[...]
-    `Move to your Heart center in your chest. In timelessness, love flows freely. Practice letting go—or if needed, dive so completely into what you're feeling that attachment releases itself.`[...]
+    `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natura[...]`,
+    `Move to your Heart center in your chest. In timelessness, love flows freely. Practice letting go—or if needed, dive so completely into what you're feeling that attachment releases itself.`,
     `Rest in your Wisdom center at your forehead. From timelessness comes true knowing. Whether through gentle release or complete surrender, find the space where wisdom naturally arises.`,
   ];
 
