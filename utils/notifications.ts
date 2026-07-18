@@ -39,11 +39,10 @@ export async function initNotifications() {
   // Foreground behavior
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
+      shouldShowBanner: true,
       shouldPlaySound: true,
       shouldSetBadge: false,
       // Newer iOS behaviors
-      shouldShowBanner: true,
       shouldShowList: true,
     }),
   });

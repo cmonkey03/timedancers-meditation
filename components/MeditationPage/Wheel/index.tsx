@@ -121,8 +121,8 @@ const Wheel = (props: Props) => {
           -1,
           true
         );
-      } else if (state === "idle" && label.toLowerCase() === "power") {
-        // gentle pulse for the starting wheel (power) when idle - makes app feel alive
+      } else if (state === "idle") {
+        // gentle pulse for all idle wheels - makes app feel alive
         breath.value = withRepeat(
           withSequence(
             withTiming(1, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
@@ -181,8 +181,8 @@ const Wheel = (props: Props) => {
     if (isSimple) return 1;
     if (state === "active") {
       return 1 + interpolate(breath.value, [0, 1], [0, 0.08]); // 8% breathing for active
-    } else if (state === "idle" && label.toLowerCase() === "power") {
-      return 1 + interpolate(breath.value, [0, 1], [0, 0.06]); // 6% gentle pulse for power when idle
+    } else if (state === "idle") {
+      return 1 + interpolate(breath.value, [0, 1], [0, 0.06]); // 6% gentle pulse for idle
     } else {
       return 1; // no animation for other wheels
     }
@@ -250,7 +250,7 @@ const Wheel = (props: Props) => {
               height: size + 36,
               borderRadius: (size + 36) / 2,
               backgroundColor: c0,
-              opacity: state === "active" ? 0.07 : glowOpacity as any,
+              opacity: state === "active" ? 0.15 : glowOpacity as any,
               top: -18,
               left: -18,
             },
@@ -316,9 +316,6 @@ const Wheel = (props: Props) => {
               strokeLinecap="round"
               fill="none"
               strokeDasharray={circumference}
-              rotation="-90"
-              originX={size / 2}
-              originY={size / 2}
             />
           </Svg>
         </Animated.View>

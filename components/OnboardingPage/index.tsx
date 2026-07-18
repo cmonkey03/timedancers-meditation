@@ -1,15 +1,17 @@
 import Wheel from '@/components/MeditationPage/Wheel';
+import { Ionicons } from '@expo/vector-icons';
 import { useThemeColors } from '@/hooks/use-theme';
-import React from 'react';
+import { useCustomFonts } from '@/hooks/use-fonts';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AnimatedWelcomeText from './AnimatedWelcomeText';
+import AnimatedBounceArrow from './AnimatedBounceArrow';
 import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
+import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
-import AnimatedWelcomeText from './AnimatedWelcomeText';
 
 type Props = {
   finishOnboarding: () => void;
@@ -17,15 +19,7 @@ type Props = {
 
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
-  const insets = useSafeAreaInsets();
-  
-  // Calculate actual content area by subtracting UI elements
-  const tabBarHeight = 83; // Standard iOS tab bar height
-  const onboardingControlsHeight = 80; // Skip/Next/Done buttons area
-
-  
-  // Calculate how much to shift content up to center it in available space
-  const contentShift = (tabBarHeight + onboardingControlsHeight) / 1.3;
+  const { fontsLoaded, fonts } = useCustomFonts();
   const SkipButton = (props: any) => (
     <Pressable
       {...props}
@@ -114,27 +108,16 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     </Pressable>
   );
 
-  // Original instructions (preserved for reference)
-  // const originalInstructions = [
-  //   `Sit upright in a chair with your appendages at rest or, if possible, on the ground seated cross-legged on a pillow or folded blanket.`,
-  //   `When you start the timer, spend equal time focusing on each wheel to the exclusion of everything else. The first chime tells you to begin to focus on the Wheel of Power, which is located two fingers below the naval (your belly button).`,
-  //   `The second chime begins your time with the Wheel of Heart, which is located in the center of your chest. Practice allowing yet not attaching to any thoughts, feelings or sensations that arise.`,
-  //   `The third chime is the beginning of your meditation on the Wheel of Widsom, located in the center of your forhead just above the eyebrows. On the last chime, your climb of the Wheel Tower has ended. Finish by bowing your head if you are seated in a chair, or touching your forehead to the ground if you are on the floor.`,
-  // ];
-
-  // New improved instructions
   const instructions = [
     `Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.`,
-    `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natural power.`,
+    `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natural`,
     `Move to your Heart center in your chest. In timelessness, love flows freely. Practice letting go—or if needed, dive so completely into what you're feeling that attachment releases itself.`,
     `Rest in your Wisdom center at your forehead. From timelessness comes true knowing. Whether through gentle release or complete surrender, find the space where wisdom naturally arises.`,
   ];
 
   return (
     <View testID="onboarding" style={{ 
-      flex: 1, 
-      marginTop: -contentShift,
-      paddingTop: Math.max(insets.top, 20)
+      flex: 1
     }}>
       <Onboarding
         onDone={() => {
@@ -148,7 +131,14 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         SkipButtonComponent={SkipButton}
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
-        imageContainerStyles={{ paddingBottom: 20 }}
+        containerStyles={{
+          paddingBottom: 140, 
+          justifyContent: 'center',
+        }}
+        imageContainerStyles={{
+          paddingBottom: 8,
+          marginBottom: 8,
+        }}        
         pages={[
         {
           backgroundColor: C.background,
@@ -158,14 +148,14 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               <AnimatedWelcomeText />
             </ImageWrapper>
           ),
-          subtitle: '',
+          subtitle: <SwipeIndicator />,
           title: '',
         },
         {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <View style={{ alignItems: 'center', gap: 12 }}>
+              <View style={{ alignItems: 'center', gap: 14 }}>
                 <Wheel 
                   size={120}
                   label="Wisdom"
@@ -203,6 +193,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 40,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Power"
@@ -219,6 +218,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 40,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Heart"
@@ -235,6 +243,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 40,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Wisdom"
@@ -246,6 +263,35 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           ),
           title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
           subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
+        },
+        {
+          backgroundColor: C.background,
+          image: (
+            <ImageWrapper>
+              <View style={{ alignItems: 'center', gap: 12 }}>
+                <View
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    backgroundColor: `${C.primary}20`,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Ionicons name="aperture" size={44} color={C.primary} />
+                </View>
+                <AnimatedBounceArrow color={C.text} />
+              </View>
+            </ImageWrapper>
+          ),
+          title: <TitleWrapper text="Ready to Begin?" color={C.text} />,
+          subtitle: (
+            <SubtitleWrapper
+              text="Tap the Meditate tab below to start your first session. Choose your duration and press Start."
+              color={C.text}
+            />
+          ),
         },
         ]}
       />

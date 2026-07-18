@@ -91,11 +91,10 @@ const VolumeSlider = ({
   }, [volume, sliderWidth, knobSize, translateX, isDragging]);
 
   const [localVolume, setLocalVolume] = useState(volume);
-  
-  // Update local volume when prop changes
-  React.useEffect(() => {
+
+  if (volume !== localVolume && !isDragging.value) {
     setLocalVolume(volume);
-  }, [volume]);
+  }
   
   const updateVolume = (newVolume: number) => {
     setLocalVolume(newVolume);

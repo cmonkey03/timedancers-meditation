@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 
@@ -15,12 +15,12 @@ interface Props {
 
 const WheelControls = ({ counting, handleInput, input, onPress, started }: Props) => {
   const C = useThemeColors();
-  const [buttonText, setButtonText] = useState('');
 
-  useEffect(() => {
-    if (counting) setButtonText('Pause');
-    if (!started) setButtonText('Start');
-    if (!counting && started) setButtonText('Resume');
+  const buttonText = useMemo(() => {
+    if (counting) return 'Pause';
+    if (!started) return 'Start';
+    if (!counting && started) return 'Resume';
+    return '';
   }, [counting, started]);
 
   if (started) {
@@ -32,12 +32,14 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             onPress={() => (counting ? onPress('pause') : onPress('counting'))}
             text={buttonText}
             variant="primary"
+            testID={counting ? "pause-button" : "resume-button"}
           />
           <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
             text="Cancel" 
             variant="ghost" 
+            testID="cancel-button"
           />
         </View>
         <View style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}>
@@ -61,6 +63,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             onPress={() => onPress('counting')}
             text="Start"
             variant="primary"
+            testID="start-button"
           />
         </View>
         <View style={styles.spacer} />

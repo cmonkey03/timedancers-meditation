@@ -13,6 +13,9 @@ import * as Haptics from 'expo-haptics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Text, View } from 'react-native';
 
+/* eslint-disable react-hooks/exhaustive-deps -- Refs are intentionally excluded from deps */
+/* eslint-disable react-hooks/set-state-in-effect -- setState in effect is intentional here */
+
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
 
@@ -133,7 +136,6 @@ const Meditation = () => {
       // Cancel any scheduled notifications now that it's disabled
       Notifier.cancelAllScheduled();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowBackgroundAlerts, timer.running]);
 
   const handleInput = (text: string) => {
@@ -159,15 +161,15 @@ const Meditation = () => {
           };
           setTimeout(fireStartAlert, 120);
           // Mark start chime as done to avoid the interval safety net playing it again
-          startChimeDoneRef.current = true;
+          chimeDoneRefs.current.start = true;
         } else if (!timer.running) {
           // Resume timer
           resume();
           // Re-schedule from current position
           if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
           // Ensure we don't replay the start chime after a resume
-          startChimeDoneRef.current = true;
-          completionChimeDoneRef.current = false;
+          chimeDoneRefs.current.start = true;
+          chimeDoneRefs.current.completion = false;
         }
         break;
       case 'cancel':
@@ -196,20 +198,23 @@ const Meditation = () => {
     }
   };
 
-  // Guard to ensure start chime only plays once
-  const startChimeDoneRef = useRef(false);
-  // Guard to ensure completion chime only plays once
-  const completionChimeDoneRef = useRef(false);
+  // Chime guards to ensure each chime only plays once per session
+  const chimeDoneRefs = useRef({
+    start: false,
+    phase1to2: false,
+    phase2to3: false,
+    completion: false,
+  });
   const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
     const newCurrentTime = timer.now;
 
-    // Ensure we chime at the very start of the session even if the player wasn't ready on press
+    // Start chime (session beginning)
     if (
       timer.running &&
-      !startChimeDoneRef.current &&
+      !chimeDoneRefs.current.start &&
       newCurrentTime.currentIndex === 0 &&
       !newCurrentTime.done
     ) {
@@ -217,15 +222,34 @@ const Meditation = () => {
       if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
         if (__DEV__) console.log('[chime] start-of-session');
         playStartAlert();
-        startChimeDoneRef.current = true;
+        chimeDoneRefs.current.start = true;
+      }
+    }
+
+    // Phase transition chimes
+    const phaseTransitions = [
+      { index: 1, refKey: 'phase1to2' as const, label: 'phase 1→2' },
+      { index: 2, refKey: 'phase2to3' as const, label: 'phase 2→3' },
+    ];
+
+    for (const { index, refKey, label } of phaseTransitions) {
+      if (
+        timer.running &&
+        !chimeDoneRefs.current[refKey] &&
+        newCurrentTime.currentIndex === index &&
+        !newCurrentTime.done
+      ) {
+        if (__DEV__) console.log(`[chime] ${label} transition`);
+        playStartAlert();
+        chimeDoneRefs.current[refKey] = true;
       }
     }
 
     // Completion chime
-    if (newCurrentTime.done && !completionChimeDoneRef.current) {
+    if (newCurrentTime.done && !chimeDoneRefs.current.completion) {
       if (__DEV__) console.log('[chime] session complete');
       playCompletionAlert();
-      completionChimeDoneRef.current = true;
+      chimeDoneRefs.current.completion = true;
       // Cancel any pending notifications now that we're done
       Notifier.cancelAllScheduled();
       clearSessionToken();
@@ -258,8 +282,10 @@ const Meditation = () => {
   // Reset phase index when timer resets
   useEffect(() => {
     if (!timer.started) {
-      startChimeDoneRef.current = false;
-      completionChimeDoneRef.current = false;
+      chimeDoneRefs.current.start = false;
+      chimeDoneRefs.current.phase1to2 = false;
+      chimeDoneRefs.current.phase2to3 = false;
+      chimeDoneRefs.current.completion = false;
       setShowCompleted(false);
       prevIndex.current = 0;
     }
@@ -280,6 +306,7 @@ const Meditation = () => {
         // Create wheel cards in correct order (wisdom at top, power at bottom)
         const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
         
+        // eslint-disable-next-line react-hooks/refs -- prevIndex ref is intentionally accessed during render for animation state
         return wheelOrder.map((i) => {
           const wheel = WHEELS[i];
           const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;

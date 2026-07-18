@@ -1,37 +1,29 @@
 import OnboardingPage from '@/components/OnboardingPage';
-import { TabActions, useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useCallback, useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useThemeColors } from '@/hooks/use-theme';
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [key, setKey] = useState(0);
-  const [skipOnboarding, setSkipOnboarding] = useState(false);
+  const [skipOnboarding] = useState(() => process.env.NODE_ENV === 'test');
   const C = useThemeColors();
 
   const finishOnboarding = useCallback(async () => {
-    navigation.dispatch(TabActions.jumpTo('meditate'));
-  }, [navigation]);
+    router.push('/meditate');
+  }, [router]);
 
-  // Check if we should skip onboarding (for E2E tests)
+  // Auto-navigate to meditate in test mode
   useEffect(() => {
-    // Skip onboarding if we detect E2E test environment
-    const isE2E = __DEV__ && (
-      (global as any).__E2E__ || 
-      process.env.NODE_ENV === 'test' ||
-      (global as any).detox
-    );
-    
-    if (isE2E) {
-      console.log('E2E mode detected, skipping onboarding');
-      setSkipOnboarding(true);
-      // Auto-navigate to meditate after a short delay
-      setTimeout(() => {
-        navigation.dispatch(TabActions.jumpTo('meditate'));
+    if (skipOnboarding) {
+      const timeout = setTimeout(() => {
+        console.log('Auto-navigating to meditate screen');
+        router.push('/meditate');
       }, 1000);
+      return () => clearTimeout(timeout);
     }
-  }, [navigation]);
+  }, [skipOnboarding, router]);
 
   // Re-mount onboarding component when this screen loses focus (blur event)
   useFocusEffect(

@@ -1,14 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { withLayoutContext } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
+import type { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
-
-// Create a Tabs component backed by Material Top Tabs (native swipe)
-const { Navigator } = createMaterialTopTabNavigator();
-export const Tabs = withLayoutContext(Navigator);
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
@@ -17,14 +13,7 @@ export default function Layout() {
   const bottomPad = Math.min(insets.bottom, 8); // clamp for compact spacing
   return (
     <Tabs
-      tabBarPosition="bottom"
       screenOptions={{
-        swipeEnabled: true,
-        tabBarScrollEnabled: false,
-        tabBarShowIcon: true,
-        tabBarShowLabel: true,
-        tabBarAllowFontScaling: false,
-        tabBarIndicatorStyle: { height: 0 },
         tabBarActiveTintColor: C.primary,
         tabBarInactiveTintColor: C.mutedText,
         tabBarStyle: {
@@ -52,8 +41,8 @@ export default function Layout() {
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color }: { color: string }) => (
-              <Ionicons name="home-outline" size={24} color={color} />
+            tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
+              <Ionicons name="home-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -61,8 +50,8 @@ export default function Layout() {
           name="meditate"
           options={{
             title: 'Meditate',
-            tabBarIcon: ({ color }: { color: string }) => (
-              <Ionicons name="aperture-outline" size={24} color={color} />
+            tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
+              <Ionicons name="aperture-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -70,8 +59,8 @@ export default function Layout() {
           name="settings"
           options={{
             title: 'Settings',
-            tabBarIcon: ({ color }: { color: string }) => (
-              <Ionicons name="settings-outline" size={24} color={color} />
+            tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
+              <Ionicons name="settings-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -79,8 +68,8 @@ export default function Layout() {
           name="explore"
           options={{
             title: 'Explore',
-            tabBarIcon: ({ color }: { color: string }) => (
-              <Ionicons name="compass-outline" size={24} color={color} />
+            tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
+              <Ionicons name="compass-outline" size={size} color={color as string} />
             ),
           }}
         />

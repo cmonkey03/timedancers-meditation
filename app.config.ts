@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Timedancers Meditation',
   slug: 'timedancers-meditation',
-  owner: "timedancers",
+  owner: "rustlemediallc",
   version: '1.0.0',
   android: {
     ...config.android,
@@ -14,7 +14,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundImage: './assets/images/android-icon-background.png',
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
-    edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: 'org.timedancers.meditation',
   },
@@ -33,7 +32,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/images/icon.png',
   scheme: 'timedancers',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
   extra: {
     eas: {
        projectId: "de8347b6-d666-4360-b7ec-791c9eee94cf",
@@ -46,7 +44,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-router',
     'expo-audio',
-    'expo-notifications',
+    'expo-asset',
+    [
+      'expo-notifications',
+      {
+        icon: './assets/images/favicon.png',
+        color: '#2d5a3d',
+        sounds: ['./assets/sounds/chime1.mp3', './assets/sounds/chime2.mp3'],
+      },
+    ],
     [
       'expo-splash-screen',
       {
