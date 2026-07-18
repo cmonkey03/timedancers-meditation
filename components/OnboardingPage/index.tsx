@@ -126,7 +126,14 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         SkipButtonComponent={SkipButton}
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
-        imageContainerStyles={{ paddingBottom: 20 }}
+        containerStyles={{
+          paddingBottom: 110, 
+          justifyContent: 'center',
+        }}
+        imageContainerStyles={{ 
+          paddingBottom: 0,
+          marginBottom: -30, 
+        }}        
         pages={[
         {
           backgroundColor: C.background,
