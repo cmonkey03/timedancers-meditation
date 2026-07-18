@@ -155,7 +155,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <View style={{ alignItems: 'center', gap: 8 }}>
+              <View style={{ alignItems: 'center', gap: 14 }}>
                 <Wheel 
                   size={120}
                   label="Wisdom"
@@ -200,7 +200,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 fontWeight: fontsLoaded ? undefined : '500',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
-                marginBottom: 28,
+                marginBottom: 40,
               }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
@@ -225,7 +225,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 fontWeight: fontsLoaded ? undefined : '500',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
-                marginBottom: 28,
+                marginBottom: 40,
               }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
@@ -250,7 +250,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 fontWeight: fontsLoaded ? undefined : '500',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
-                marginBottom: 28,
+                marginBottom: 40,
               }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
