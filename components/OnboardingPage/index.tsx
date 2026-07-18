@@ -130,9 +130,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           paddingBottom: 110, 
           justifyContent: 'center',
         }}
-        imageContainerStyles={{ 
-          paddingBottom: 0,
-          marginBottom: -30, 
+        imageContainerStyles={{
+          paddingBottom: 8,
+          marginBottom: 8,
         }}        
         pages={[
         {
@@ -150,7 +150,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
-              <View style={{ alignItems: 'center', gap: 12 }}>
+              <View style={{ alignItems: 'center', gap: 8 }}>
                 <Wheel 
                   size={120}
                   label="Wisdom"

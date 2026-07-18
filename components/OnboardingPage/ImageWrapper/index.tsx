@@ -8,7 +8,7 @@ interface Props {
 const ImageWrapper = ({ children }: Props) => (
   <View
     style={{
-      paddingBottom: 28,
+      paddingBottom: 16,
       alignItems: 'center',
       justifyContent: 'center',
     }}
