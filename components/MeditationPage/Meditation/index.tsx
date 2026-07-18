@@ -259,7 +259,7 @@ const Meditation = () => {
       completionResetTimeoutRef.current = setTimeout(() => {
         reset();
         setShowCompleted(false);
-      }, 2000);
+      }, 5000);
     }
   }, [timer, playStartAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
 
@@ -344,7 +344,9 @@ const Meditation = () => {
       })()}
       
       {showCompleted && (
-        <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
+        <Text style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}>
+          Session complete!
+        </Text>
       )}
       
       <WheelControls
