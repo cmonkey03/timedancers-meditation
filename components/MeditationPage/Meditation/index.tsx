@@ -1,6 +1,7 @@
 import WheelControls from '@/components/MeditationPage/WheelControls';
 import Wheel from '@/components/MeditationPage/Wheel';
 import { useAlerts } from '@/hooks/use-alerts';
+import type { AlertMode } from '@/hooks/use-notifications';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
@@ -209,6 +210,7 @@ const Meditation = () => {
 
   // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
+    (async () => {
     const newCurrentTime = timer.now;
 
     // Start chime (session beginning)
@@ -240,8 +242,13 @@ const Meditation = () => {
         !newCurrentTime.done
       ) {
         if (__DEV__) console.log(`[chime] ${label} transition`);
-        playStartAlert();
-        chimeDoneRefs.current[refKey] = true;
+        const currentMode = await AsyncStorage.getItem('alertMode') as AlertMode | null;
+        playStartAlert(currentMode ?? undefined);
+        // Only mark done if mode actually plays something, so switching from
+        // silent to a chime mode mid-session will still alert on the same phase
+        if (currentMode !== 'silent') {
+          chimeDoneRefs.current[refKey] = true;
+        }
       }
     }
 
@@ -261,6 +268,7 @@ const Meditation = () => {
         setShowCompleted(false);
       }, 5000);
     }
+    })();
   }, [timer, playStartAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
 
   // Cleanup any pending completion reset timeout on unmount
