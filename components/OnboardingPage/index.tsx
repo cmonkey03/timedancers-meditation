@@ -132,9 +132,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
         containerStyles={{
-          paddingBottom: 110, 
-          paddingTop: 60,
-          justifyContent: 'flex-start',
+          paddingBottom: 140, 
+          justifyContent: 'center',
         }}
         imageContainerStyles={{
           paddingBottom: 8,
