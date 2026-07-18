@@ -19,7 +19,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeOverrideProvider>
-          <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left', 'bottom']}>
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left']}>
             <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
