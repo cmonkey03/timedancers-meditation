@@ -9,7 +9,7 @@ interface Props {
 
 const SubtitleWrapper = ({ color, text, reducePadding = false }: Props) => {
   const { fontsLoaded, fonts } = useCustomFonts();
-  const verticalPadding = reducePadding ? 8 : 16;
+  const verticalPadding = reducePadding ? 4 : 16;
   
   if (!fontsLoaded) {
     return (
