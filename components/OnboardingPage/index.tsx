@@ -1,9 +1,7 @@
 import Wheel from '@/components/MeditationPage/Wheel';
 import { useThemeColors } from '@/hooks/use-theme';
-import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
@@ -17,7 +15,6 @@ type Props = {
 
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
-  const insets = useSafeAreaInsets();
   const SkipButton = (props: any) => (
     <Pressable
       {...props}
@@ -124,8 +121,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
 
   return (
     <View testID="onboarding" style={{ 
-      flex: 1, 
-      paddingTop: Math.max(insets.top, 20)
+      flex: 1
     }}>
       <Onboarding
         onDone={() => {
