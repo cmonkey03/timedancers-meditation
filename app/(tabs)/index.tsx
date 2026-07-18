@@ -16,13 +16,8 @@ export default function HomeScreen() {
 
   // Check if we should skip onboarding (for E2E tests)
   useEffect(() => {
-    // Skip onboarding for development and testing
-    // Check multiple indicators to ensure it works in all environments
-    const shouldSkipOnboarding = __DEV__ || 
-      process.env.NODE_ENV === 'development' ||
-      process.env.NODE_ENV === 'test' ||
-      // Always skip in any non-production environment
-      process.env.NODE_ENV !== 'production';
+    // Only skip onboarding in test mode
+    const shouldSkipOnboarding = process.env.NODE_ENV === 'test';
     
     console.log('Onboarding Skip Check:', {
       __DEV__,
@@ -31,7 +26,7 @@ export default function HomeScreen() {
     });
     
     if (shouldSkipOnboarding) {
-      console.log('Development/test mode detected, skipping onboarding');
+      console.log('Test mode detected, skipping onboarding');
       setSkipOnboarding(true);
       // Auto-navigate to meditate after a short delay
       setTimeout(() => {
