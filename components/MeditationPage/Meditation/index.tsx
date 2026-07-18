@@ -13,6 +13,10 @@ import * as Haptics from 'expo-haptics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Text, View } from 'react-native';
 
+/* eslint-disable react-hooks/exhaustive-deps -- Refs are intentionally excluded from deps */
+/* eslint-disable react-hooks/immutability -- Refs are intentionally mutable */
+/* eslint-disable react-hooks/set-state-in-effect -- setState in effect is intentional here */
+
 // Timer/UI constants
 const START_CHIME_WINDOW_MS = 500;
 
@@ -133,7 +137,6 @@ const Meditation = () => {
       // Cancel any scheduled notifications now that it's disabled
       Notifier.cancelAllScheduled();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allowBackgroundAlerts, timer.running]);
 
   const handleInput = (text: string) => {
@@ -280,12 +283,10 @@ const Meditation = () => {
   // Reset phase index when timer resets
   useEffect(() => {
     if (!timer.started) {
-      chimeDoneRefs.current = {
-        start: false,
-        phase1to2: false,
-        phase2to3: false,
-        completion: false,
-      };
+      chimeDoneRefs.current.start = false;
+      chimeDoneRefs.current.phase1to2 = false;
+      chimeDoneRefs.current.phase2to3 = false;
+      chimeDoneRefs.current.completion = false;
       setShowCompleted(false);
       prevIndex.current = 0;
     }
@@ -306,6 +307,7 @@ const Meditation = () => {
         // Create wheel cards in correct order (wisdom at top, power at bottom)
         const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
         
+        // eslint-disable-next-line react-hooks/refs -- prevIndex ref is intentionally accessed during render for animation state
         return wheelOrder.map((i) => {
           const wheel = WHEELS[i];
           const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
