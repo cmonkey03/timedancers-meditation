@@ -18,10 +18,12 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
   }));
 
   const handlePressIn = () => {
+    /* eslint-disable-next-line react-hooks/immutability */
     scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
   };
 
   const handlePressOut = () => {
+    /* eslint-disable-next-line react-hooks/immutability */
     scale.value = withSpring(1, { damping: 15, stiffness: 300 });
   };
 
