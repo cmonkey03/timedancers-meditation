@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 
@@ -15,12 +15,12 @@ interface Props {
 
 const WheelControls = ({ counting, handleInput, input, onPress, started }: Props) => {
   const C = useThemeColors();
-  const [buttonText, setButtonText] = useState('');
 
-  useEffect(() => {
-    if (counting) setButtonText('Pause');
-    if (!started) setButtonText('Start');
-    if (!counting && started) setButtonText('Resume');
+  const buttonText = useMemo(() => {
+    if (counting) return 'Pause';
+    if (!started) return 'Start';
+    if (!counting && started) return 'Resume';
+    return '';
   }, [counting, started]);
 
   if (started) {

@@ -7,34 +7,23 @@ import { useThemeColors } from '@/hooks/use-theme';
 export default function HomeScreen() {
   const router = useRouter();
   const [key, setKey] = useState(0);
-  const [skipOnboarding, setSkipOnboarding] = useState(false);
+  const [skipOnboarding] = useState(() => process.env.NODE_ENV === 'test');
   const C = useThemeColors();
 
   const finishOnboarding = useCallback(async () => {
     router.push('/meditate');
   }, [router]);
 
-  // Check if we should skip onboarding (for E2E tests)
+  // Auto-navigate to meditate in test mode
   useEffect(() => {
-    // Only skip onboarding in test mode
-    const shouldSkipOnboarding = process.env.NODE_ENV === 'test';
-    
-    console.log('Onboarding Skip Check:', {
-      __DEV__,
-      nodeEnv: process.env.NODE_ENV,
-      shouldSkipOnboarding
-    });
-    
-    if (shouldSkipOnboarding) {
-      console.log('Test mode detected, skipping onboarding');
-      setSkipOnboarding(true);
-      // Auto-navigate to meditate after a short delay
-      setTimeout(() => {
+    if (skipOnboarding) {
+      const timeout = setTimeout(() => {
         console.log('Auto-navigating to meditate screen');
         router.push('/meditate');
       }, 1000);
+      return () => clearTimeout(timeout);
     }
-  }, [router]);
+  }, [skipOnboarding, router]);
 
   // Re-mount onboarding component when this screen loses focus (blur event)
   useFocusEffect(

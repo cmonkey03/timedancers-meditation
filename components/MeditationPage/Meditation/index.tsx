@@ -14,7 +14,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Text, View } from 'react-native';
 
 /* eslint-disable react-hooks/exhaustive-deps -- Refs are intentionally excluded from deps */
-/* eslint-disable react-hooks/immutability -- Refs are intentionally mutable */
 /* eslint-disable react-hooks/set-state-in-effect -- setState in effect is intentional here */
 
 // Timer/UI constants
