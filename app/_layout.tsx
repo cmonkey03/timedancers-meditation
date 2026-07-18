@@ -3,8 +3,9 @@
 import 'react-native-gesture-handler';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { View } from 'react-native';
 import 'react-native-reanimated';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 // eslint-disable-next-line import/no-duplicates
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -19,12 +20,12 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeOverrideProvider>
-          <SafeAreaView style={{ flex: 1 }} edges={['top', 'right', 'left']}>
+          <View style={{ flex: 1 }}>
             <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             </Stack>
             <StatusBar style="auto" />
-          </SafeAreaView>
+          </View>
         </ThemeOverrideProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
