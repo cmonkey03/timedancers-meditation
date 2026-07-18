@@ -175,7 +175,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
             </ImageWrapper>
           ),
           title: <TitleWrapper color={C.text} text="Three Sacred Centers" />,
-          subtitle: <SubtitleWrapper color={C.text} text={instructions[0] || ''} reducePadding />,
+          subtitle: <SubtitleWrapper color={C.text} text={instructions[0] || ''} />,
         },
         {
           backgroundColor: C.background,
