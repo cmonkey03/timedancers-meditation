@@ -1,11 +1,15 @@
 import Wheel from '@/components/MeditationPage/Wheel';
+import { Ionicons } from '@expo/vector-icons';
 import { useThemeColors } from '@/hooks/use-theme';
+import { useCustomFonts } from '@/hooks/use-fonts';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import AnimatedWelcomeText from './AnimatedWelcomeText';
+import AnimatedBounceArrow from './AnimatedBounceArrow';
 import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
+import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
 
@@ -15,6 +19,7 @@ type Props = {
 
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
+  const { fontsLoaded, fonts } = useCustomFonts();
   const SkipButton = (props: any) => (
     <Pressable
       {...props}
@@ -143,7 +148,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               <AnimatedWelcomeText />
             </ImageWrapper>
           ),
-          subtitle: '',
+          subtitle: <SwipeIndicator />,
           title: '',
         },
         {
@@ -188,6 +193,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 28,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Power"
@@ -204,6 +218,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 28,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Heart"
@@ -220,6 +243,15 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           backgroundColor: C.background,
           image: (
             <ImageWrapper>
+              <Text style={{
+                color: `${C.text}66`,
+                fontSize: 13,
+                fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
+                fontWeight: fontsLoaded ? undefined : '500',
+                letterSpacing: 1.5,
+                textTransform: 'uppercase',
+                marginBottom: 28,
+              }}>Preview</Text>
               <AnimatedWheel 
                 size={180}
                 label="Wisdom"
@@ -231,6 +263,35 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           ),
           title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
           subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
+        },
+        {
+          backgroundColor: C.background,
+          image: (
+            <ImageWrapper>
+              <View style={{ alignItems: 'center', gap: 12 }}>
+                <View
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 40,
+                    backgroundColor: `${C.primary}20`,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Ionicons name="aperture" size={44} color={C.primary} />
+                </View>
+                <AnimatedBounceArrow color={C.text} />
+              </View>
+            </ImageWrapper>
+          ),
+          title: <TitleWrapper text="Ready to Begin?" color={C.text} />,
+          subtitle: (
+            <SubtitleWrapper
+              text="Tap the Meditate tab below to start your first session. Choose your duration and press Start."
+              color={C.text}
+            />
+          ),
         },
         ]}
       />
