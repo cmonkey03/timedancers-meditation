@@ -103,15 +103,6 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     </Pressable>
   );
 
-  // Original instructions (preserved for reference)
-  // const originalInstructions = [
-  //   `Sit upright in a chair with your appendages at rest or, if possible, on the ground seated cross-legged on a pillow or folded blanket.`,
-  //   `When you start the timer, spend equal time focusing on each wheel to the exclusion of everything else. The first chime tells you to begin to focus on the Wheel of Power, which is located two fingers below the naval (your belly button).`,
-  //   `The second chime begins your time with the Wheel of Heart, which is located in the center of your chest. Practice allowing yet not attaching to any thoughts, feelings or sensations that arise.`,
-  //   `The third chime is the beginning of your meditation on the Wheel of Widsom, located in the center of your forhead just above the eyebrows. On the last chime, your climb of the Wheel Tower has ended. Finish by bowing your head if you are seated in a chair, or touching your forehead to the ground if you are on the floor.`,
-  // ];
-
-  // New improved instructions
   const instructions = [
     `Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.`,
     `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natural power.`,
