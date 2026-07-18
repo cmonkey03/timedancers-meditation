@@ -4,12 +4,10 @@ import { useCustomFonts } from '@/hooks/use-fonts';
 interface Props {
   color?: string;
   text: string;
-  reducePadding?: boolean;
 }
 
-const SubtitleWrapper = ({ color, text, reducePadding = false }: Props) => {
+const SubtitleWrapper = ({ color, text }: Props) => {
   const { fontsLoaded, fonts } = useCustomFonts();
-  const verticalPadding = reducePadding ? 4 : 16;
   
   if (!fontsLoaded) {
     return (
@@ -19,7 +17,7 @@ const SubtitleWrapper = ({ color, text, reducePadding = false }: Props) => {
           fontSize: 16,
           fontWeight: '400',
           paddingHorizontal: 32,
-          paddingVertical: verticalPadding,
+          paddingVertical: 16,
           textAlign: 'center',
           lineHeight: 24,
           letterSpacing: 0.2,
@@ -37,7 +35,7 @@ const SubtitleWrapper = ({ color, text, reducePadding = false }: Props) => {
         fontSize: 16,
         fontFamily: fonts.inter.regular,
         paddingHorizontal: 32,
-        paddingVertical: verticalPadding,
+        paddingVertical: 16,
         textAlign: 'center',
         lineHeight: 24,
         letterSpacing: 0.3,
