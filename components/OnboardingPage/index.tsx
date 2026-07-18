@@ -18,14 +18,6 @@ type Props = {
 const OnboardingPage = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
   const insets = useSafeAreaInsets();
-  
-  // Calculate actual content area by subtracting UI elements
-  const tabBarHeight = 83; // Standard iOS tab bar height
-  const onboardingControlsHeight = 80; // Skip/Next/Done buttons area
-
-  
-  // Calculate how much to shift content up to center it in available space
-  const contentShift = (tabBarHeight + onboardingControlsHeight) / 1.3;
   const SkipButton = (props: any) => (
     <Pressable
       {...props}
@@ -133,7 +125,6 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   return (
     <View testID="onboarding" style={{ 
       flex: 1, 
-      marginTop: -contentShift,
       paddingTop: Math.max(insets.top, 20)
     }}>
       <Onboarding
