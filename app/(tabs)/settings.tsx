@@ -34,6 +34,7 @@ export default function SettingsScreen() {
       await AsyncStorage.multiRemove([
         'lastDurationMinutes',
         'alertMode',
+        'chimeVolume',
         'allowBackgroundAlerts',
         'dailyReminderTime',
         'dailyReminderId',

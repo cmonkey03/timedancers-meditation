@@ -1,4 +1,4 @@
-import { useAlerts } from '@/hooks/use-alerts';
+import { useChime } from '@/hooks/chime-context';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -212,24 +212,8 @@ type Props = {
 
 export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBackgroundAlerts }: Props) {
   const C = useThemeColors();
-  const [mode, setMode] = useState<AlertMode>('chime');
-  const { playStartAlert, volume, updateVolume } = useAlerts(mode);
+  const { playStartAlert, volume, updateVolume, mode, setMode } = useChime();
   const [sessionActive, setSessionActive] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const saved = await AsyncStorage.getItem('alertMode');
-        if (saved === 'chime' || saved === 'chime_haptic' || saved === 'haptic' || saved === 'silent') {
-          setMode(saved);
-        }
-      } catch {}
-    })();
-  }, []);
-
-  useEffect(() => {
-    AsyncStorage.setItem('alertMode', mode).catch(() => {});
-  }, [mode]);
 
   // Check if a meditation session is active
   useEffect(() => {
