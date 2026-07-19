@@ -139,15 +139,15 @@ function ChimeProviderInner({ children }: { children: React.ReactNode }) {
     // Don't play anything in silent mode
     if (mode === 'silent') return;
 
+    // Mark as played immediately to prevent duplicate calls
+    setPlayedEvents(prev => new Set(prev).add(event));
+
     // Play appropriate chime based on event type
     if (event === 'sessionComplete') {
       await playCompletionAlert();
     } else {
       await playStartAlert();
     }
-    
-    // Mark as played
-    setPlayedEvents(prev => new Set(prev).add(event));
   }, [playedEvents, mode, playStartAlert, playCompletionAlert]);
 
   const resetChimeState = useCallback(() => {

@@ -187,7 +187,7 @@ const Meditation = () => {
   useEffect(() => {
     const now = timer.now;
 
-    // Phase transition chimes
+    // Phase transition chimes - fire when entering a new phase
     if (timer.running && now.currentIndex !== lastPhaseIndexRef.current && !now.done) {
       const eventMap: Record<number, 'phase1to2' | 'phase2to3'> = {
         1: 'phase1to2',
@@ -201,24 +201,21 @@ const Meditation = () => {
       lastPhaseIndexRef.current = now.currentIndex;
     }
 
-    // Completion chime
-    if (now.done) {
+    // Completion chime - fire when session is done
+    if (now.done && !showCompleted) {
       if (__DEV__) console.log('[chime] session complete', alertMode);
       triggerChime('sessionComplete');
       Notifier.cancelAllScheduled();
       clearSessionToken();
       if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
-      // Show completion UI after chime plays for better UX
-      setTimeout(() => {
-        setShowCompleted(true);
-        completionResetTimeoutRef.current = setTimeout(() => {
-          reset();
-          setShowCompleted(false);
-          resetChimeState();
-        }, 5000);
-      }, 500);
+      setShowCompleted(true);
+      completionResetTimeoutRef.current = setTimeout(() => {
+        reset();
+        setShowCompleted(false);
+        resetChimeState();
+      }, 5000);
     }
-  }, [timer, triggerChime, alertMode, reset, clearSessionToken, resetChimeState]);
+  }, [timer, triggerChime, alertMode, reset, clearSessionToken, resetChimeState, showCompleted]);
 
   // Cleanup any pending completion reset timeout on unmount
   useEffect(() => {
