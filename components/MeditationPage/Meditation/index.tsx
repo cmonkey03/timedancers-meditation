@@ -135,6 +135,8 @@ const Meditation = () => {
         if (!timer.running && !timer.started) {
           // Start timer
           start();
+          // Reset completion trigger ref for new session
+          completionTriggeredRef.current = false;
           // Schedule notifications for all upcoming phase transitions and completion
           if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
           // Persist expected end time for cold-start cleanup
@@ -166,6 +168,7 @@ const Meditation = () => {
         clearSessionToken();
         // Reset chime state for new session
         resetChimeState();
+        completionTriggeredRef.current = false;
         break;
       case 'pause':
         // Pause timer
@@ -217,7 +220,7 @@ const Meditation = () => {
         reset();
         setShowCompleted(false);
         resetChimeState();
-        completionTriggeredRef.current = false;
+        // Don't reset completionTriggeredRef here - it will be reset when timer actually resets
       }, 10000);
     }
   }, [timer, triggerChime, alertMode, clearSessionToken, reset, resetChimeState, showCompleted]);
@@ -245,7 +248,7 @@ const Meditation = () => {
       lastPhaseIndexRef.current = -1;
       setShowCompleted(false);
       prevIndex.current = 0;
-      completionTriggeredRef.current = false;
+      // Don't reset completionTriggeredRef here - it's managed by the completion timeout
     }
   }, [timer.started]);
 
