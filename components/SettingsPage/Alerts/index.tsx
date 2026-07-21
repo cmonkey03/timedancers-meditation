@@ -1,4 +1,4 @@
-import { useAlerts } from '@/hooks/use-alerts';
+import { useChime } from '@/hooks/chime-context';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,15 +19,16 @@ const MODES: { key: AlertMode; label: string }[] = [
   { key: 'silent', label: 'Silent' },
 ];
 
-const TestButton = ({ onPress }: { onPress: () => void }) => {
+const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: boolean }) => {
   const C = useThemeColors();
   const scale = useSharedValue(1);
   
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
-
+  
   const handlePressIn = () => {
+    if (disabled) return;
     scale.value = withSpring(0.95, { damping: 15, stiffness: 300 });
   };
 
@@ -37,6 +38,7 @@ const TestButton = ({ onPress }: { onPress: () => void }) => {
 
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
@@ -49,14 +51,14 @@ const TestButton = ({ onPress }: { onPress: () => void }) => {
             paddingVertical: 10,
             borderRadius: 20,
             borderWidth: 2,
-            borderColor: `${C.text}4D`,
-            backgroundColor: 'transparent',
+            borderColor: disabled ? `${C.text}20` : `${C.text}4D`,
+            backgroundColor: disabled ? `${C.text}08` : 'transparent',
           },
           animatedStyle,
         ]}
       >
         <Text style={{ 
-          color: C.text, 
+          color: disabled ? `${C.text}40` : C.text, 
           fontWeight: '600',
           fontSize: 14,
         }}>
@@ -210,23 +212,21 @@ type Props = {
 
 export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBackgroundAlerts }: Props) {
   const C = useThemeColors();
-  const [mode, setMode] = useState<AlertMode>('chime');
-  const { playStartAlert, volume, updateVolume } = useAlerts(mode);
+  const { playStartAlert, volume, updateVolume, mode, setMode } = useChime();
+  const [sessionActive, setSessionActive] = useState(false);
 
+  // Check if a meditation session is active
   useEffect(() => {
-    (async () => {
+    const check = async () => {
       try {
-        const saved = await AsyncStorage.getItem('alertMode');
-        if (saved === 'chime' || saved === 'chime_haptic' || saved === 'haptic' || saved === 'silent') {
-          setMode(saved);
-        }
+        const endAt = await AsyncStorage.getItem('activeSessionEndAtMs');
+        setSessionActive(!!endAt && Date.now() < parseInt(endAt));
       } catch {}
-    })();
+    };
+    check();
+    const id = setInterval(check, 2000);
+    return () => clearInterval(id);
   }, []);
-
-  useEffect(() => {
-    AsyncStorage.setItem('alertMode', mode).catch(() => {});
-  }, [mode]);
 
   const handleVolumeChange = async (newVolume: number) => {
     await updateVolume(newVolume);
@@ -297,7 +297,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
       )}
 
       <View style={{ alignSelf: 'flex-start', marginTop: 4, marginBottom: 12 }}>
-        <TestButton onPress={() => playStartAlert()} />
+        <TestButton onPress={() => playStartAlert()} disabled={sessionActive} />
       </View>
 
       {/* Play alerts in background toggle */}

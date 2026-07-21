@@ -3,6 +3,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import type { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ChimeProvider } from '@/hooks/chime-context';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
 
@@ -12,6 +13,7 @@ export default function Layout() {
   const { fontsLoaded, fonts } = useCustomFonts();
   const bottomPad = Math.min(insets.bottom, 8); // clamp for compact spacing
   return (
+    <ChimeProvider>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: C.primary,
@@ -74,5 +76,6 @@ export default function Layout() {
           }}
         />
     </Tabs>
+    </ChimeProvider>
   );
 }

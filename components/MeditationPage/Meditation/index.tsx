@@ -1,6 +1,6 @@
 import WheelControls from '@/components/MeditationPage/WheelControls';
 import Wheel from '@/components/MeditationPage/Wheel';
-import { useAlerts } from '@/hooks/use-alerts';
+import { useChime } from '@/hooks/chime-context';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
@@ -13,11 +13,7 @@ import * as Haptics from 'expo-haptics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Text, View } from 'react-native';
 
-/* eslint-disable react-hooks/exhaustive-deps -- Refs are intentionally excluded from deps */
 /* eslint-disable react-hooks/set-state-in-effect -- setState in effect is intentional here */
-
-// Timer/UI constants
-const START_CHIME_WINDOW_MS = 500;
 
 function capitalize(s: string): string {
   if (!s) return '';
@@ -37,7 +33,6 @@ const Meditation = () => {
   const [input, setInput] = useState('5');
   const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
-  const [alertMode, setAlertMode] = useState<'chime' | 'chime_haptic' | 'haptic' | 'silent'>(() => 'chime');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
   const appIsActiveRef = useRef(true);
   const [showCompleted, setShowCompleted] = useState(false);
@@ -55,14 +50,14 @@ const Meditation = () => {
     if (differs) setPhases(next);
   }, [input, timer.running, timer.started, timer.phases, setPhases]);
 
-  // Alerts (chime/haptic)
-  const { playStartAlert, playCompletionAlert } = useAlerts(alertMode);
+  // Alerts (chime/haptic) — single shared instance from ChimeProvider
+  const { playStartAlert, triggerChime, resetChimeState, mode: alertMode } = useChime();
 
   // Configure audio once (silent mode, etc.)
   useEffect(() => {
     (async () => {
       try {
-        await setAudioModeAsync({ playsInSilentMode: true, staysActiveInBackground: true } as any);
+        await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: true });
       } catch (e) {
         console.log(e);
       }
@@ -83,10 +78,6 @@ const Meditation = () => {
         const stored = await AsyncStorage.getItem('lastDurationMinutes');
         if (stored && !timer.started) {
           setInput(stored);
-        }
-        const savedMode = await AsyncStorage.getItem('alertMode');
-        if (savedMode === 'chime' || savedMode === 'chime_haptic' || savedMode === 'haptic' || savedMode === 'silent') {
-          setAlertMode(savedMode);
         }
         const savedAllowBg = await AsyncStorage.getItem('allowBackgroundAlerts');
         if (savedAllowBg === 'true' || savedAllowBg === 'false') {
@@ -116,27 +107,21 @@ const Meditation = () => {
     }
   }, [input, timer.started]);
 
-  // Persist alertMode immediately when it changes
-  useEffect(() => {
-    AsyncStorage.setItem('alertMode', alertMode).catch(() => {});
-  }, [alertMode]);
-
   // Persist allowBackgroundAlerts
   useEffect(() => {
     AsyncStorage.setItem('allowBackgroundAlerts', allowBackgroundAlerts ? 'true' : 'false').catch(() => {});
   }, [allowBackgroundAlerts]);
 
-  // React immediately to background alerts toggle changes while running
+  // React to background-alerts toggle and alert-mode changes while running.
+  // Reschedule background notifications when either setting changes.
   useEffect(() => {
     if (!timer.running) return;
     if (allowBackgroundAlerts) {
-      // Reschedule remaining notifications now that it's enabled
       scheduleNotificationsForRemaining();
     } else {
-      // Cancel any scheduled notifications now that it's disabled
       Notifier.cancelAllScheduled();
     }
-  }, [allowBackgroundAlerts, timer.running]);
+  }, [alertMode, allowBackgroundAlerts, timer.running, scheduleNotificationsForRemaining]);
 
   const handleInput = (text: string) => {
     if (typeof text === 'string' && !Number.isNaN(Number(text))) {
@@ -150,6 +135,8 @@ const Meditation = () => {
         if (!timer.running && !timer.started) {
           // Start timer
           start();
+          // Reset completion trigger ref for new session
+          completionTriggeredRef.current = false;
           // Schedule notifications for all upcoming phase transitions and completion
           if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
           // Persist expected end time for cold-start cleanup
@@ -157,19 +144,17 @@ const Meditation = () => {
           // Initial phase alert: either instant or slightly debounced to avoid background glitch
           const fireStartAlert = () => {
             if (!appIsActiveRef.current) return;
-            playStartAlert();
+            // Add a small delay to ensure audio player is ready
+            setTimeout(() => {
+              triggerChime('sessionStart');
+            }, 300);
           };
           setTimeout(fireStartAlert, 120);
-          // Mark start chime as done to avoid the interval safety net playing it again
-          chimeDoneRefs.current.start = true;
         } else if (!timer.running) {
           // Resume timer
           resume();
           // Re-schedule from current position
           if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
-          // Ensure we don't replay the start chime after a resume
-          chimeDoneRefs.current.start = true;
-          chimeDoneRefs.current.completion = false;
         }
         break;
       case 'cancel':
@@ -181,6 +166,9 @@ const Meditation = () => {
         // Cancel any scheduled notifications
         Notifier.cancelAllScheduled();
         clearSessionToken();
+        // Reset chime state for new session
+        resetChimeState();
+        completionTriggeredRef.current = false;
         break;
       case 'pause':
         // Pause timer
@@ -198,75 +186,50 @@ const Meditation = () => {
     }
   };
 
-  // Chime guards to ensure each chime only plays once per session
-  const chimeDoneRefs = useRef({
-    start: false,
-    phase1to2: false,
-    phase2to3: false,
-    completion: false,
-  });
   const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPhaseIndexRef = useRef<number>(-1);
+  const completionTriggeredRef = useRef(false);
 
   // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
-    const newCurrentTime = timer.now;
+    const now = timer.now;
 
-    // Start chime (session beginning)
-    if (
-      timer.running &&
-      !chimeDoneRefs.current.start &&
-      newCurrentTime.currentIndex === 0 &&
-      !newCurrentTime.done
-    ) {
-      const phase0Ms = (timer.phases[0]?.seconds ?? 0) * 1000;
-      if (phase0Ms > 0 && phase0Ms - newCurrentTime.phaseRemainingMs <= START_CHIME_WINDOW_MS) {
-        if (__DEV__) console.log('[chime] start-of-session');
-        playStartAlert();
-        chimeDoneRefs.current.start = true;
+    // Phase transition chimes - fire when entering a new phase
+    if (timer.running && now.currentIndex !== lastPhaseIndexRef.current && !now.done) {
+      const eventMap: Record<number, 'phase1to2' | 'phase2to3'> = {
+        1: 'phase1to2',
+        2: 'phase2to3',
+      };
+      const event = eventMap[now.currentIndex];
+      if (event) {
+        triggerChime(event);
       }
+      lastPhaseIndexRef.current = now.currentIndex;
     }
 
-    // Phase transition chimes
-    const phaseTransitions = [
-      { index: 1, refKey: 'phase1to2' as const, label: 'phase 1→2' },
-      { index: 2, refKey: 'phase2to3' as const, label: 'phase 2→3' },
-    ];
-
-    for (const { index, refKey, label } of phaseTransitions) {
-      if (
-        timer.running &&
-        !chimeDoneRefs.current[refKey] &&
-        newCurrentTime.currentIndex === index &&
-        !newCurrentTime.done
-      ) {
-        if (__DEV__) console.log(`[chime] ${label} transition`);
-        playStartAlert();
-        chimeDoneRefs.current[refKey] = true;
-      }
-    }
-
-    // Completion chime
-    if (newCurrentTime.done && !chimeDoneRefs.current.completion) {
-      if (__DEV__) console.log('[chime] session complete');
-      playCompletionAlert();
-      chimeDoneRefs.current.completion = true;
-      // Cancel any pending notifications now that we're done
+    // Completion chime - fire when session is done
+    if (now.done && !showCompleted && !completionTriggeredRef.current) {
+      completionTriggeredRef.current = true;
+      triggerChime('sessionComplete');
       Notifier.cancelAllScheduled();
       clearSessionToken();
-      // Show completion state briefly, then reset back to Start/input
       if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
       setShowCompleted(true);
+      // Auto-reset after 10 seconds
       completionResetTimeoutRef.current = setTimeout(() => {
         reset();
         setShowCompleted(false);
-      }, 2000);
+        resetChimeState();
+        // Don't reset completionTriggeredRef here - it will be reset when timer actually resets
+      }, 10000);
     }
-  }, [timer, playStartAlert, playCompletionAlert, alertMode, reset, clearSessionToken]);
+  }, [timer, triggerChime, alertMode, clearSessionToken, reset, resetChimeState, showCompleted]);
 
   // Cleanup any pending completion reset timeout on unmount
   useEffect(() => {
+    const timeout = completionResetTimeoutRef.current;
     return () => {
-      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+      if (timeout) clearTimeout(timeout);
     };
   }, []);
 
@@ -282,12 +245,10 @@ const Meditation = () => {
   // Reset phase index when timer resets
   useEffect(() => {
     if (!timer.started) {
-      chimeDoneRefs.current.start = false;
-      chimeDoneRefs.current.phase1to2 = false;
-      chimeDoneRefs.current.phase2to3 = false;
-      chimeDoneRefs.current.completion = false;
+      lastPhaseIndexRef.current = -1;
       setShowCompleted(false);
       prevIndex.current = 0;
+      // Don't reset completionTriggeredRef here - it's managed by the completion timeout
     }
   }, [timer.started]);
 
@@ -315,7 +276,7 @@ const Meditation = () => {
           const isDone = i < timer.now.currentIndex || timer.now.done;
 
           const wheelState: "idle" | "active" | "releasing" | "done" =
-            isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
+            timer.now.done ? "done" : isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
 
           const total = timer.phases[i]?.seconds ?? wheel.seconds;
           const remaining = (() => {
@@ -344,7 +305,9 @@ const Meditation = () => {
       })()}
       
       {showCompleted && (
-        <Text style={{ marginTop: 12, color: C.text, fontWeight: '700', fontSize: 18 }}>Session complete</Text>
+        <Text style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}>
+          Session complete!
+        </Text>
       )}
       
       <WheelControls
