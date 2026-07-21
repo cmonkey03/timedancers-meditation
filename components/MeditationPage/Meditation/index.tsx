@@ -142,7 +142,10 @@ const Meditation = () => {
           // Initial phase alert: either instant or slightly debounced to avoid background glitch
           const fireStartAlert = () => {
             if (!appIsActiveRef.current) return;
-            triggerChime('sessionStart');
+            // Add a small delay to ensure audio player is ready
+            setTimeout(() => {
+              triggerChime('sessionStart');
+            }, 300);
           };
           setTimeout(fireStartAlert, 120);
         } else if (!timer.running) {
@@ -182,6 +185,7 @@ const Meditation = () => {
 
   const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastPhaseIndexRef = useRef<number>(-1);
+  const completionTriggeredRef = useRef(false);
 
   // React to timer state updates (from hook) to trigger chimes / haptics based on mode
   useEffect(() => {
@@ -195,32 +199,34 @@ const Meditation = () => {
       };
       const event = eventMap[now.currentIndex];
       if (event) {
-        if (__DEV__) console.log(`[chime] phase transition to ${now.currentIndex}`, alertMode);
         triggerChime(event);
       }
       lastPhaseIndexRef.current = now.currentIndex;
     }
 
     // Completion chime - fire when session is done
-    if (now.done && !showCompleted) {
-      if (__DEV__) console.log('[chime] session complete', alertMode);
+    if (now.done && !showCompleted && !completionTriggeredRef.current) {
+      completionTriggeredRef.current = true;
       triggerChime('sessionComplete');
       Notifier.cancelAllScheduled();
       clearSessionToken();
       if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
       setShowCompleted(true);
+      // Auto-reset after 10 seconds
       completionResetTimeoutRef.current = setTimeout(() => {
         reset();
         setShowCompleted(false);
         resetChimeState();
-      }, 5000);
+        completionTriggeredRef.current = false;
+      }, 10000);
     }
-  }, [timer, triggerChime, alertMode, reset, clearSessionToken, resetChimeState, showCompleted]);
+  }, [timer, triggerChime, alertMode, clearSessionToken, reset, resetChimeState, showCompleted]);
 
   // Cleanup any pending completion reset timeout on unmount
   useEffect(() => {
+    const timeout = completionResetTimeoutRef.current;
     return () => {
-      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
+      if (timeout) clearTimeout(timeout);
     };
   }, []);
 
@@ -239,6 +245,7 @@ const Meditation = () => {
       lastPhaseIndexRef.current = -1;
       setShowCompleted(false);
       prevIndex.current = 0;
+      completionTriggeredRef.current = false;
     }
   }, [timer.started]);
 
@@ -266,7 +273,7 @@ const Meditation = () => {
           const isDone = i < timer.now.currentIndex || timer.now.done;
 
           const wheelState: "idle" | "active" | "releasing" | "done" =
-            isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
+            timer.now.done ? "done" : isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
 
           const total = timer.phases[i]?.seconds ?? wheel.seconds;
           const remaining = (() => {

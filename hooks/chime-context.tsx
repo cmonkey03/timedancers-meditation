@@ -76,9 +76,8 @@ function ChimeProviderInner({ children }: { children: React.ReactNode }) {
     if (mode === 'chime' || mode === 'chime_haptic') {
       try {
         if (chime1) {
-          await chime1.pause();
-          await chime1.seekTo(0);
           chime1.volume = volume;
+          await chime1.seekTo(0);
           await chime1.play();
         }
       } catch (e) {
@@ -98,7 +97,9 @@ function ChimeProviderInner({ children }: { children: React.ReactNode }) {
           await delay(120);
           await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         }
-      } catch {}
+      } catch (e) {
+        console.log('[chime] error playing haptics:', e);
+      }
     }
   }, [mode, chime1, volume]);
 
@@ -106,9 +107,8 @@ function ChimeProviderInner({ children }: { children: React.ReactNode }) {
     if (mode === 'chime' || mode === 'chime_haptic') {
       try {
         if (chime2) {
-          await chime2.pause();
-          await chime2.seekTo(0);
           chime2.volume = volume;
+          await chime2.seekTo(0);
           await chime2.play();
         }
       } catch (e) {
@@ -128,7 +128,9 @@ function ChimeProviderInner({ children }: { children: React.ReactNode }) {
           await delay(140);
           await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         }
-      } catch {}
+      } catch (e) {
+        console.log('[chime] error playing completion haptics:', e);
+      }
     }
   }, [mode, chime2, volume]);
 
