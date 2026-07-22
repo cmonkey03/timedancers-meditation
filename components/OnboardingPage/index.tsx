@@ -12,6 +12,7 @@ import SubtitleWrapper from './SubtitleWrapper';
 import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
+import { onboardingData } from '@/data/onboarding';
 
 type Props = {
   finishOnboarding: () => void;
@@ -44,7 +45,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         fontSize: 15,
         opacity: 0.6,
         letterSpacing: 0.3,
-      }}>Skip</Text>
+      }}>{onboardingData.buttons.skip}</Text>
     </Pressable>
   );
 
@@ -72,7 +73,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         color: C.text, 
         fontSize: 15,
         letterSpacing: 0.3,
-      }}>Next</Text>
+      }}>{onboardingData.buttons.next}</Text>
     </Pressable>
   );
 
@@ -104,16 +105,10 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
         color: '#FFFFFF', 
         fontSize: 15,
         letterSpacing: 0.3,
-      }}>Begin</Text>
+      }}>{onboardingData.buttons.begin}</Text>
     </Pressable>
   );
 
-  const instructions = [
-    `Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.`,
-    `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natural`,
-    `Move to your Heart center in your chest. In timelessness, love flows freely. Practice letting go—or if needed, dive so completely into what you're feeling that attachment releases itself.`,
-    `Rest in your Wisdom center at your forehead. From timelessness comes true knowing. Whether through gentle release or complete surrender, find the space where wisdom naturally arises.`,
-  ];
 
   return (
     <View testID="onboarding" style={{ 
@@ -186,8 +181,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               </View>
             </ImageWrapper>
           ),
-          title: <TitleWrapper color={C.text} text="Three Sacred Centers" />,
-          subtitle: <SubtitleWrapper color={C.text} text={instructions[0] || ''} />,
+          title: <TitleWrapper color={C.text} text={onboardingData.pages[1].title} />,
+          subtitle: <SubtitleWrapper color={C.text} text={onboardingData.instructions[0] || ''} />,
         },
         {
           backgroundColor: C.background,
@@ -201,7 +196,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>Preview</Text>
+              }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
                 label="Power"
@@ -211,8 +206,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Power" color={C.text} />,
-          subtitle: <SubtitleWrapper text={instructions[1] || ''} color={C.text} />,
+          title: <TitleWrapper text={onboardingData.pages[2].title} color={C.text} />,
+          subtitle: <SubtitleWrapper text={onboardingData.instructions[1] || ''} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -226,7 +221,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>Preview</Text>
+              }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
                 label="Heart"
@@ -236,8 +231,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Heart" color={C.text} />,
-          subtitle: <SubtitleWrapper text={instructions[2] || ''} color={C.text} />,
+          title: <TitleWrapper text={onboardingData.pages[3].title} color={C.text} />,
+          subtitle: <SubtitleWrapper text={onboardingData.instructions[2] || ''} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -251,7 +246,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>Preview</Text>
+              }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
                 label="Wisdom"
@@ -261,8 +256,8 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Wheel of Wisdom" color={C.text} />,
-          subtitle: <SubtitleWrapper text={instructions[3] || ''} color={C.text} />,
+          title: <TitleWrapper text={onboardingData.pages[4].title} color={C.text} />,
+          subtitle: <SubtitleWrapper text={onboardingData.instructions[3] || ''} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -285,10 +280,10 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               </View>
             </ImageWrapper>
           ),
-          title: <TitleWrapper text="Ready to Begin?" color={C.text} />,
+          title: <TitleWrapper text={onboardingData.pages[5].title} color={C.text} />,
           subtitle: (
             <SubtitleWrapper
-              text="Tap the Meditate tab below to start your first session. Choose your duration and press Start."
+              text={onboardingData.pages[5].subtitle}
               color={C.text}
             />
           ),

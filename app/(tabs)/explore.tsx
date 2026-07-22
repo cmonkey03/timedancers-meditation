@@ -2,12 +2,8 @@ import { useThemeColors } from '@/hooks/use-theme';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { exploreData } from '@/data/explore';
 
-const links = [
-  { label: 'About the creator of this app', url: 'https://russell.dance' },
-  { label: 'Research: Intimate Violence', url: 'https://russell.dance/research/feeling-impact' },
-  { label: 'Newsletter', url: 'https://newsletter.gypsyfires.com' },
-];
 
 const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
   const C = useThemeColors();
@@ -42,8 +38,8 @@ export default function Explore() {
   const C = useThemeColors();
   return (
     <View style={[s.wrap, { backgroundColor: C.background }]}>
-      <Text style={[s.title, { color: C.text }]}>Explore</Text>
-      {links.map((l) => (
+      <Text style={[s.title, { color: C.text }]}>{exploreData.title}</Text>
+      {exploreData.links.map((l) => (
         <LinkButton key={l.url} link={l} />
       ))}
     </View>
