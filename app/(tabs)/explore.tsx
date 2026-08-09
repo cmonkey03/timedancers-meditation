@@ -2,12 +2,8 @@ import { useThemeColors } from '@/hooks/use-theme';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { exploreData } from '@/data/explore';
 
-const links = [
-  { label: 'About the creator of this app', url: 'https://russell.dance' },
-  { label: 'Research: Intimate Violence', url: 'https://russell.dance/research/feeling-impact' },
-  { label: 'Newsletter', url: 'https://newsletter.gypsyfires.com' },
-];
 
 const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
   const C = useThemeColors();
@@ -30,6 +26,9 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
       onPress={() => WebBrowser.openBrowserAsync(link.url)}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      accessibilityLabel={link.label}
+      accessibilityRole="link"
+      accessibilityHint={`Opens ${link.label} in browser`}
     >
       <Animated.View style={[s.link, { borderBottomColor: C.border }, animatedStyle]}>
         <Text style={[s.linkText, { color: C.text }]}>{link.label}</Text>
@@ -41,9 +40,9 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
 export default function Explore() {
   const C = useThemeColors();
   return (
-    <View style={[s.wrap, { backgroundColor: C.background }]}>
-      <Text style={[s.title, { color: C.text }]}>Explore</Text>
-      {links.map((l) => (
+    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel="Explore resources page" accessibilityRole="none">
+      <Text style={[s.title, { color: C.text }]}>{exploreData.title}</Text>
+      {exploreData.links.map((l) => (
         <LinkButton key={l.url} link={l} />
       ))}
     </View>

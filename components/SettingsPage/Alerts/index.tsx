@@ -43,6 +43,9 @@ const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: bool
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       testID="test-alert-button"
+      accessibilityLabel="Test alert"
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
     >
       <Animated.View
         style={[
@@ -170,6 +173,11 @@ const VolumeSlider = ({
                 width: sliderWidth,
               }
             ]}
+            accessibilityLabel={`Chime volume ${volumePercentage} percent`}
+            accessibilityRole="adjustable"
+            accessibilityValue={{ min: 0, max: 100, now: volumePercentage }}
+            accessibilityHint="Swipe left or right to adjust volume"
+            accessible={true}
           >
             {/* Active track */}
             <Animated.View
@@ -255,6 +263,9 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         testID={`alert-mode-${m.key}`}
+        accessibilityLabel={m.label}
+        accessibilityRole="radio"
+        accessibilityState={{ selected }}
       >
         <Animated.View
           style={[

@@ -5,6 +5,7 @@ import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
+import { getPhaseAccessibilityLabel, getTimeAccessibilityLabel } from '@/utils/accessibility';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -262,6 +263,8 @@ const Meditation = () => {
         justifyContent: 'center',
         backgroundColor: C.background,
       }}
+      accessibilityLabel={timer.running ? "Meditation session in progress" : "Meditation timer setup"}
+      accessibilityRole="none"
     >
       {(() => {
         // Create wheel cards in correct order (wisdom at top, power at bottom)
@@ -298,6 +301,7 @@ const Meditation = () => {
                 total={total}
                 state={wheelState}
                 colors={wheel.colors}
+                accessibilityLabel={getPhaseAccessibilityLabel(wheel.key, remaining)}
               />
             </View>
           );
@@ -305,7 +309,12 @@ const Meditation = () => {
       })()}
       
       {showCompleted && (
-        <Text style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}>
+        <Text 
+          style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
+          accessibilityLabel="Meditation session complete"
+          accessibilityRole="alert"
+          accessible={true}
+        >
           Session complete!
         </Text>
       )}

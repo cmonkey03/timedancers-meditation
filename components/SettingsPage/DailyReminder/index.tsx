@@ -34,6 +34,10 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       onPressOut={handlePressOut}
       disabled={!enabled}
       testID="daily-reminder-time-button"
+      accessibilityLabel={`Daily reminder time ${time || 'not set'}`}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !enabled }}
+      accessibilityHint={enabled ? "Tap to change daily reminder time" : "Enable daily reminder to set time"}
     >
       <Animated.View
         style={[
@@ -104,6 +108,8 @@ export default function DailyReminder() {
             } catch {}
           }}
           testID="daily-reminder-switch"
+          accessibilityLabel="Enable daily reminder"
+          accessibilityHint="Toggle daily meditation reminder notification"
         />
         <View style={{ width: 16 }} />
         <TimeButton 
