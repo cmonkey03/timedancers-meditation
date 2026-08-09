@@ -43,6 +43,9 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       testID={testID}
+      accessibilityLabel={text}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: false }}
     >
       <Animated.View
         style={[
@@ -67,6 +70,7 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
 const styles = StyleSheet.create({
   btn: { 
     minWidth: 120, 
+    minHeight: 44, // WCAG minimum touch target size
     paddingHorizontal: 20, 
     paddingVertical: 14, 
     borderRadius: 22, 

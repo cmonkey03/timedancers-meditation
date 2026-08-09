@@ -25,7 +25,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     <Pressable
       {...props}
       testID="onboarding-skip"
-      accessibilityLabel="onboarding-skip"
+      accessibilityLabel={onboardingData.buttons.skip}
+      accessibilityRole="button"
+      accessibilityHint="Skip the onboarding tutorial"
       style={[
         {
           paddingHorizontal: 20,
@@ -53,7 +55,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     <Pressable
       {...props}
       testID="onboarding-next"
-      accessibilityLabel="onboarding-next"
+      accessibilityLabel={onboardingData.buttons.next}
+      accessibilityRole="button"
+      accessibilityHint="Go to next onboarding screen"
       style={[
         {
           paddingHorizontal: 20,
@@ -81,7 +85,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     <Pressable
       {...props}
       testID="onboarding-done"
-      accessibilityLabel="onboarding-done"
+      accessibilityLabel={onboardingData.buttons.begin}
+      accessibilityRole="button"
+      accessibilityHint="Complete onboarding and start using the app"
       style={[
         {
           paddingHorizontal: 24,
@@ -113,7 +119,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   return (
     <View testID="onboarding" style={{ 
       flex: 1
-    }}>
+    }} accessibilityLabel="Onboarding tutorial" accessibilityRole="none">
       <Onboarding
         onDone={() => {
           finishOnboarding();
