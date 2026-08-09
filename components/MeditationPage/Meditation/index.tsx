@@ -59,7 +59,11 @@ const Meditation = () => {
   useEffect(() => {
     (async () => {
       try {
-        await setAudioModeAsync({ playsInSilentMode: true, shouldPlayInBackground: true });
+        await setAudioModeAsync({ 
+          playsInSilentMode: true, 
+          shouldPlayInBackground: true,
+          allowsRecording: false,
+        });
       } catch (e) {
         console.log(e);
       }

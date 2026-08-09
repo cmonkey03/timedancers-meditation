@@ -46,6 +46,7 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
       accessibilityLabel={text}
       accessibilityRole="button"
       accessibilityState={{ disabled: false }}
+      accessible={true}
     >
       <Animated.View
         style={[
