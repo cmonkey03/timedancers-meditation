@@ -42,7 +42,12 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             testID="cancel-button"
           />
         </View>
-        <View style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}>
+        <View 
+          style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}
+          accessibilityLabel={counting ? 'Meditation in progress' : 'Meditation paused'}
+          accessibilityRole="summary"
+          accessible={true}
+        >
           <View style={[styles.statusDot, { 
             backgroundColor: counting ? '#4ade80' : '#fbbf24' 
           }]} />
@@ -72,7 +77,12 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           onValueChange={handleInput}
         />
       </View>
-      <View style={[styles.instructionContainer, { backgroundColor: `${C.text}08` }]}>
+      <View 
+        style={[styles.instructionContainer, { backgroundColor: `${C.text}08` }]}
+        accessibilityLabel="Select meditation time"
+        accessibilityRole="text"
+        accessible={true}
+      >
         <Text style={[styles.instructionText, { color: C.text }]}>
           Select meditation time
         </Text>

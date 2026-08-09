@@ -26,6 +26,9 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
       onPress={() => WebBrowser.openBrowserAsync(link.url)}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      accessibilityLabel={link.label}
+      accessibilityRole="link"
+      accessibilityHint={`Opens ${link.label} in browser`}
     >
       <Animated.View style={[s.link, { borderBottomColor: C.border }, animatedStyle]}>
         <Text style={[s.linkText, { color: C.text }]}>{link.label}</Text>
@@ -37,7 +40,7 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
 export default function Explore() {
   const C = useThemeColors();
   return (
-    <View style={[s.wrap, { backgroundColor: C.background }]}>
+    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel="Explore resources page" accessibilityRole="none">
       <Text style={[s.title, { color: C.text }]}>{exploreData.title}</Text>
       {exploreData.links.map((l) => (
         <LinkButton key={l.url} link={l} />

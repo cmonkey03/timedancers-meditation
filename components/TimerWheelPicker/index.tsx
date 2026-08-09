@@ -22,6 +22,8 @@ const TimerWheelPicker = ({ value, onValueChange }: Props) => {
           onValueChange={onValueChange}
           style={[styles.picker, { color: C.text }]}
           itemStyle={Platform.OS === 'ios' ? [styles.iosItem, { color: C.text }] : undefined}
+          accessibilityLabel={`Select meditation duration in minutes. Currently ${value} minutes`}
+          accessibilityHint="Swipe up or down to select meditation time"
         >
           {minuteOptions.map((minute) => (
             <Picker.Item

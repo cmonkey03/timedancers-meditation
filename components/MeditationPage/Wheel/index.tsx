@@ -1,5 +1,6 @@
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -43,6 +44,7 @@ type Props = MeditationWheelProps | SimpleWheelProps;
 const Wheel = (props: Props) => {
   const C = useThemeColors();
   const { fontsLoaded, fonts } = useCustomFonts();
+  const reduceMotion = useReducedMotion();
   
   // Determine if this is simple or meditation wheel
   const isSimple = 'backgroundColor' in props;
@@ -110,7 +112,7 @@ const Wheel = (props: Props) => {
 
   // Breathing animation
   React.useEffect(() => {
-    if (!isSimple) {
+    if (!isSimple && !reduceMotion) {
       if (state === "active") {
         // continuous breathing for active wheel
         breath.value = withRepeat(
@@ -135,12 +137,15 @@ const Wheel = (props: Props) => {
         // no breathing for other idle/done wheels
         breath.value = withTiming(0, { duration: 300 });
       }
+    } else {
+      // Stop animation when reduced motion is enabled
+      breath.value = withTiming(0, { duration: 300 });
     }
-  }, [state, label, breath, isSimple]);
+  }, [state, label, breath, isSimple, reduceMotion]);
 
   // Background spinning animation (only when timer is running)
   React.useEffect(() => {
-    if (!isSimple) {
+    if (!isSimple && !reduceMotion) {
       if (state === "active") {
         // continuous spinning for active wheel background
         backgroundSpin.value = withRepeat(
@@ -152,12 +157,15 @@ const Wheel = (props: Props) => {
         // no spinning when timer is not running
         backgroundSpin.value = withTiming(0, { duration: 300 });
       }
+    } else {
+      // Stop animation when reduced motion is enabled
+      backgroundSpin.value = withTiming(0, { duration: 300 });
     }
-  }, [state, backgroundSpin, isSimple]);
+  }, [state, backgroundSpin, isSimple, reduceMotion]);
 
   // Release animation (one spin + glow)
   React.useEffect(() => {
-    if (!isSimple && state === "releasing") {
+    if (!isSimple && state === "releasing" && !reduceMotion) {
       spin.value = withSequence(
         withTiming(1, { duration: 600, easing: Easing.out(Easing.cubic) }),
         withTiming(0, { duration: 0 }) // reset
@@ -166,8 +174,12 @@ const Wheel = (props: Props) => {
         withTiming(1, { duration: 300, easing: Easing.out(Easing.cubic) }),
         withDelay(150, withTiming(0, { duration: 500 }))
       );
+    } else if (reduceMotion) {
+      // Disable animations when reduced motion is enabled
+      spin.value = 0;
+      glow.value = 0;
     }
-  }, [state, spin, glow, isSimple]);
+  }, [state, spin, glow, isSimple, reduceMotion]);
 
   const aProps = useAnimatedProps(() => {
     if (isSimple) return { strokeDashoffset: 0 };
@@ -238,8 +250,10 @@ const Wheel = (props: Props) => {
             opacity: dimmed ? 0.9 : 1,
           },
         ]}
-        accessibilityLabel={`${label} ${mm}:${ss} remaining`}
-        accessibilityRole="timer"
+        accessibilityLabel={`${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
+        accessibilityRole="none"
+        accessibilityState={{ disabled: state === "done" }}
+        accessibilityHint={state === "active" ? "Meditation in progress" : state === "idle" ? "Ready to start" : "Session complete"}
       >
         {/* soft glow */}
         <Animated.View
