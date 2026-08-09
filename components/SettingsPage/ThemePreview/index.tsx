@@ -1,5 +1,6 @@
 import { useThemeColors } from '@/hooks/use-theme';
 import { useThemeOverride } from '@/hooks/theme-override';
+import { uiText } from '@/data/ui-text';
 import { Text, View, Pressable } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
@@ -67,9 +68,9 @@ export default function ThemePreview() {
   const { override, setOverride } = useThemeOverride();
 
   const options = [
-    { key: 'system' as const, label: 'System' },
-    { key: 'light' as const, label: 'Light' },
-    { key: 'dark' as const, label: 'Dark' },
+    { key: 'system' as const, label: uiText.settings.theme.system },
+    { key: 'light' as const, label: uiText.settings.theme.light },
+    { key: 'dark' as const, label: uiText.settings.theme.dark },
   ];
 
   return (

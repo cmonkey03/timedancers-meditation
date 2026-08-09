@@ -5,6 +5,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import { initNotifications } from '@/utils/notifications';
 import { getDailyReminder, setDailyReminderEnabled } from '@/utils/settings';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import TimePickerSheet from '@/components/TimePickerSheet';
 
 const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string; onPress: () => void }) => {
@@ -37,7 +38,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       accessibilityLabel={`Daily reminder time ${time || 'not set'}`}
       accessibilityRole="button"
       accessibilityState={{ disabled: !enabled }}
-      accessibilityHint={enabled ? "Tap to change daily reminder time" : "Enable daily reminder to set time"}
+      accessibilityHint={enabled ? uiText.settings.dailyReminder.setTimeHint : uiText.settings.dailyReminder.enableToSetTime}
     >
       <Animated.View
         style={[
@@ -63,7 +64,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
           fontWeight: '600',
           fontSize: 16,
         }}>
-          {time || 'HH:MM'}
+          {time || uiText.settings.dailyReminder.timePlaceholder}
         </Text>
       </Animated.View>
     </Pressable>
@@ -94,7 +95,7 @@ export default function DailyReminder() {
         marginBottom: 16,
       }}
     >
-      <Text style={{ fontWeight: '600', color: C.text, fontSize: 16 }}>Daily Reminder</Text>
+      <Text style={{ fontWeight: '600', color: C.text, fontSize: 16 }}>{uiText.settings.sections.dailyReminder}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
         <Switch
           value={enabled}
@@ -108,8 +109,8 @@ export default function DailyReminder() {
             } catch {}
           }}
           testID="daily-reminder-switch"
-          accessibilityLabel="Enable daily reminder"
-          accessibilityHint="Toggle daily meditation reminder notification"
+          accessibilityLabel={uiText.settings.dailyReminder.enable}
+          accessibilityHint={uiText.settings.dailyReminder.hint}
         />
         <View style={{ width: 16 }} />
         <TimeButton 
@@ -118,7 +119,7 @@ export default function DailyReminder() {
           onPress={() => enabled && setShowPicker(true)} 
         />
       </View>
-      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>Schedule a local notification (24-hour).</Text>
+      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>{uiText.settings.dailyReminder.description}</Text>
 
       {/* Bottom-sheet time picker */}
       <TimePickerSheet

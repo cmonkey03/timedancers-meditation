@@ -1,6 +1,7 @@
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
@@ -17,9 +18,9 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
   const C = useThemeColors();
 
   const buttonText = useMemo(() => {
-    if (counting) return 'Pause';
-    if (!started) return 'Start';
-    if (!counting && started) return 'Resume';
+    if (counting) return uiText.meditation.buttons.pause;
+    if (!started) return uiText.meditation.buttons.start;
+    if (!counting && started) return uiText.meditation.buttons.resume;
     return '';
   }, [counting, started]);
 
@@ -37,14 +38,14 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
-            text="Cancel" 
+            text={uiText.meditation.buttons.cancel} 
             variant="ghost" 
             testID="cancel-button"
           />
         </View>
         <View 
           style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}
-          accessibilityLabel={counting ? 'Meditation in progress' : 'Meditation paused'}
+          accessibilityLabel={counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}
           accessibilityRole="summary"
           accessible={true}
         >
@@ -52,7 +53,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             backgroundColor: counting ? '#4ade80' : '#fbbf24' 
           }]} />
           <Text style={[styles.statusText, { color: C.text }]}>
-            {counting ? 'Meditation in progress' : 'Meditation paused'}
+            {counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}
           </Text>
         </View>
       </Animated.View>
@@ -66,7 +67,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => onPress('counting')}
-            text="Start"
+            text={uiText.meditation.buttons.start}
             variant="primary"
             testID="start-button"
           />
@@ -79,12 +80,12 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
       </View>
       <View 
         style={[styles.instructionContainer, { backgroundColor: `${C.text}08` }]}
-        accessibilityLabel="Select meditation time"
+        accessibilityLabel={uiText.meditation.accessibility.selectMeditationTime}
         accessibilityRole="text"
         accessible={true}
       >
         <Text style={[styles.instructionText, { color: C.text }]}>
-          Select meditation time
+          {uiText.meditation.instructions.selectTime}
         </Text>
       </View>
     </Animated.View>

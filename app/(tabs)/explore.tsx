@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { exploreData } from '@/data/explore';
+import { uiText } from '@/data/ui-text';
 
 
 const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
@@ -40,7 +41,7 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
 export default function Explore() {
   const C = useThemeColors();
   return (
-    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel="Explore resources page" accessibilityRole="none">
+    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel={uiText.explore.accessibility.explorePage} accessibilityRole="none">
       <Text style={[s.title, { color: C.text }]}>{exploreData.title}</Text>
       {exploreData.links.map((l) => (
         <LinkButton key={l.url} link={l} />

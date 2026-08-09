@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChimeProvider } from '@/hooks/chime-context';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
+import { uiText } from '@/data/ui-text';
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
@@ -42,7 +43,7 @@ export default function Layout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
+            title: uiText.tabs.home,
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="home-outline" size={size} color={color as string} />
             ),
@@ -51,7 +52,7 @@ export default function Layout() {
         <Tabs.Screen
           name="meditate"
           options={{
-            title: 'Meditate',
+            title: uiText.tabs.meditate,
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="aperture-outline" size={size} color={color as string} />
             ),
@@ -60,7 +61,7 @@ export default function Layout() {
         <Tabs.Screen
           name="settings"
           options={{
-            title: 'Settings',
+            title: uiText.tabs.settings,
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="settings-outline" size={size} color={color as string} />
             ),
@@ -69,7 +70,7 @@ export default function Layout() {
         <Tabs.Screen
           name="explore"
           options={{
-            title: 'Explore',
+            title: uiText.tabs.explore,
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="compass-outline" size={size} color={color as string} />
             ),

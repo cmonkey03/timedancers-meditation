@@ -3,6 +3,7 @@ import Alerts from '@/components/SettingsPage/Alerts';
 import Button from '@/components/Button';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
+import { uiText } from '@/data/ui-text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -60,7 +61,7 @@ export default function SettingsScreen() {
         color: C.text, 
         marginBottom: 12,
         letterSpacing: 0.5,
-      }}>Settings</Text>
+      }}>{uiText.settings.title}</Text>
 
       <ThemePreview />
       <Alerts
@@ -73,7 +74,7 @@ export default function SettingsScreen() {
       <View style={{ marginTop: 8, alignSelf: 'flex-start' }}>
         <Button
           onPress={resetDefaults}
-          text="Reset to defaults"
+          text={uiText.settings.buttons.resetToDefaults}
           variant="ghost"
           testID="reset-defaults-button"
         />
