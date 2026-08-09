@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';
 import Wheel from '@/components/MeditationPage/Wheel';
+import { onboardingData } from '@/data/onboarding';
 
 // Mock expo-linear-gradient
 vi.mock('expo-linear-gradient', () => ({
@@ -65,7 +66,7 @@ vi.mock('@/hooks/use-fonts', () => ({
 describe('components/Wheel', () => {
   const meditationProps = {
     size: 160,
-    label: 'Power',
+    label: onboardingData.wheelLabels.power,
     remaining: 60,
     total: 180,
     state: 'idle' as const,
@@ -81,7 +82,7 @@ describe('components/Wheel', () => {
   it('renders meditation wheel without crashing', () => {
     const { getByText } = render(<Wheel {...meditationProps} />);
     
-    const label = getByText('Power');
+    const label = getByText(onboardingData.wheelLabels.power);
     expect(label).toBeTruthy();
   });
 
@@ -100,7 +101,7 @@ describe('components/Wheel', () => {
         <Wheel {...meditationProps} state={state} />
       );
       
-      const label = getByText('Power');
+      const label = getByText(onboardingData.wheelLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -113,7 +114,7 @@ describe('components/Wheel', () => {
         <Wheel {...meditationProps} size={size} />
       );
       
-      const label = getByText('Power');
+      const label = getByText(onboardingData.wheelLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -130,7 +131,7 @@ describe('components/Wheel', () => {
         <Wheel {...meditationProps} remaining={remaining} total={total} />
       );
       
-      const label = getByText('Power');
+      const label = getByText(onboardingData.wheelLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -147,13 +148,13 @@ describe('components/Wheel', () => {
         <Wheel {...meditationProps} colors={colors} />
       );
       
-      const label = getByText('Power');
+      const label = getByText(onboardingData.wheelLabels.power);
       expect(label).toBeTruthy();
     });
   });
 
   it('renders different labels', () => {
-    const labels = ['Power', 'Heart', 'Wisdom'];
+    const labels = [onboardingData.wheelLabels.power, onboardingData.wheelLabels.heart, onboardingData.wheelLabels.wisdom];
     
     labels.forEach(label => {
       const { getByText } = render(

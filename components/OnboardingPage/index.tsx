@@ -27,7 +27,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
       testID="onboarding-skip"
       accessibilityLabel={onboardingData.buttons.skip}
       accessibilityRole="button"
-      accessibilityHint="Skip the onboarding tutorial"
+      accessibilityHint={onboardingData.accessibility.skipTutorial}
       style={[
         {
           paddingHorizontal: 20,
@@ -57,7 +57,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
       testID="onboarding-next"
       accessibilityLabel={onboardingData.buttons.next}
       accessibilityRole="button"
-      accessibilityHint="Go to next onboarding screen"
+      accessibilityHint={onboardingData.accessibility.nextScreen}
       style={[
         {
           paddingHorizontal: 20,
@@ -87,7 +87,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
       testID="onboarding-done"
       accessibilityLabel={onboardingData.buttons.begin}
       accessibilityRole="button"
-      accessibilityHint="Complete onboarding and start using the app"
+      accessibilityHint={onboardingData.accessibility.completeOnboarding}
       style={[
         {
           paddingHorizontal: 24,
@@ -119,7 +119,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   return (
     <View testID="onboarding" style={{ 
       flex: 1
-    }} accessibilityLabel="Onboarding tutorial" accessibilityRole="none">
+    }} accessibilityLabel={onboardingData.accessibility.onboardingTutorial} accessibilityRole="none">
       <Onboarding
         onDone={() => {
           finishOnboarding();
@@ -159,30 +159,30 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               <View style={{ alignItems: 'center', gap: 14 }}>
                 <Wheel 
                   size={120}
-                  label="Wisdom"
+                  label={onboardingData.wheelLabels.wisdom}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['purple', 'indigo']}
-                  displayText="Wisdom"
+                  displayText={onboardingData.wheelLabels.wisdom}
                 />
                 <Wheel 
                   size={120}
-                  label="Heart"
+                  label={onboardingData.wheelLabels.heart}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['blue', 'green']}
-                  displayText="Heart"
+                  displayText={onboardingData.wheelLabels.heart}
                 />
                 <Wheel 
                   size={120}
-                  label="Power"
+                  label={onboardingData.wheelLabels.power}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['yellow', 'red']}
-                  displayText="Power"
+                  displayText={onboardingData.wheelLabels.power}
                 />
               </View>
             </ImageWrapper>
@@ -205,7 +205,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
-                label="Power"
+                label={onboardingData.wheelLabels.power}
                 startTime={180}
                 total={180}
                 colors={['yellow', 'red']}
@@ -230,7 +230,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
-                label="Heart"
+                label={onboardingData.wheelLabels.heart}
                 startTime={180}
                 total={180}
                 colors={['blue', 'green']}
@@ -255,7 +255,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
               }}>{onboardingData.preview}</Text>
               <AnimatedWheel 
                 size={180}
-                label="Wisdom"
+                label={onboardingData.wheelLabels.wisdom}
                 startTime={180}
                 total={180}
                 colors={['purple', 'indigo']}

@@ -5,6 +5,21 @@ export const onboardingData = {
     begin: 'Begin',
   },
   preview: 'Preview',
+  welcome: {
+    title: 'Decolonize your destiny',
+    subtitle: 'Unlock the power of timedancing through meditating on three sacred centers',
+  },
+  wheelLabels: {
+    wisdom: 'Wisdom',
+    heart: 'Heart',
+    power: 'Power',
+  },
+  accessibility: {
+    skipTutorial: 'Skip the onboarding tutorial',
+    nextScreen: 'Go to next onboarding screen',
+    completeOnboarding: 'Complete onboarding and start using the app',
+    onboardingTutorial: 'Onboarding tutorial',
+  },
   instructions: [
     `Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.`,
     `Focus on your Power center below the navel. Here you discover timelessness through your core strength. Let yourself sink so deeply into this center that time dissolves, revealing your natural`,

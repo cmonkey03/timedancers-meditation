@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 
 interface Props {
   value: string;
@@ -22,8 +23,8 @@ const TimerWheelPicker = ({ value, onValueChange }: Props) => {
           onValueChange={onValueChange}
           style={[styles.picker, { color: C.text }]}
           itemStyle={Platform.OS === 'ios' ? [styles.iosItem, { color: C.text }] : undefined}
-          accessibilityLabel={`Select meditation duration in minutes. Currently ${value} minutes`}
-          accessibilityHint="Swipe up or down to select meditation time"
+          accessibilityLabel={`${uiText.meditation.accessibility.selectDuration} ${value} minutes`}
+          accessibilityHint={uiText.meditation.accessibility.swipeToSelect}
         >
           {minuteOptions.map((minute) => (
             <Picker.Item

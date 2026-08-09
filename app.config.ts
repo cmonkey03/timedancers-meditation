@@ -16,6 +16,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     predictiveBackGestureEnabled: false,
     package: 'org.timedancers.meditation',
+    permissions: [
+      'RECEIVE_BOOT_COMPLETED',
+      'VIBRATE',
+      'SCHEDULE_EXACT_ALARM',
+      'USE_EXACT_ALARM',
+    ],
   },
   ios: {
     ...config.ios,
@@ -24,8 +30,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
       "CFBundleDisplayName": "Timedancers",   // <= short label under the icon
-      // Allow audio to continue in the background (for future enhancements)
-      "UIBackgroundModes": ["audio"]
+      // Allow audio to continue in the background
+      "UIBackgroundModes": ["audio", "fetch"],
+      // Allow notifications to show when app is in background
+      "UIRemoteNotificationTypes": ["alert", "badge", "sound"],
     }
   },
   orientation: 'portrait',

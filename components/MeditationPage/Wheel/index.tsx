@@ -1,6 +1,7 @@
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { uiText } from '@/data/ui-text';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -30,6 +31,7 @@ interface MeditationWheelProps {
   state: WheelState;
   colors: [string, string];
   displayText?: string; // Optional custom text to display instead of timer
+  accessibilityLabel?: string; // Optional custom accessibility label
 }
 
 // Simple wheel props (for onboarding/tower)
@@ -76,6 +78,7 @@ const Wheel = (props: Props) => {
     state,
     colors,
     displayText,
+    accessibilityLabel,
   } = meditationProps;
 
   const stroke = 10;
@@ -250,10 +253,10 @@ const Wheel = (props: Props) => {
             opacity: dimmed ? 0.9 : 1,
           },
         ]}
-        accessibilityLabel={`${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
+        accessibilityLabel={accessibilityLabel || `${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
         accessibilityRole="none"
         accessibilityState={{ disabled: state === "done" }}
-        accessibilityHint={state === "active" ? "Meditation in progress" : state === "idle" ? "Ready to start" : "Session complete"}
+        accessibilityHint={state === "active" ? uiText.meditation.accessibility.meditationInProgress : state === "idle" ? uiText.meditation.accessibility.readyToStart : uiText.meditation.accessibility.sessionComplete}
       >
         {/* soft glow */}
         <Animated.View
