@@ -1,6 +1,7 @@
 import { useChime } from '@/hooks/chime-context';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Switch, Text, View, Pressable } from 'react-native';
@@ -13,10 +14,10 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 const MODES: { key: AlertMode; label: string }[] = [
-  { key: 'chime', label: 'Chime' },
-  { key: 'chime_haptic', label: 'Chime + Vibrate' },
-  { key: 'haptic', label: 'Vibrate' },
-  { key: 'silent', label: 'Silent' },
+  { key: 'chime', label: uiText.settings.alerts.modes.chime },
+  { key: 'chime_haptic', label: uiText.settings.alerts.modes.chimeHaptic },
+  { key: 'haptic', label: uiText.settings.alerts.modes.haptic },
+  { key: 'silent', label: uiText.settings.alerts.modes.silent },
 ];
 
 const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: boolean }) => {
@@ -43,7 +44,7 @@ const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: bool
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       testID="test-alert-button"
-      accessibilityLabel="Test alert"
+      accessibilityLabel={uiText.settings.alerts.accessibility.testAlert}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
     >
@@ -65,7 +66,7 @@ const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: bool
           fontWeight: '600',
           fontSize: 14,
         }}>
-          Test alert
+          {uiText.settings.alerts.testAlert}
         </Text>
       </Animated.View>
     </Pressable>
@@ -156,7 +157,7 @@ const VolumeSlider = ({
     <View style={styles.volumeContainer}>
       <View style={styles.volumeHeader}>
         <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>
-          Chime Volume
+          {uiText.settings.alerts.chimeVolume}
         </Text>
         <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>
           {volumePercentage}%
@@ -173,10 +174,10 @@ const VolumeSlider = ({
                 width: sliderWidth,
               }
             ]}
-            accessibilityLabel={`Chime volume ${volumePercentage} percent`}
+            accessibilityLabel={`${uiText.settings.alerts.accessibility.chimeVolume} ${volumePercentage}%`}
             accessibilityRole="adjustable"
             accessibilityValue={{ min: 0, max: 100, now: volumePercentage }}
-            accessibilityHint="Swipe left or right to adjust volume"
+            accessibilityHint={uiText.settings.alerts.accessibility.adjustVolume}
             accessible={true}
           >
             {/* Active track */}

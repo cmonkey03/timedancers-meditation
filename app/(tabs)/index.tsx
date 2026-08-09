@@ -3,6 +3,7 @@ import { useRouter, useFocusEffect } from 'expo-router';
 import { useCallback, useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -47,7 +48,7 @@ export default function HomeScreen() {
         justifyContent: 'center', 
         alignItems: 'center' 
       }} testID="e2e-loading">
-        <Text style={{ color: C.text, fontSize: 16 }}>Loading...</Text>
+        <Text style={{ color: C.text, fontSize: 16 }}>{uiText.common.loading}</Text>
       </View>
     );
   }

@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render } from '@testing-library/react-native';
 import { View, Text } from 'react-native';
 import AnimatedWelcomeText from '@/components/OnboardingPage/AnimatedWelcomeText';
+import { onboardingData } from '@/data/onboarding';
 
 // Mock react-native-reanimated
 vi.mock('react-native-reanimated', () => {
@@ -65,8 +66,8 @@ describe('components/AnimatedWelcomeText', () => {
   it('renders when fonts are loaded', () => {
     const { getByText } = render(<AnimatedWelcomeText />);
     
-    expect(getByText('Decolonize your destiny')).toBeTruthy();
-    expect(getByText('Unlock the power of timedancing through meditating on three sacred centers')).toBeTruthy();
+    expect(getByText(onboardingData.welcome.title)).toBeTruthy();
+    expect(getByText(onboardingData.welcome.subtitle)).toBeTruthy();
   });
 
   it('does not render when fonts are not loaded', () => {
@@ -77,8 +78,8 @@ describe('components/AnimatedWelcomeText', () => {
 
     const { queryByText } = render(<AnimatedWelcomeText />);
     
-    expect(queryByText('Decolonize your destiny')).toBeNull();
-    expect(queryByText('Unlock the power of timedancing through meditating on three sacred centers')).toBeNull();
+    expect(queryByText(onboardingData.welcome.title)).toBeNull();
+    expect(queryByText(onboardingData.welcome.subtitle)).toBeNull();
   });
 
   it('uses correct theme colors', () => {
@@ -103,7 +104,7 @@ describe('components/AnimatedWelcomeText', () => {
     const { queryByText, rerender } = render(<AnimatedWelcomeText />);
     
     // Initially loaded
-    expect(queryByText('Decolonize your destiny')).toBeTruthy();
+    expect(queryByText(onboardingData.welcome.title)).toBeTruthy();
 
     // Change to not loaded
     mockUseCustomFonts.mockReturnValue({
@@ -112,6 +113,6 @@ describe('components/AnimatedWelcomeText', () => {
     });
 
     rerender(<AnimatedWelcomeText />);
-    expect(queryByText('Decolonize your destiny')).toBeNull();
+    expect(queryByText(onboardingData.welcome.title)).toBeNull();
   });
 });

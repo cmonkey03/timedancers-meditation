@@ -1,5 +1,6 @@
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
+import { onboardingData } from '@/data/onboarding';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
@@ -20,8 +21,8 @@ const AnimatedWelcomeText = () => {
   const subtitleOpacity = useSharedValue(0);
   const subtitleScale = useSharedValue(0.8);
   
-  const fullTitle = "Decolonize your destiny";
-  const fullSubtitle = "Unlock the power of timedancing through meditating on three sacred centers";
+  const fullTitle = onboardingData.welcome.title;
+  const fullSubtitle = onboardingData.welcome.subtitle;
 
   useEffect(() => {
     if (!fontsLoaded) return;

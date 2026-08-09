@@ -5,7 +5,8 @@ import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
-import { getPhaseAccessibilityLabel, getTimeAccessibilityLabel } from '@/utils/accessibility';
+import { uiText } from '@/data/ui-text';
+import { getPhaseAccessibilityLabel } from '@/utils/accessibility';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -263,7 +264,7 @@ const Meditation = () => {
         justifyContent: 'center',
         backgroundColor: C.background,
       }}
-      accessibilityLabel={timer.running ? "Meditation session in progress" : "Meditation timer setup"}
+      accessibilityLabel={timer.running ? uiText.meditation.accessibility.sessionInProgress : uiText.meditation.status.setup}
       accessibilityRole="none"
     >
       {(() => {
@@ -311,11 +312,11 @@ const Meditation = () => {
       {showCompleted && (
         <Text 
           style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
-          accessibilityLabel="Meditation session complete"
+          accessibilityLabel={uiText.meditation.accessibility.sessionComplete}
           accessibilityRole="alert"
           accessible={true}
         >
-          Session complete!
+          {uiText.meditation.status.complete}
         </Text>
       )}
       

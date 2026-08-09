@@ -3,6 +3,7 @@ import { Modal, View, TouchableOpacity, Platform, StyleSheet, ColorSchemeName } 
 import DateTimePicker, { AndroidNativeProps, IOSNativeProps } from '@react-native-community/datetimepicker';
 import Button from '@/components/Button';
 import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import * as Haptics from 'expo-haptics';
 
 const BG = 'rgba(0,0,0,0.3)';
@@ -57,12 +58,12 @@ export default function TimePickerSheet({
           <View style={[styles.toolbar, { borderBottomColor: C.border }]}>
             <Button
               onPress={onCancel}
-              text="Cancel"
+              text={uiText.timePicker.buttons.cancel}
               variant="ghost"
             />
             <Button
               onPress={confirm}
-              text="Done"
+              text={uiText.timePicker.buttons.done}
               variant="primary"
             />
           </View>
