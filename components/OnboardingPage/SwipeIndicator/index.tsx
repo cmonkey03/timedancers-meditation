@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -45,10 +45,10 @@ const SwipeIndicator = () => {
 
   return (
     <Animated.View style={[{ alignItems: 'center', marginTop: 32 }, animatedStyle]}>
-      <Ionicons name="chevron-forward" size={28} color={`${C.text}99`} />
+      <Ionicons name="chevron-forward" size={28} color={C.text60} />
       <Text
         style={{
-          color: `${C.text}99`,
+          color: C.text60,
           fontSize: 13,
           fontFamily: fontsLoaded ? fonts.inter.medium : undefined,
           marginTop: 4,

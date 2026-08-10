@@ -44,13 +44,13 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           />
         </View>
         <View 
-          style={[styles.statusContainer, { backgroundColor: `${C.text}08` }]}
+          style={[styles.statusContainer, { backgroundColor: C.text30 }]}
           accessibilityLabel={counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}
           accessibilityRole="summary"
           accessible={true}
         >
           <View style={[styles.statusDot, { 
-            backgroundColor: counting ? '#4ade80' : '#fbbf24' 
+            backgroundColor: counting ? C.success : C.warning 
           }]} />
           <Text style={[styles.statusText, { color: C.text }]}>
             {counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}

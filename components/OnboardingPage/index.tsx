@@ -13,6 +13,7 @@ import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
 import { onboardingData } from '@/data/onboarding';
+import { setOnboardingCompleted } from '@/utils/settings';
 
 type Props = {
   finishOnboarding: () => void;
@@ -93,9 +94,9 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
           paddingHorizontal: 24,
           paddingVertical: 12,
           borderRadius: 20,
-          backgroundColor: '#2d5a3d',
+          backgroundColor: C.buttonPrimary,
           borderWidth: 0,
-          shadowColor: '#2d5a3d',
+          shadowColor: C.buttonPrimary,
           shadowOffset: { width: 0, height: 3 },
           shadowOpacity: 0.3,
           shadowRadius: 6,
@@ -108,7 +109,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     >
       <Text style={{ 
         fontWeight: '600', 
-        color: '#FFFFFF', 
+        color: C.buttonPrimaryText, 
         fontSize: 15,
         letterSpacing: 0.3,
       }}>{onboardingData.buttons.begin}</Text>
@@ -117,14 +118,16 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
 
 
   return (
-    <View testID="onboarding" style={{ 
+    <View testID="onboarding" style={{
       flex: 1
     }} accessibilityLabel={onboardingData.accessibility.onboardingTutorial} accessibilityRole="none">
       <Onboarding
-        onDone={() => {
+        onDone={async () => {
+          await setOnboardingCompleted();
           finishOnboarding();
         }}
-        onSkip={() => {
+        onSkip={async () => {
+          await setOnboardingCompleted();
           finishOnboarding();
         }}
         showSkip

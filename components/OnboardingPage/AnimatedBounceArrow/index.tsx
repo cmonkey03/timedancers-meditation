@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useThemeColors } from '@/hooks/use-theme';
 import React, { useEffect } from 'react';
 import Animated, {
   useSharedValue,

@@ -315,7 +315,7 @@ const Meditation = () => {
       
       {showCompleted && (
         <Text 
-          style={{ marginTop: 16, color: '#2d5a3d', fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
+          style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
           accessibilityLabel={uiText.meditation.accessibility.sessionComplete}
           accessibilityRole="alert"
           accessible={true}

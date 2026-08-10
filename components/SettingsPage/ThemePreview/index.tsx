@@ -38,11 +38,11 @@ const ThemePillButton = ({ opt, selected, onPress }: {
             paddingVertical: 12,
             borderRadius: 22,
             borderWidth: 2,
-            borderColor: selected ? '#2d5a3d' : `${C.text}30`,
-            backgroundColor: selected ? '#2d5a3d' : 'transparent',
+            borderColor: selected ? C.buttonPrimary : C.text30,
+            backgroundColor: selected ? C.buttonPrimary : C.buttonGhost,
             marginRight: 8,
             marginBottom: 8,
-            shadowColor: '#000',
+            shadowColor: C.shadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.05,
             shadowRadius: 2,
@@ -52,7 +52,7 @@ const ThemePillButton = ({ opt, selected, onPress }: {
         ]}
       >
         <Text style={{ 
-          color: selected ? '#ffffff' : C.text, 
+          color: selected ? C.buttonPrimaryText : C.text, 
           fontWeight: selected ? '600' : '500',
           fontSize: 14,
         }}>
