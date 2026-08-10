@@ -8,7 +8,7 @@ interface Props {
   onValueChange: (value: string) => void;
 }
 
-const TimerWheelPicker = ({ value, onValueChange }: Props) => {
+const DurationPicker = ({ value, onValueChange }: Props) => {
   const C = useThemeColors();
 
   // Generate options from 1 to 60 minutes
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TimerWheelPicker;
+export default DurationPicker;

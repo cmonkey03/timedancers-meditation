@@ -1,12 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
-import { Switch, Text, View, Pressable, useColorScheme } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import TimePickerModal from '@/components/TimePickerModal';
+import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
 import { initNotifications } from '@/utils/notifications';
 import { getDailyReminder, setDailyReminderEnabled } from '@/utils/settings';
-import { useThemeColors } from '@/hooks/use-theme';
-import { uiText } from '@/data/ui-text';
-import TimePickerSheet from '@/components/TimePickerSheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { Pressable, Switch, Text, useColorScheme, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string; onPress: () => void }) => {
   const C = useThemeColors();
@@ -122,7 +122,7 @@ export default function DailyReminder() {
       <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>{uiText.settings.dailyReminder.description}</Text>
 
       {/* Bottom-sheet time picker */}
-      <TimePickerSheet
+      <TimePickerModal
         visible={showPicker}
         time={time || '08:00'}
         colorScheme={colorScheme}

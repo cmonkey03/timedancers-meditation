@@ -1,5 +1,4 @@
 import Button from '@/components/Button';
-import TimerWheelPicker from '@/components/TimerWheelPicker';
 import { uiText } from '@/data/ui-text';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useMemo } from 'react';
@@ -73,7 +72,7 @@ const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
           />
         </View>
         <View style={styles.spacer} />
-        <TimerWheelPicker
+        <DurationPicker
           value={input}
           onValueChange={handleInput}
         />

@@ -1,14 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { Modal, View, TouchableOpacity, Platform, StyleSheet, ColorSchemeName } from 'react-native';
-import DateTimePicker, { AndroidNativeProps, IOSNativeProps } from '@react-native-community/datetimepicker';
 import Button from '@/components/Button';
-import { useThemeColors } from '@/hooks/use-theme';
 import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
+import DateTimePicker, { AndroidNativeProps, IOSNativeProps } from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
+import { useMemo, useState } from 'react';
+import { ColorSchemeName, Modal, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const BG = 'rgba(0,0,0,0.3)';
 
-export default function TimePickerSheet({
+export default function TimePickerModal({
   visible,
   time, // "HH:MM" (24h)
   onConfirm,
