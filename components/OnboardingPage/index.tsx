@@ -13,6 +13,7 @@ import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
 import { onboardingData } from '@/data/onboarding';
+import { setOnboardingCompleted } from '@/utils/settings';
 
 type Props = {
   finishOnboarding: () => void;
@@ -117,14 +118,16 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
 
 
   return (
-    <View testID="onboarding" style={{ 
+    <View testID="onboarding" style={{
       flex: 1
     }} accessibilityLabel={onboardingData.accessibility.onboardingTutorial} accessibilityRole="none">
       <Onboarding
-        onDone={() => {
+        onDone={async () => {
+          await setOnboardingCompleted();
           finishOnboarding();
         }}
-        onSkip={() => {
+        onSkip={async () => {
+          await setOnboardingCompleted();
           finishOnboarding();
         }}
         showSkip

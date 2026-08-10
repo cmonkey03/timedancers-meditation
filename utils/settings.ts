@@ -6,6 +6,7 @@ const KEYS = {
   reminderTime: 'dailyReminderTime',
   reminderId: 'dailyReminderId',
   chimeVolume: 'chimeVolume',
+  onboardingCompleted: 'onboardingCompleted',
 } as const;
 
 export type DailyReminder = {
@@ -73,6 +74,29 @@ export async function setChimeVolume(volume: number): Promise<void> {
   try {
     const clampedVolume = Math.max(0, Math.min(1, volume));
     await AsyncStorage.setItem(KEYS.chimeVolume, clampedVolume.toString());
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Check if the user has completed onboarding
+ */
+export async function hasCompletedOnboarding(): Promise<boolean> {
+  try {
+    const completed = await AsyncStorage.getItem(KEYS.onboardingCompleted);
+    return completed === 'true';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Mark onboarding as completed
+ */
+export async function setOnboardingCompleted(): Promise<void> {
+  try {
+    await AsyncStorage.setItem(KEYS.onboardingCompleted, 'true');
   } catch {
     // Ignore storage errors
   }

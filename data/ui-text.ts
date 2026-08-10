@@ -114,7 +114,7 @@ export const uiText = {
 
   // Tab Bar
   tabs: {
-    home: 'Home',
+    home: 'Start',
     meditate: 'Meditate',
     settings: 'Settings',
     explore: 'Explore',
