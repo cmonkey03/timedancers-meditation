@@ -1,44 +1,51 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
-import Control from '@/components/Session/Control';
-import Wheel from '@/components/Session/Ring';
+import { Control, Wheels } from '@/components/Session';
 import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
+import { useSessionAppState } from '@/hooks/use-session-app-state';
+import { useSessionAudio } from '@/hooks/use-session-audio';
+import { useSessionCompletion } from '@/hooks/use-session-completion';
+import { useSessionEffects } from '@/hooks/use-session-effects';
+import { useSessionPersistence } from '@/hooks/use-session-persistence';
 import { useThemeColors } from '@/hooks/use-theme';
-import { getPhaseAccessibilityLabel } from '@/utils/accessibility';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setAudioModeAsync } from 'expo-audio';
-import * as Haptics from 'expo-haptics';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { AppState, Text, View } from 'react-native';
-
-/* eslint-disable react-hooks/set-state-in-effect -- setState in effect is intentional here */
-
-function capitalize(s: string): string {
-  if (!s) return '';
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-// Wheel definitions with rainbow colors (bottom to top: yellow/red → blue/green → purple/indigo)
-const WHEELS = [
-  { key: "power",  seconds: 60, colors: ["yellow", "red"] as [string, string] }, // Yellow to Red (bottom)
-  { key: "heart",   seconds: 60, colors: ["blue", "green"] as [string, string] }, // Blue to Green (middle)  
-  { key: "wisdom", seconds: 60, colors: ["purple", "indigo"] as [string, string] }, // Purple to Indigo (top)
-] as const;
+import { useEffect, useMemo } from 'react';
+import { Text, View } from 'react-native';
 
 export default function SessionScreen() {
   useKeepAwakeSafe();
+  useSessionAudio();
+  
   const C = useThemeColors();
-  const [input, setInput] = useState('5');
+  const appIsActiveRef = useSessionAppState();
+  
   const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
-  const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
-  const appIsActiveRef = useRef(true);
-  const [showCompleted, setShowCompleted] = useState(false);
+  
+  // Alerts (chime/haptic) — single shared instance from ChimeProvider
+  const { playStartAlert, triggerChime, resetChimeState, mode: alertMode } = useChime();
+
+  const { 
+    input, 
+    allowBackgroundAlerts, 
+    handleInput 
+  } = useSessionPersistence(timer.started);
+
+  // Notifications helper (scheduling, tokens, cleanup)
+  const { scheduleNotificationsForRemaining, markSessionStart, clearSessionToken, coldStartCleanup } = useNotifications(
+    timer,
+    alertMode,
+    allowBackgroundAlerts
+  );
+
+  // Handle cold start cleanup on mount
+  useEffect(() => {
+    coldStartCleanup();
+  }, [coldStartCleanup]);
 
   // Simple equal-division phases when idle: recompute from minutes input
   useEffect(() => {
@@ -53,72 +60,6 @@ export default function SessionScreen() {
     if (differs) setPhases(next);
   }, [input, timer.running, timer.started, timer.phases, setPhases]);
 
-  // Alerts (chime/haptic) — single shared instance from ChimeProvider
-  const { playStartAlert, triggerChime, resetChimeState, mode: alertMode } = useChime();
-
-  // Configure audio once (silent mode, etc.)
-  useEffect(() => {
-    (async () => {
-      try {
-        await setAudioModeAsync({ 
-          playsInSilentMode: true, 
-          shouldPlayInBackground: true,
-          allowsRecording: false,
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  }, []);
-
-  // Notifications helper (scheduling, tokens, cleanup)
-  const { scheduleNotificationsForRemaining, markSessionStart, clearSessionToken, coldStartCleanup } = useNotifications(
-    timer,
-    alertMode,
-    allowBackgroundAlerts
-  );
-
-  // Prefill input from last used duration and restore settings; clear stale notifications on cold start
-  useEffect(() => {
-    (async () => {
-      try {
-        const stored = await AsyncStorage.getItem('lastDurationMinutes');
-        if (stored && !timer.started) {
-          setInput(stored);
-        }
-        const savedAllowBg = await AsyncStorage.getItem('allowBackgroundAlerts');
-        if (savedAllowBg === 'true' || savedAllowBg === 'false') {
-          setAllowBackgroundAlerts(savedAllowBg === 'true');
-        }
-        // Cold start cleanup
-        await coldStartCleanup();
-      } catch {
-        // ignore storage errors
-      }
-    })();
-  }, [timer.started, coldStartCleanup]);
-
-  // Keep app active state ref updated (used to avoid firing start alert during backgrounding)
-  useEffect(() => {
-    const onChange = (s: any) => {
-      appIsActiveRef.current = s === 'active';
-    };
-    const sub = AppState.addEventListener('change', onChange);
-    return () => sub.remove();
-  }, []);
-
-  // Persist input when it changes (only when not started)
-  useEffect(() => {
-    if (!timer.started) {
-      AsyncStorage.setItem('lastDurationMinutes', input).catch(() => {});
-    }
-  }, [input, timer.started]);
-
-  // Persist allowBackgroundAlerts
-  useEffect(() => {
-    AsyncStorage.setItem('allowBackgroundAlerts', allowBackgroundAlerts ? 'true' : 'false').catch(() => {});
-  }, [allowBackgroundAlerts]);
-
   // React to background-alerts toggle and alert-mode changes while running.
   // Reschedule background notifications when either setting changes.
   useEffect(() => {
@@ -130,11 +71,17 @@ export default function SessionScreen() {
     }
   }, [alertMode, allowBackgroundAlerts, timer.running, scheduleNotificationsForRemaining]);
 
-  const handleInput = (text: string) => {
-    if (typeof text === 'string' && !Number.isNaN(Number(text))) {
-      setInput(text);
-    }
-  };
+  // Session effects (phase transitions, haptics)
+  const prevIndex = useSessionEffects(timer, triggerChime);
+
+  // Session completion handling
+  const { showCompleted, resetCompletionTriggered } = useSessionCompletion(
+    timer,
+    triggerChime,
+    clearSessionToken,
+    reset,
+    resetChimeState
+  );
 
   const onPress = async (action: string) => {
     switch (action) {
@@ -143,7 +90,7 @@ export default function SessionScreen() {
           // Start timer
           start();
           // Reset completion trigger ref for new session
-          completionTriggeredRef.current = false;
+          resetCompletionTriggered();
           // Schedule notifications for all upcoming phase transitions and completion
           if (allowBackgroundAlerts) scheduleNotificationsForRemaining();
           // Persist expected end time for cold-start cleanup
@@ -175,7 +122,7 @@ export default function SessionScreen() {
         clearSessionToken();
         // Reset chime state for new session
         resetChimeState();
-        completionTriggeredRef.current = false;
+        resetCompletionTriggered();
         break;
       case 'pause':
         // Pause timer
@@ -193,74 +140,6 @@ export default function SessionScreen() {
     }
   };
 
-  const completionResetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastPhaseIndexRef = useRef<number>(-1);
-  const completionTriggeredRef = useRef(false);
-
-  // React to timer state updates (from hook) to trigger chimes / haptics based on mode
-  useEffect(() => {
-    const now = timer.now;
-
-    // Phase transition chimes - fire when entering a new phase
-    if (timer.running && now.currentIndex !== lastPhaseIndexRef.current && !now.done) {
-      const eventMap: Record<number, 'phase1to2' | 'phase2to3'> = {
-        1: 'phase1to2',
-        2: 'phase2to3',
-      };
-      const event = eventMap[now.currentIndex];
-      if (event) {
-        triggerChime(event);
-      }
-      lastPhaseIndexRef.current = now.currentIndex;
-    }
-
-    // Completion chime - fire when session is done
-    if (now.done && !showCompleted && !completionTriggeredRef.current) {
-      completionTriggeredRef.current = true;
-      triggerChime('sessionComplete');
-      Notifier.cancelAllScheduled();
-      clearSessionToken();
-      if (completionResetTimeoutRef.current) clearTimeout(completionResetTimeoutRef.current);
-      setShowCompleted(true);
-      // Auto-reset after 10 seconds
-      completionResetTimeoutRef.current = setTimeout(() => {
-        reset();
-        setShowCompleted(false);
-        resetChimeState();
-        // Don't reset completionTriggeredRef here - it will be reset when timer actually resets
-      }, 10000);
-    }
-  }, [timer, triggerChime, alertMode, clearSessionToken, reset, resetChimeState, showCompleted]);
-
-  // Cleanup any pending completion reset timeout on unmount
-  useEffect(() => {
-    const timeout = completionResetTimeoutRef.current;
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, []);
-
-  // Haptic feedback on wheel change
-  const prevIndex = useRef(timer.now.currentIndex);
-  useEffect(() => {
-    if (timer.now.currentIndex !== prevIndex.current && !timer.now.done) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      prevIndex.current = timer.now.currentIndex;
-    }
-  }, [timer.now.currentIndex, timer.now.done]);
-
-  // Reset phase index when timer resets
-  useEffect(() => {
-    if (!timer.started) {
-      lastPhaseIndexRef.current = -1;
-      setShowCompleted(false);
-      prevIndex.current = 0;
-      // Don't reset completionTriggeredRef here - it's managed by the completion timeout
-    }
-  }, [timer.started]);
-
-  // No local tick loop; timing managed by usePhasedTimer
-
   return (
     <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-session">
       <DismissKeyboard>
@@ -274,47 +153,7 @@ export default function SessionScreen() {
           accessibilityLabel={timer.running ? uiText.session.accessibility.sessionInProgress : uiText.session.status.setup}
           accessibilityRole="none"
         >
-          {(() => {
-            // Create wheel cards in correct order (wisdom at top, power at bottom)
-            const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
-            
-            // eslint-disable-next-line react-hooks/refs -- prevIndex ref is intentionally accessed during render for animation state
-            return wheelOrder.map((i) => {
-              const wheel = WHEELS[i];
-              const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
-              const justReleased = 
-                i === prevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;
-              const isDone = i < timer.now.currentIndex || timer.now.done;
-
-              const wheelState: "idle" | "active" | "releasing" | "done" =
-                timer.now.done ? "done" : isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
-
-              const total = timer.phases[i]?.seconds ?? wheel.seconds;
-              const remaining = (() => {
-                if (i === timer.now.currentIndex) {
-                  return Timer.getRemainingSeconds(timer.now.phaseRemainingMs);
-                }
-                if (isDone) return 0;
-                return total;
-              })();
-
-              const big = isActive && timer.started;
-              
-              return (
-                <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 16 }}>
-                  <Wheel
-                    size={big ? 200 : 120}
-                    label={capitalize(wheel.key)}
-                    remaining={remaining}
-                    total={total}
-                    state={wheelState}
-                    colors={wheel.colors}
-                    accessibilityLabel={getPhaseAccessibilityLabel(wheel.key, remaining)}
-                  />
-                </View>
-              );
-            });
-          })()}
+          <Wheels timer={timer} prevIndex={prevIndex} />
           
           {showCompleted && (
             <Text 
