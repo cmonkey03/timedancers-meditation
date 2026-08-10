@@ -1,7 +1,7 @@
-import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -20,35 +20,35 @@ import Svg, { Circle, Defs, Stop, LinearGradient as SvgLinearGradient } from "re
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-type WheelState = "idle" | "active" | "releasing" | "done";
+type RingState = "idle" | "active" | "releasing" | "done";
 
-// Meditation wheel props
-interface MeditationWheelProps {
+// Session wheel props
+interface SessionRingProps {
   size?: number;
   label: string;
   remaining: number;
   total: number;
-  state: WheelState;
+  state: RingState;
   colors: [string, string];
   displayText?: string; // Optional custom text to display instead of timer
   accessibilityLabel?: string; // Optional custom accessibility label
 }
 
 // Simple wheel props (for onboarding/tower)
-interface SimpleWheelProps {
+interface SimpleRingProps {
   color?: string;
   backgroundColor: string[];
   text: string;
 }
 
-type Props = MeditationWheelProps | SimpleWheelProps;
+type Props = SessionRingProps | SimpleRingProps;
 
-const Wheel = (props: Props) => {
+const Ring = (props: Props) => {
   const C = useThemeColors();
   const { fontsLoaded, fonts } = useCustomFonts();
   const reduceMotion = useReducedMotion();
   
-  // Determine if this is simple or meditation wheel
+  // Determine if this is simple or session wheel
   const isSimple = 'backgroundColor' in props;
   
   // Always call hooks at the top level - use conditional logic inside
@@ -60,13 +60,13 @@ const Wheel = (props: Props) => {
   const glow = useSharedValue(0);
   
   // Extract props based on type
-  const simpleProps = isSimple ? props as SimpleWheelProps : null;
-  const meditationProps = !isSimple ? props as MeditationWheelProps : {
+  const simpleProps = isSimple ? props as SimpleRingProps : null;
+  const sessionProps = !isSimple ? props as SessionRingProps : {
     size: 180,
     label: '',
     remaining: 0,
     total: 1,
-    state: 'idle' as WheelState,
+    state: 'idle' as RingState,
     colors: ['#000', '#000'] as [string, string]
   };
 
@@ -79,7 +79,7 @@ const Wheel = (props: Props) => {
     colors,
     displayText,
     accessibilityLabel,
-  } = meditationProps;
+  } = sessionProps;
 
   const stroke = 10;
   const r = (size - stroke) / 2;
@@ -256,7 +256,7 @@ const Wheel = (props: Props) => {
         accessibilityLabel={accessibilityLabel || `${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
         accessibilityRole="none"
         accessibilityState={{ disabled: state === "done" }}
-        accessibilityHint={state === "active" ? uiText.meditation.accessibility.meditationInProgress : state === "idle" ? uiText.meditation.accessibility.readyToStart : uiText.meditation.accessibility.sessionComplete}
+        accessibilityHint={state === "active" ? uiText.session.accessibility.sessionInProgress : state === "idle" ? uiText.session.accessibility.readyToStart : uiText.session.accessibility.sessionComplete}
       >
         {/* soft glow */}
         <Animated.View
@@ -373,4 +373,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheel;
+export default Ring;

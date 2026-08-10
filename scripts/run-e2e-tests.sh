@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TimeDancers Meditation App - E2E Test Runner
+# TImespin Session App - E2E Test Runner
 # This script builds the app and runs all E2E test suites
 
 set -e  # Exit on any error
@@ -79,13 +79,13 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-build    Skip the build step (use existing build)"
             echo "  --skip-unit     Skip unit tests (run only E2E tests)"
             echo "  --verbose       Run tests with verbose output"
-            echo "  --suite SUITE   Run only specific suite (onboarding|meditation|settings)"
+            echo "  --suite SUITE   Run only specific suite (onboarding|session|settings)"
             echo "  --help          Show this help message"
             echo ""
             echo "Examples:"
             echo "  $0                          # Build and run all tests"
             echo "  $0 --skip-build             # Run all tests without building"
-            echo "  $0 --suite meditation       # Run only meditation tests"
+            echo "  $0 --suite session       # Run only session tests"
             echo "  $0 --verbose --suite settings # Run settings tests with verbose output"
             exit 0
             ;;
@@ -98,7 +98,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Start the test process
-print_header "TimeDancers Meditation Test Runner"
+print_header "TImespin Session Test Runner"
 
 # Build the app if not skipping
 if [ "$SKIP_BUILD" = false ]; then
@@ -177,12 +177,12 @@ if [ -n "$SUITE" ]; then
                 FAILED_SUITES+=("Onboarding")
             fi
             ;;
-        meditation)
+        session)
             TOTAL_SUITES=1
-            if run_test_suite "Meditation" "e2e/meditation.e2e.ts"; then
+            if run_test_suite "Session" "e2e/session.e2e.ts"; then
                 PASSED_SUITES=1
             else
-                FAILED_SUITES+=("Meditation")
+                FAILED_SUITES+=("Session")
             fi
             ;;
         settings)
@@ -195,7 +195,7 @@ if [ -n "$SUITE" ]; then
             ;;
         *)
             print_error "Unknown test suite: $SUITE"
-            echo "Available suites: onboarding, meditation, settings"
+            echo "Available suites: onboarding, session, settings"
             exit 1
             ;;
     esac
@@ -204,8 +204,8 @@ else
     print_status "Running all E2E test suites..."
     
     # Test suites to run (using arrays instead of associative arrays for compatibility)
-    SUITE_NAMES=("Onboarding" "Meditation" "Settings")
-    SUITE_FILES=("e2e/onboarding.e2e.ts" "e2e/meditation.e2e.ts" "e2e/settings.e2e.ts")
+    SUITE_NAMES=("Onboarding" "Session" "Settings")
+    SUITE_FILES=("e2e/onboarding.e2e.ts" "e2e/session.e2e.ts" "e2e/settings.e2e.ts")
     TOTAL_SUITES=${#SUITE_NAMES[@]}
     
     for i in "${!SUITE_NAMES[@]}"; do

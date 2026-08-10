@@ -1,17 +1,17 @@
+import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
 import type { AlertMode } from '@/hooks/use-notifications';
 import { useThemeColors } from '@/hooks/use-theme';
-import { uiText } from '@/data/ui-text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Switch, Text, View, Pressable } from 'react-native';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
-  withSpring, 
-  runOnJS
-} from 'react-native-reanimated';
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring
+} from 'react-native-reanimated';
 
 const MODES: { key: AlertMode; label: string }[] = [
   { key: 'chime', label: uiText.settings.alerts.modes.chime },
@@ -225,7 +225,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
   const { playStartAlert, volume, updateVolume, mode, setMode } = useChime();
   const [sessionActive, setSessionActive] = useState(false);
 
-  // Check if a meditation session is active
+  // Check if a session session is active
   useEffect(() => {
     const check = async () => {
       try {

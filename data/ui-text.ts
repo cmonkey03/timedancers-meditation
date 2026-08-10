@@ -18,8 +18,8 @@ export const uiText = {
     },
   },
 
-  // Meditation
-  meditation: {
+  // Session
+  session: {
     buttons: {
       start: 'Start',
       pause: 'Pause',
@@ -27,22 +27,21 @@ export const uiText = {
       cancel: 'Cancel',
     },
     status: {
-      inProgress: 'Meditation in progress',
-      paused: 'Meditation paused',
+      inProgress: 'Session in progress',
+      paused: 'Session paused',
       complete: 'Session complete!',
-      setup: 'Meditation timer setup',
+      setup: 'Session timer setup',
     },
     instructions: {
-      selectTime: 'Select meditation time',
+      selectTime: 'Select session time',
     },
     accessibility: {
-      sessionInProgress: 'Meditation session in progress',
-      sessionComplete: 'Meditation session complete',
-      selectDuration: 'Select meditation duration in minutes. Currently',
-      swipeToSelect: 'Swipe up or down to select meditation time',
-      meditationInProgress: 'Meditation in progress',
+      sessionInProgress: 'Session session in progress',
+      sessionComplete: 'Session session complete',
+      selectDuration: 'Select session duration in minutes. Currently',
+      swipeToSelect: 'Swipe up or down to select session time',
       readyToStart: 'Ready to start',
-      selectMeditationTime: 'Select meditation time',
+      selectSessionTime: 'Select session time',
     },
   },
 
@@ -66,7 +65,7 @@ export const uiText = {
     },
     dailyReminder: {
       enable: 'Enable daily reminder',
-      hint: 'Toggle daily meditation reminder notification',
+      hint: 'Toggle daily session reminder notification',
       setTimeHint: 'Tap to change daily reminder time',
       enableToSetTime: 'Enable daily reminder to set time',
       description: 'Schedule a local notification (24-hour).',
@@ -115,7 +114,7 @@ export const uiText = {
   // Tab Bar
   tabs: {
     home: 'Start',
-    meditate: 'Meditate',
+    session: 'Session',
     settings: 'Settings',
     explore: 'Explore',
   },

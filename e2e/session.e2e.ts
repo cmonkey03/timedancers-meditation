@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { element, by, waitFor } from 'detox';
+import { by, element, waitFor } from 'detox';
 
-describe('Meditation Flow', () => {
-  it('should test meditation timer functionality', async () => {
-    console.log('🧘 Testing meditation timer functionality...');
+describe('Session Flow', () => {
+  it('should test session timer functionality', async () => {
+    console.log('🧘 Testing session timer functionality...');
     
-    // Wait for app to load and ensure we're on the meditate screen
+    // Wait for app to load and ensure we're on the session screen
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // We should already be on the meditate screen - just verify by looking for Start button
+    // We should already be on the session screen - just verify by looking for Start button
     await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(10000);
-    console.log('✅ Meditate screen is visible and Start button found');
+    console.log('✅ Session screen is visible and Start button found');
     
     // Start the timer
     await element(by.id('start-button')).tap();
@@ -55,6 +55,6 @@ describe('Meditation Flow', () => {
     await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(8000);
     console.log('✅ Back to start state');
     
-    console.log('✅ Meditation timer test completed successfully!');
+    console.log('✅ Session timer test completed successfully!');
   });
 });

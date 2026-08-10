@@ -1,5 +1,5 @@
 /**
- * Notifications hook for meditation sessions.
+ * Notifications hook for session sessions.
  *
  * Responsibilities:
  * - Initialize local notifications (permissions + Android channels)

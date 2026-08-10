@@ -1,6 +1,6 @@
-# GitHub Workflows for TimeDancers Meditation App
+# GitHub Workflows for Timespin App
 
-This directory contains GitHub Actions workflows for automated testing and deployment of the TimeDancers Meditation app.
+This directory contains GitHub Actions workflows for automated testing and deployment of the Timespin app.
 
 ## 🔄 Workflows Overview
 
@@ -31,14 +31,14 @@ This directory contains GitHub Actions workflows for automated testing and deplo
 
 - 🧪 Runs complete unit test suite
 - 📱 Builds iOS app for testing
-- 🤖 Runs all E2E test suites (onboarding, meditation, settings)
+- 🤖 Runs all E2E test suites (onboarding, sessionettings)
 - 📊 Uploads test artifacts on failure
 - ⏱️ Timeout: 60 minutes
 
 **Test Suites:**
 
 - **Onboarding**: Tests the welcome flow and initial setup
-- **Meditation**: Tests timer functionality and chakra orb interactions
+- **Session**: Tests timer functionality and chakra orb interactions
 - **Settings**: Tests configuration changes and preferences
 
 ### 3. **Deployment** (Handled by Expo GitHub App)
@@ -89,9 +89,9 @@ The workflows use macOS runners with:
 Add these to your main README.md:
 
 ```markdown
-[![E2E Tests](https://github.com/your-username/timedancers-meditation/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/your-username/timedancers-meditation/actions/workflows/e2e-tests.yml)
-[![Deploy](https://github.com/your-username/timedancers-meditation/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/timedancers-meditation/actions/workflows/deploy.yml)
-[![PR Checks](https://github.com/your-username/timedancers-meditation/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/your-username/timedancers-meditation/actions/workflows/pr-checks.yml)
+[![E2E Tests](https://github.com/your-username/timespin-app/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/e2e-tests.yml)
+[![Deploy](https://github.com/your-username/timespin-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/deploy.yml)
+[![PR Checks](https://github.com/your-username/timespin-app/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/pr-checks.yml)
 ```
 
 ## 🚀 Deployment Process
@@ -132,11 +132,11 @@ Add these to your main README.md:
 
 ## 📱 App Features Tested
 
-Based on the meditation app's sophisticated features, our E2E tests cover:
+Based on the session app's sophisticated features, our E2E tests cover:
 
-### 🧘‍♀️ Meditation Experience
+### 🧘‍♀️ Session Experience
 
-- **Chakra Orb System**: Tests the magical three-orb meditation interface
+- **Chakra Orb System**: Tests the magical three-orb session interface
 - **Phase-based Timer**: Validates settle, rebound, and witness phases
 - **Drift Prevention**: Ensures accurate timing even with app backgrounding
 - **Haptic Feedback**: Tests vibration on phase transitions
@@ -153,7 +153,7 @@ Based on the meditation app's sophisticated features, our E2E tests cover:
 
 - **Volume Controls**: Tests chime volume slider functionality
 - **Alert Modes**: Tests different notification preferences
-- **Time Picker**: Tests meditation duration selection
+- **Time Picker**: Tests session duration selection
 - **Persistence**: Ensures settings are saved between sessions
 
 ## 🔧 Troubleshooting

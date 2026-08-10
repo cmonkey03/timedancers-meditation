@@ -58,7 +58,7 @@ Added comprehensive keyboard navigation for web users:
 
 1. **Background Handler**
 
-   - Detects when app goes to background during meditation
+   - Detects when app goes to background during session
    - Automatically schedules notifications for remaining session
    - Cancels notifications when app returns to foreground
    - Proper cleanup of audio resources
@@ -71,7 +71,7 @@ Added comprehensive keyboard navigation for web users:
 
 3. **Platform-Specific Behavior**
 
-   - **iOS**: Uses background audio mode, stays active during meditation
+   - **iOS**: Uses background audio mode, stays active during session
    - **Android**: Uses foreground service implications, proper notification channels
    - **Web**: Uses Page Visibility API for background detection
 
@@ -106,14 +106,14 @@ Added comprehensive keyboard navigation for web users:
 
 ### Background Audio Testing
 
-1. Start a meditation session
+1. Start a session session
 2. Lock the device while timer is running
 3. Verify chimes play at phase transitions
 4. Check completion notification when session ends
 
 ### Background Notification Testing
 
-1. Start a meditation session
+1. Start a session session
 2. Close the app completely
 3. Wait for phase transition or completion
 4. Verify notification appears with sound
@@ -128,9 +128,9 @@ Added comprehensive keyboard navigation for web users:
 
 ### Multitasking Testing
 
-1. Start meditation session
+1. Start session session
 2. Switch to another app
-3. Return to meditation app
+3. Return to session app
 4. Verify timer state is correct
 5. Check notifications were handled properly
 
@@ -139,7 +139,7 @@ Added comprehensive keyboard navigation for web users:
 1. **iOS Background Audio Limitations**
 
    - iOS may kill background audio after extended periods
-   - System sounds may interrupt meditation audio
+   - System sounds may interrupt session audio
    - Depends on user's background app refresh settings
 
 2. **Android Doze Mode**
@@ -156,15 +156,15 @@ Added comprehensive keyboard navigation for web users:
 
 ## Future Enhancements
 
-1. **Background Location** (if needed for outdoor meditation)
+1. **Background Location** (if needed for outdoor session)
 
 2. **Bluetooth Audio** - Better support for external speakers
 
-3. **Widget Support** - Quick meditation start from home screen
+3. **Widget Support** - Quick session start from home screen
 
 4. **Watch Integration** - Apple Watch/Android Wear companion
 
-5. **CarPlay/Android Auto** - Meditation while driving (as passenger)
+5. **CarPlay/Android Auto** - Session timer while driving (as passenger)
 
 ## User Settings
 

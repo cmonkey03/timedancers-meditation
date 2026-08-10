@@ -1,11 +1,11 @@
 # E2E Testing with Detox
 
-This directory contains end-to-end tests for the TimeDancers Meditation app using Detox.
+This directory contains end-to-end tests for the Timespin Session app using Detox.
 
 ## Test Files
 
 - `onboarding.e2e.ts` - Tests the app onboarding flow
-- `meditation.e2e.ts` - Tests meditation functionality (start, pause, resume, cancel)
+- `session.e2e.ts` - Tests session functionality (start, pause, resume, cancel)
 - `settings.e2e.ts` - Tests settings configuration (theme, alerts, daily reminders)
 
 ## Setup
@@ -60,7 +60,7 @@ npm run e2e:skip-unit
 
 # Run specific E2E test suites
 npm run e2e:onboarding
-npm run e2e:meditation
+npm run e2e:session
 npm run e2e:settings
 ```
 
@@ -79,11 +79,11 @@ scripts\run-e2e-tests.bat [OPTIONS]
 --skip-build          # Skip the build step
 --skip-unit          # Skip unit tests (run only E2E tests)
 --verbose            # Run with verbose output
---suite <name>       # Run specific suite (onboarding|meditation|settings)
+--suite <name>       # Run specific suite (onboarding|session|settings)
 --help              # Show help message
 
 # Examples:
-./scripts/run-e2e-tests.sh --verbose --suite meditation
+./scripts/run-e2e-tests.sh --verbose --suite session
 ./scripts/run-e2e-tests.sh --skip-build
 ```
 
@@ -109,18 +109,18 @@ npm run detox:build
 npm run detox:test
 
 # Run specific test suites (basic)
-npm run detox:test:meditation
+npm run detox:test:session
 npm run detox:test:settings
 npm run detox:test:onboarding
 
 # Run with specific configurations
 detox test -c ios.debug --loglevel verbose
-detox test -c ios.debug e2e/meditation.e2e.ts
+detox test -c ios.debug e2e/session.e2e.ts
 
-- **Start/Pause/Resume/Cancel Flow**: Tests the complete meditation session lifecycle
-- **Wheel States**: Verifies that meditation wheels display correctly with proper accessibility labels
-- **Duration Selection**: Tests changing meditation duration
-- **Session Completion**: Tests meditation session completion (note: uses default 5-minute duration)
+- **Start/Pause/Resume/Cancel Flow**: Tests the complete session session lifecycle
+- **Wheel States**: Verifies that session wheels display correctly with proper accessibility labels
+- **Duration Selection**: Tests changing session duration
+- **Session Completion**: Tests session session completion (note: uses default 5-minute duration)
 
 ### Settings Tests (`settings.e2e.ts`)
 
@@ -130,19 +130,19 @@ detox test -c ios.debug e2e/meditation.e2e.ts
 - **Background Alerts**: Tests toggling background alert notifications
 - **Daily Reminders**: Tests enabling/disabling daily reminder notifications
 - **Reset to Defaults**: Tests resetting all settings to their default values
-- **Navigation**: Tests navigating between Settings and Meditation screens
+- **Navigation**: Tests navigating between Settings and Session screens
 
 ### Onboarding Tests (`onboarding.e2e.ts`)
 
-- **Complete Onboarding Flow**: Tests going through all onboarding screens and landing on the meditation screen
+- **Complete Onboarding Flow**: Tests going through all onboarding screens and landing on the session screen
 
 ## Test IDs
 
 The tests use `testID` props for reliable element selection:
 
-### Meditation Screen
+### Session Screen
 
-- `screen-meditate` - Main meditation screen container
+- `screen-session` - Main session screen container
 
 ### Settings Screen
 

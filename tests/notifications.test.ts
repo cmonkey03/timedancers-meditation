@@ -43,7 +43,7 @@ describe('computeScheduleItems', () => {
     const items = computeScheduleItems(st, 'chime');
     // Only completion notification remains
     expect(items.length).toBe(1);
-    expect(items[0].title).toBe('Meditation complete');
+    expect(items[0].title).toBe('Session complete');
     expect(items[0].withSound).toBe(true);
     // Session total 180s, elapsed 30s -> remaining 150s -> scheduled at now + 150s
     expect(items[0].whenEpochMs).toBe((start + 30_000) + 150_000);
