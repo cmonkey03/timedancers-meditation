@@ -1,4 +1,4 @@
-import AnimatedWelcomeText from '@/components/OnboardingComponents/AnimatedWelcomeText';
+import AnimatedWelcomeText from '@/components/Onboarding/AnimatedWelcomeText';
 import { onboardingData } from '@/data/onboarding';
 import { render } from '@testing-library/react-native';
 import { Text, View } from 'react-native';

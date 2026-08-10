@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
-import { DailyReminder, ThemePreview } from '@/components/SettingsComponents';
-import Alerts from '@/components/SettingsComponents/Alerts';
+import { DailyReminder, ThemePreview } from '@/components/Settings';
+import Alerts from '@/components/Settings/Alerts';
 import { uiText } from '@/data/ui-text';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useThemeColors } from '@/hooks/use-theme';

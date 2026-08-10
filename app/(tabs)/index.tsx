@@ -1,4 +1,4 @@
-import Onboarding from '@/components/OnboardingComponents';
+import Onboarding from '@/components/Onboarding';
 import { uiText } from '@/data/ui-text';
 import { useThemeColors } from '@/hooks/use-theme';
 import { hasCompletedOnboarding } from '@/utils/settings';

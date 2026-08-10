@@ -1,4 +1,4 @@
-import Wheel from '@/components/SessionComponents/Wheel';
+import Wheel from '@/components/Session/Wheel';
 import { useEffect, useState } from 'react';
 import Animated, {
     Easing,

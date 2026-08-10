@@ -1,4 +1,4 @@
-import Wheel from '@/components/SessionComponents/Wheel';
+import Wheel from '@/components/Session/Wheel';
 import { onboardingData } from '@/data/onboarding';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';

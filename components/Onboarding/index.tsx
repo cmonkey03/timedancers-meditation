@@ -1,4 +1,4 @@
-import Wheel from '@/components/SessionComponents/Wheel';
+import Wheel from '@/components/Session/Wheel';
 import { onboardingData } from '@/data/onboarding';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useThemeColors } from '@/hooks/use-theme';
