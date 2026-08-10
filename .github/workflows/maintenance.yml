@@ -91,7 +91,7 @@ jobs:
               }
             });
             
-            // Check for meditation app specific dependencies
+            // Check for session app specific dependencies
             const requiredDeps = [
               'expo',
               'react-native',
@@ -145,7 +145,7 @@ jobs:
           
           # Validate Xcode project
           echo "🔍 Validating Xcode project..."
-          xcodebuild -workspace *.xcworkspace -scheme TimedancersMeditation -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' clean build-for-testing || {
+          xcodebuild -workspace *.xcworkspace -scheme TimespinSession -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' clean build-for-testing || {
             echo "❌ iOS build validation failed"
             exit 1
           }
@@ -188,7 +188,7 @@ jobs:
           
           if [ "${{ needs.security-audit.result }}" == "success" ] && [ "${{ needs.dependency-check.result }}" == "success" ] && [ "${{ needs.ios-compatibility.result }}" == "success" ]; then
             echo "🎉 **All maintenance checks passed!**" >> $GITHUB_STEP_SUMMARY
-            echo "Your TimeDancers Meditation app is healthy and secure." >> $GITHUB_STEP_SUMMARY
+            echo "Your Timespin Session app is healthy and secure." >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ **Some maintenance checks failed.**" >> $GITHUB_STEP_SUMMARY
             echo "Please review the failed jobs and address any issues." >> $GITHUB_STEP_SUMMARY

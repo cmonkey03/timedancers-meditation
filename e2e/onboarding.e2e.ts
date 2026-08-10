@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { element, by, waitFor } from 'detox';
+import { by, element, waitFor } from 'detox';
 
 describe('Onboarding Flow', () => {
-  it('should complete onboarding and reach meditation screen', async () => {
+  it('should complete onboarding and reach session screen', async () => {
     console.log('🚀 Testing onboarding flow...');
     
     // Wait for app to load
@@ -25,15 +25,15 @@ describe('Onboarding Flow', () => {
       console.log('ℹ️  No onboarding found - may already be past it');
     }
     
-    // Verify we're on the meditate screen by looking for Start button
+    // Verify we're on the session screen by looking for Start button
     await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(10000);
-    console.log('✅ Successfully reached meditate screen and found Start button');
+    console.log('✅ Successfully reached session screen and found Start button');
     
     // Test tab navigation
     console.log('🔍 Testing tab navigation...');
     
     // Check what tabs are actually visible (using only text since that's what works)
-    const tabTexts = ['Home', 'Meditate', 'Settings', 'Explore'];
+    const tabTexts = ['Home', 'Session', 'Settings', 'Explore'];
     
     console.log('🔍 Checking which tabs are visible...');
     for (const tabText of tabTexts) {
@@ -57,15 +57,15 @@ describe('Onboarding Flow', () => {
     await waitFor(element(by.text('Settings'))).toBeVisible().withTimeout(3000);
     console.log('✅ Successfully navigated to settings screen');
     
-    // Navigate back to meditate
-    await element(by.text('Meditate')).tap();
-    console.log('✅ Tapped Meditate tab');
+    // Navigate back to session
+    await element(by.text('Session')).tap();
+    console.log('✅ Tapped Session tab');
     
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Verify we're back on meditate screen
+    // Verify we're back on session screen
     await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(3000);
-    console.log('✅ Successfully navigated back to meditate screen');
+    console.log('✅ Successfully navigated back to session screen');
     
     console.log('✅ Onboarding and navigation test completed successfully!');
   });

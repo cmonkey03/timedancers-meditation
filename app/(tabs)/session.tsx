@@ -1,11 +1,12 @@
-import WheelControls from '@/components/MeditationPage/WheelControls';
-import Wheel from '@/components/MeditationPage/Wheel';
+import DismissKeyboard from '@/components/DismissKeyboard';
+import Control from '@/components/Session/Control';
+import Wheel from '@/components/Session/Ring';
+import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
-import { uiText } from '@/data/ui-text';
 import { getPhaseAccessibilityLabel } from '@/utils/accessibility';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
@@ -29,7 +30,7 @@ const WHEELS = [
   { key: "wisdom", seconds: 60, colors: ["purple", "indigo"] as [string, string] }, // Purple to Indigo (top)
 ] as const;
 
-const Meditation = () => {
+export default function SessionScreen() {
   useKeepAwakeSafe();
   const C = useThemeColors();
   const [input, setInput] = useState('5');
@@ -261,78 +262,80 @@ const Meditation = () => {
   // No local tick loop; timing managed by usePhasedTimer
 
   return (
-    <View
-      style={{
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: C.background,
-      }}
-      accessibilityLabel={timer.running ? uiText.meditation.accessibility.sessionInProgress : uiText.meditation.status.setup}
-      accessibilityRole="none"
-    >
-      {(() => {
-        // Create wheel cards in correct order (wisdom at top, power at bottom)
-        const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
-        
-        // eslint-disable-next-line react-hooks/refs -- prevIndex ref is intentionally accessed during render for animation state
-        return wheelOrder.map((i) => {
-          const wheel = WHEELS[i];
-          const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
-          const justReleased = 
-            i === prevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;
-          const isDone = i < timer.now.currentIndex || timer.now.done;
-
-          const wheelState: "idle" | "active" | "releasing" | "done" =
-            timer.now.done ? "done" : isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
-
-          const total = timer.phases[i]?.seconds ?? wheel.seconds;
-          const remaining = (() => {
-            if (i === timer.now.currentIndex) {
-              return Timer.getRemainingSeconds(timer.now.phaseRemainingMs);
-            }
-            if (isDone) return 0;
-            return total;
-          })();
-
-          const big = isActive && timer.started;
-          
-          return (
-            <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 16 }}>
-              <Wheel
-                size={big ? 200 : 120}
-                label={capitalize(wheel.key)}
-                remaining={remaining}
-                total={total}
-                state={wheelState}
-                colors={wheel.colors}
-                accessibilityLabel={getPhaseAccessibilityLabel(wheel.key, remaining)}
-              />
-            </View>
-          );
-        });
-      })()}
-      
-      {showCompleted && (
-        <Text 
-          style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
-          accessibilityLabel={uiText.meditation.accessibility.sessionComplete}
-          accessibilityRole="alert"
-          accessible={true}
+    <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-session">
+      <DismissKeyboard>
+        <View
+          style={{
+            alignItems: 'center',
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: C.background,
+          }}
+          accessibilityLabel={timer.running ? uiText.session.accessibility.sessionInProgress : uiText.session.status.setup}
+          accessibilityRole="none"
         >
-          {uiText.meditation.status.complete}
-        </Text>
-      )}
-      
-      <WheelControls
-        counting={timer.running}
-        handleInput={handleInput}
-        input={input}
-        onPress={onPress}
-        started={timer.started}
-      />
+          {(() => {
+            // Create wheel cards in correct order (wisdom at top, power at bottom)
+            const wheelOrder = [2, 1, 0]; // wisdom, heart, power (top to bottom)
+            
+            // eslint-disable-next-line react-hooks/refs -- prevIndex ref is intentionally accessed during render for animation state
+            return wheelOrder.map((i) => {
+              const wheel = WHEELS[i];
+              const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
+              const justReleased = 
+                i === prevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;
+              const isDone = i < timer.now.currentIndex || timer.now.done;
+
+              const wheelState: "idle" | "active" | "releasing" | "done" =
+                timer.now.done ? "done" : isActive ? "active" : justReleased ? "releasing" : isDone ? "done" : "idle";
+
+              const total = timer.phases[i]?.seconds ?? wheel.seconds;
+              const remaining = (() => {
+                if (i === timer.now.currentIndex) {
+                  return Timer.getRemainingSeconds(timer.now.phaseRemainingMs);
+                }
+                if (isDone) return 0;
+                return total;
+              })();
+
+              const big = isActive && timer.started;
+              
+              return (
+                <View key={wheel.key} style={{ alignItems: "center", marginVertical: big ? 16 : 16 }}>
+                  <Wheel
+                    size={big ? 200 : 120}
+                    label={capitalize(wheel.key)}
+                    remaining={remaining}
+                    total={total}
+                    state={wheelState}
+                    colors={wheel.colors}
+                    accessibilityLabel={getPhaseAccessibilityLabel(wheel.key, remaining)}
+                  />
+                </View>
+              );
+            });
+          })()}
+          
+          {showCompleted && (
+            <Text 
+              style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
+              accessibilityLabel={uiText.session.accessibility.sessionComplete}
+              accessibilityRole="alert"
+              accessible={true}
+            >
+              {uiText.session.status.complete}
+            </Text>
+          )}
+          
+          <Control   
+            counting={timer.running}
+            handleInput={handleInput}
+            input={input}
+            onPress={onPress}
+            started={timer.started}
+          />
+        </View>
+      </DismissKeyboard>
     </View>
   );
-};
-
-export default Meditation;
+}

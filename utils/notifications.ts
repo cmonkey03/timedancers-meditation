@@ -26,8 +26,8 @@ export async function initNotifications() {
       lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
     });
     // Also create an explicit channel we can target for time-interval triggers
-    await Notifications.setNotificationChannelAsync('meditation-timer-v2', {
-      name: 'Meditation Timer',
+    await Notifications.setNotificationChannelAsync('session-timer-v2', {
+      name: 'Session Timer',
       importance: Notifications.AndroidImportance.HIGH,
       sound: 'default',
       enableVibrate: true,
@@ -69,7 +69,7 @@ export async function scheduleAfterMs(
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds,
       repeats: false,
-      channelId: Platform.OS === 'android' ? 'meditation-timer-v2' : undefined,
+      channelId: Platform.OS === 'android' ? 'session-timer-v2' : undefined,
     } as Notifications.TimeIntervalTriggerInput;
     const id = await Notifications.scheduleNotificationAsync({
       content: {

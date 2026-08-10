@@ -1,12 +1,11 @@
+import { uiText } from '@/data/ui-text';
+import { ChimeProvider } from '@/hooks/chime-context';
+import { useCustomFonts } from '@/hooks/use-fonts';
+import { useThemeColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import React from 'react';
 import type { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChimeProvider } from '@/hooks/chime-context';
-import { useThemeColors } from '@/hooks/use-theme';
-import { useCustomFonts } from '@/hooks/use-fonts';
-import { uiText } from '@/data/ui-text';
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
@@ -50,9 +49,9 @@ export default function Layout() {
           }}
         />
         <Tabs.Screen
-          name="meditate"
+          name="session"
           options={{
-            title: uiText.tabs.meditate,
+            title: uiText.tabs.session,
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="aperture-outline" size={size} color={color as string} />
             ),

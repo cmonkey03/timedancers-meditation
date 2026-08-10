@@ -1,10 +1,10 @@
-import OnboardingPage from '@/components/OnboardingPage';
-import { useRouter, useFocusEffect } from 'expo-router';
-import { useCallback, useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
-import { useThemeColors } from '@/hooks/use-theme';
+import Onboarding from '@/components/Onboarding';
 import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
 import { hasCompletedOnboarding } from '@/utils/settings';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function HomeScreen() {
   const C = useThemeColors();
 
   const finishOnboarding = useCallback(async () => {
-    router.push('/meditate');
+    router.push('/session');
   }, [router]);
 
   // Check if onboarding has been completed
@@ -29,19 +29,19 @@ export default function HomeScreen() {
       setIsLoading(false);
 
       if (completed) {
-        router.push('/meditate');
+        router.push('/session');
       }
     };
 
     checkOnboardingStatus();
   }, [skipOnboarding, router]);
 
-  // Auto-navigate to meditate in test mode
+  // Auto-navigate to session in test mode
   useEffect(() => {
     if (skipOnboarding) {
       const timeout = setTimeout(() => {
-        console.log('Auto-navigating to meditate screen');
-        router.push('/meditate');
+        console.log('Auto-navigating to session screen');
+        router.push('/session');
       }, 1000);
       return () => clearTimeout(timeout);
     }
@@ -89,5 +89,5 @@ export default function HomeScreen() {
   }
 
   // Show onboarding if not completed
-  return <OnboardingPage key={key} finishOnboarding={finishOnboarding} />;
+  return <Onboarding key={key} finishOnboarding={finishOnboarding} />;
 }

@@ -1,15 +1,14 @@
-import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { useThemeColors } from '@/hooks/use-theme';
 import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
+import { Picker } from '@react-native-picker/picker';
+import { Platform, StyleSheet, View } from 'react-native';
 
 interface Props {
   value: string;
   onValueChange: (value: string) => void;
 }
 
-const TimerWheelPicker = ({ value, onValueChange }: Props) => {
+const DurationPicker = ({ value, onValueChange }: Props) => {
   const C = useThemeColors();
 
   // Generate options from 1 to 60 minutes
@@ -23,8 +22,8 @@ const TimerWheelPicker = ({ value, onValueChange }: Props) => {
           onValueChange={onValueChange}
           style={[styles.picker, { color: C.text }]}
           itemStyle={Platform.OS === 'ios' ? [styles.iosItem, { color: C.text }] : undefined}
-          accessibilityLabel={`${uiText.meditation.accessibility.selectDuration} ${value} minutes`}
-          accessibilityHint={uiText.meditation.accessibility.swipeToSelect}
+          accessibilityLabel={`${uiText.session.accessibility.selectDuration} ${value} minutes`}
+          accessibilityHint={uiText.session.accessibility.swipeToSelect}
         >
           {minuteOptions.map((minute) => (
             <Picker.Item
@@ -67,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TimerWheelPicker;
+export default DurationPicker;

@@ -1,4 +1,4 @@
-// Accessibility utilities for the meditation app
+// Accessibility utilities for the session app
 
 /**
  * Ensures text meets WCAG AA contrast requirements (4.5:1 for normal text, 3:1 for large text)
@@ -88,7 +88,7 @@ export function getTimeAccessibilityLabel(minutes: number): string {
 }
 
 /**
- * Generate accessibility label for meditation phase
+ * Generate accessibility label for session phase
  * @param phase - Phase key (power, heart, wisdom)
  * @param remaining - Remaining time in seconds
  * @returns Descriptive accessibility label

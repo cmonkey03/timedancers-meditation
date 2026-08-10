@@ -1,9 +1,8 @@
-import React from 'react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render } from '@testing-library/react-native';
-import { View, Text } from 'react-native';
-import AnimatedWelcomeText from '@/components/OnboardingPage/AnimatedWelcomeText';
+import AnimatedWelcomeText from '@/components/Onboarding/AnimatedWelcomeText';
 import { onboardingData } from '@/data/onboarding';
+import { render } from '@testing-library/react-native';
+import { Text, View } from 'react-native';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock react-native-reanimated
 vi.mock('react-native-reanimated', () => {
