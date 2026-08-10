@@ -5,7 +5,7 @@ export const uiText = {
       title: 'Decolonize your destiny',
       subtitle: 'Unlock the power of timedancing through meditating on three sacred centers',
     },
-    wheelLabels: {
+    ringLabels: {
       wisdom: 'Wisdom',
       heart: 'Heart',
       power: 'Power',

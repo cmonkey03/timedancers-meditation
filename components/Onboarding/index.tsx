@@ -1,4 +1,4 @@
-import Wheel from '@/components/Session/Ring';
+import Ring from '@/components/Session/Ring';
 import { onboardingData } from '@/data/onboarding';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useThemeColors } from '@/hooks/use-theme';
@@ -7,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 import OnboardingSwiper from 'react-native-onboarding-swiper';
 import AnimatedBounceArrow from './AnimatedBounceArrow';
+import AnimatedRing from './AnimatedRing';
 import AnimatedWelcomeText from './AnimatedWelcomeText';
-import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import SwipeIndicator from './SwipeIndicator';
@@ -160,32 +160,32 @@ const Onboarding = ({ finishOnboarding }: Props) => {
           image: (
             <ImageWrapper>
               <View style={{ alignItems: 'center', gap: 14 }}>
-                <Wheel 
+                <Ring 
                   size={120}
-                  label={onboardingData.wheelLabels.wisdom}
+                  label={onboardingData.ringLabels.wisdom}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['purple', 'indigo']}
-                  displayText={onboardingData.wheelLabels.wisdom}
+                  displayText={onboardingData.ringLabels.wisdom}
                 />
-                <Wheel 
+                <Ring 
                   size={120}
-                  label={onboardingData.wheelLabels.heart}
+                  label={onboardingData.ringLabels.heart}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['blue', 'green']}
-                  displayText={onboardingData.wheelLabels.heart}
+                  displayText={onboardingData.ringLabels.heart}
                 />
-                <Wheel 
+                <Ring 
                   size={120}
-                  label={onboardingData.wheelLabels.power}
+                  label={onboardingData.ringLabels.power}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['yellow', 'red']}
-                  displayText={onboardingData.wheelLabels.power}
+                  displayText={onboardingData.ringLabels.power}
                 />
               </View>
             </ImageWrapper>
@@ -206,9 +206,9 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 textTransform: 'uppercase',
                 marginBottom: 40,
               }}>{onboardingData.preview}</Text>
-              <AnimatedWheel 
+              <AnimatedRing 
                 size={180}
-                label={onboardingData.wheelLabels.power}
+                label={onboardingData.ringLabels.power}
                 startTime={180}
                 total={180}
                 colors={['yellow', 'red']}
@@ -231,9 +231,9 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 textTransform: 'uppercase',
                 marginBottom: 40,
               }}>{onboardingData.preview}</Text>
-              <AnimatedWheel 
+              <AnimatedRing 
                 size={180}
-                label={onboardingData.wheelLabels.heart}
+                label={onboardingData.ringLabels.heart}
                 startTime={180}
                 total={180}
                 colors={['blue', 'green']}
@@ -256,9 +256,9 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 textTransform: 'uppercase',
                 marginBottom: 40,
               }}>{onboardingData.preview}</Text>
-              <AnimatedWheel 
+              <AnimatedRing 
                 size={180}
-                label={onboardingData.wheelLabels.wisdom}
+                label={onboardingData.ringLabels.wisdom}
                 startTime={180}
                 total={180}
                 colors={['purple', 'indigo']}

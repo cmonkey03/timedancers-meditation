@@ -10,7 +10,7 @@ function capitalize(s: string): string {
 }
 
 // ReportingObserver definitions with rainbow colors (bottom to top: yellow/red → blue/green → purple/indigo)
-const WHEELS = [
+const RINGS = [
   { key: "power",  seconds: 60, colors: ["yellow", "red"] as [string, string] }, // Yellow to Red (bottom)
   { key: "heart",   seconds: 60, colors: ["blue", "green"] as [string, string] }, // Blue to Green (middle)  
   { key: "wisdom", seconds: 60, colors: ["purple", "indigo"] as [string, string] }, // Purple to Indigo (top)
@@ -45,7 +45,7 @@ export default function SessionReportingObservers({ timer, prevIndex }: Props) {
         
         // eslint-disable-next-line react-hooks/refs -- localPrevIndex ref is intentionally accessed during render for animation state
         return ringOrder.map((i) => {
-          const ring = WHEELS[i];
+          const ring = RINGS[i];
           const isActive = i === timer.now.currentIndex && !timer.now.done && timer.now.phaseRemainingMs > 0 && timer.started;
           const justReleased = 
             i === localPrevIndex.current && !isActive && timer.now.phaseRemainingMs === 0;

@@ -1,4 +1,4 @@
-import Wheel from '@/components/Session/Ring';
+import Ring from '@/components/Session/Ring';
 import { useEffect, useState } from 'react';
 import Animated, {
     Easing,
@@ -8,7 +8,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
-interface AnimatedWheelProps {
+interface AnimatedRingProps {
   size: number;
   label: string;
   colors: [string, string];
@@ -16,7 +16,7 @@ interface AnimatedWheelProps {
   total: number;
 }
 
-const AnimatedWheel = ({ size, label, colors, startTime, total }: AnimatedWheelProps) => {
+const AnimatedRing = ({ size, label, colors, startTime, total }: AnimatedRingProps) => {
   const [remaining, setRemaining] = useState(startTime);
   const pulse = useSharedValue(0);
 
@@ -47,7 +47,7 @@ const AnimatedWheel = ({ size, label, colors, startTime, total }: AnimatedWheelP
 
   return (
     <Animated.View style={animatedStyle}>
-      <Wheel
+      <Ring
         size={size}
         label={label}
         remaining={remaining}
@@ -59,4 +59,4 @@ const AnimatedWheel = ({ size, label, colors, startTime, total }: AnimatedWheelP
   );
 };
 
-export default AnimatedWheel;
+export default AnimatedRing;

@@ -72,7 +72,7 @@ export default function SessionScreen() {
   }, [alertMode, allowBackgroundAlerts, timer.running, scheduleNotificationsForRemaining]);
 
   // Session effects (phase transitions, haptics)
-  const prevIndex = useSessionEffects(timer, triggerChime);
+  const prevIndexRef = useSessionEffects(timer, triggerChime);
 
   // Session completion handling
   const { showCompleted, resetCompletionTriggered } = useSessionCompletion(
@@ -153,7 +153,7 @@ export default function SessionScreen() {
           accessibilityLabel={timer.running ? uiText.session.accessibility.sessionInProgress : uiText.session.status.setup}
           accessibilityRole="none"
         >
-          <Wheels timer={timer} prevIndex={prevIndex} />
+          <Wheels timer={timer} prevIndex={prevIndexRef} />
           
           {showCompleted && (
             <Text 

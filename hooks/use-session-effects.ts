@@ -3,11 +3,11 @@
  *
  * Responsibilities:
  * - Trigger chimes on phase transitions
- * - Trigger haptic feedback on wheel changes
+ * - Trigger haptic feedback on ring changes
  * - Manage phase index tracking
  */
 import * as Haptics from 'expo-haptics';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useSessionEffects(
   timer: {
@@ -23,7 +23,6 @@ export function useSessionEffects(
 ) {
   const lastPhaseIndexRef = useRef<number>(-1);
   const prevIndexRef = useRef(timer.now.currentIndex);
-  const [prevIndex, setPrevIndex] = useState(timer.now.currentIndex);
 
   // React to timer state updates to trigger chimes based on mode
   useEffect(() => {
@@ -43,12 +42,11 @@ export function useSessionEffects(
     }
   }, [timer, triggerChime]);
 
-  // Haptic feedback on wheel change
+  // Haptic feedback on ring change
   useEffect(() => {
     if (timer.now.currentIndex !== prevIndexRef.current && !timer.now.done) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       prevIndexRef.current = timer.now.currentIndex;
-      setPrevIndex(timer.now.currentIndex);
     }
   }, [timer.now.currentIndex, timer.now.done]);
 
@@ -57,9 +55,8 @@ export function useSessionEffects(
     if (!timer.started) {
       lastPhaseIndexRef.current = -1;
       prevIndexRef.current = 0;
-      setPrevIndex(0);
     }
   }, [timer.started]);
 
-  return prevIndex;
+  return prevIndexRef;
 }

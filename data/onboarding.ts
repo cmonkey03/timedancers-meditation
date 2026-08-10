@@ -9,7 +9,7 @@ export const onboardingData = {
     title: 'Decolonize your destiny',
     subtitle: 'Unlock the power of timedancing through meditating on three sacred centers',
   },
-  wheelLabels: {
+  ringLabels: {
     wisdom: 'Wisdom',
     heart: 'Heart',
     power: 'Power',
@@ -36,15 +36,15 @@ export const onboardingData = {
       subtitle: 0, // Index into instructions array
     },
     {
-      title: 'Wheel of Power',
+      title: 'Ring of Power',
       subtitle: 1,
     },
     {
-      title: 'Wheel of Heart',
+      title: 'Ring of Heart',
       subtitle: 2,
     },
     {
-      title: 'Wheel of Wisdom',
+      title: 'Ring of Wisdom',
       subtitle: 3,
     },
     {
