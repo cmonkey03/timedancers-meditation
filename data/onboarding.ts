@@ -49,7 +49,7 @@ export const onboardingData = {
     },
     {
       title: 'Ready to Begin?',
-      subtitle: 'Tap the Meditate tab below to start your first session. Choose your duration and press Start.',
+      subtitle: 'Tap the Session tab below to start your first session. Choose your duration and press Start.',
     },
   ],
 } as const;

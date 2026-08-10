@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import displayTime from '@/utils/display-time';
+import { describe, expect, it } from 'vitest';
 
 describe('utils/display-time', () => {
   it('formats zero seconds correctly', () => {
@@ -35,7 +35,7 @@ describe('utils/display-time', () => {
     expect(displayTime(665)).toBe('11:05');
   });
 
-  it('handles typical meditation durations', () => {
+  it('handles typical session durations', () => {
     expect(displayTime(300)).toBe('05:00'); // 5 minutes
     expect(displayTime(600)).toBe('10:00'); // 10 minutes
     expect(displayTime(900)).toBe('15:00'); // 15 minutes

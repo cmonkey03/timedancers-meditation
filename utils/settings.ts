@@ -46,7 +46,7 @@ export async function setDailyReminderEnabled(enabled: boolean, time: string): P
   }
 
   // schedule new one if time is valid
-  const id = await scheduleDailyReminder(time, 'Timedancers', 'Time to meditate');
+  const id = await scheduleDailyReminder(time, 'Timespin', 'Ready for today\'s session?');
   await AsyncStorage.setItem(KEYS.reminderEnabled, 'true');
   await AsyncStorage.setItem(KEYS.reminderTime, time);
   if (id) await AsyncStorage.setItem(KEYS.reminderId, id);

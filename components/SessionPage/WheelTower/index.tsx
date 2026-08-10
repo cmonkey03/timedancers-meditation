@@ -1,6 +1,5 @@
-import Wheel from '@/components/MeditationPage/Wheel';
+import Wheel from '@/components/SessionPage/Wheel';
 import { useThemeColors } from '@/hooks/use-theme';
-import React from 'react';
 import { Text, useColorScheme, View } from 'react-native';
 
 interface Props {

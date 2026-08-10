@@ -1,4 +1,4 @@
-// Timer logic for meditation sessions with phase-based timing
+// Timer logic for session with phase-based timing
 // Uses wall clock time to prevent drift and handle app sleep/pause scenarios
 
 export type PhaseKey = "power" | "heart" | "wisdom";

@@ -1,5 +1,5 @@
 @echo off
-REM TimeDancers Meditation App - E2E Test Runner (Windows)
+REM Timespin Session App - E2E Test Runner (Windows)
 REM This script builds the app and runs all E2E test suites
 
 setlocal enabledelayedexpansion
@@ -41,13 +41,13 @@ if "%~1"=="--help" (
     echo   --skip-build    Skip the build step (use existing build^)
     echo   --skip-unit     Skip unit tests (run only E2E tests^)
     echo   --verbose       Run tests with verbose output
-    echo   --suite SUITE   Run only specific suite (onboarding^|meditation^|settings^)
+    echo   --suite SUITE   Run only specific suite (onboarding^|session^|settings^)
     echo   --help          Show this help message
     echo.
     echo Examples:
     echo   %0                          # Build and run all tests
     echo   %0 --skip-build             # Run all tests without building
-    echo   %0 --suite meditation       # Run only meditation tests
+    echo   %0 --suite session       # Run only session tests
     echo   %0 --verbose --suite settings # Run settings tests with verbose output
     exit /b 0
 )
@@ -73,7 +73,7 @@ if errorlevel 1 (
 
 echo.
 echo ================================
-echo  TimeDancers Meditation Test Runner
+echo  Timespin Session Test Runner
 echo ================================
 echo.
 
@@ -136,13 +136,13 @@ if not "%SUITE%"=="" (
     set TOTAL_SUITES=1
     if "%SUITE%"=="onboarding" (
         call :run_test_suite "Onboarding" "e2e/onboarding.e2e.ts"
-    ) else if "%SUITE%"=="meditation" (
-        call :run_test_suite "Meditation" "e2e/meditation.e2e.ts"
+    ) else if "%SUITE%"=="session" (
+        call :run_test_suite "Session" "e2e/session.e2e.ts"
     ) else if "%SUITE%"=="settings" (
         call :run_test_suite "Settings" "e2e/settings.e2e.ts"
     ) else (
         echo [ERROR] Unknown test suite: %SUITE%
-        echo Available suites: onboarding, meditation, settings
+        echo Available suites: onboarding, session, settings
         exit /b 1
     )
 ) else (
@@ -152,7 +152,7 @@ if not "%SUITE%"=="" (
     call :run_test_suite "Onboarding" "e2e/onboarding.e2e.ts"
     timeout /t 2 /nobreak >nul
     
-    call :run_test_suite "Meditation" "e2e/meditation.e2e.ts"
+    call :run_test_suite "Session" "e2e/session.e2e.ts"
     timeout /t 2 /nobreak >nul
     
     call :run_test_suite "Settings" "e2e/settings.e2e.ts"

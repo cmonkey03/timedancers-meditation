@@ -48,7 +48,7 @@ describe('computeScheduleItems additional cases', () => {
     vi.setSystemTime(start + 125_000);
     const items = computeScheduleItems(st, 'chime');
     expect(items.length).toBe(1);
-    expect(items[0].title).toBe('Meditation complete');
+    expect(items[0].title).toBe('Session complete');
     expect(items[0].whenEpochMs).toBe(start + 180_000);
   });
 

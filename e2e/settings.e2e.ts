@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { element, by, waitFor } from 'detox';
+import { by, element, waitFor } from 'detox';
 
 describe('Settings Flow', () => {
   it('should test settings screen functionality', async () => {
     console.log('⚙️  Testing settings screen functionality...');
     
-    // Wait for app to load and ensure we're on the meditate screen
+    // Wait for app to load and ensure we're on the session screen
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // We should already be on the meditate screen - just verify by looking for Start button
+    // We should already be on the session screen - just verify by looking for Start button
     await waitFor(element(by.id('start-button'))).toBeVisible().withTimeout(10000);
-    console.log('✅ Started on meditate screen');
+    console.log('✅ Started on session screen');
     
     // Navigate to settings screen
     console.log('🔍 Navigating to Settings screen...');

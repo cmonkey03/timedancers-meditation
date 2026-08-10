@@ -1,7 +1,7 @@
-import { useThemeColors } from '@/hooks/use-theme';
+import { uiText } from '@/data/ui-text';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { uiText } from '@/data/ui-text';
+import { useThemeColors } from '@/hooks/use-theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -22,8 +22,8 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type WheelState = "idle" | "active" | "releasing" | "done";
 
-// Meditation wheel props
-interface MeditationWheelProps {
+// Session wheel props
+interface SessionWheelProps {
   size?: number;
   label: string;
   remaining: number;
@@ -41,14 +41,14 @@ interface SimpleWheelProps {
   text: string;
 }
 
-type Props = MeditationWheelProps | SimpleWheelProps;
+type Props = SessionWheelProps | SimpleWheelProps;
 
 const Wheel = (props: Props) => {
   const C = useThemeColors();
   const { fontsLoaded, fonts } = useCustomFonts();
   const reduceMotion = useReducedMotion();
   
-  // Determine if this is simple or meditation wheel
+  // Determine if this is simple or session wheel
   const isSimple = 'backgroundColor' in props;
   
   // Always call hooks at the top level - use conditional logic inside
@@ -61,7 +61,7 @@ const Wheel = (props: Props) => {
   
   // Extract props based on type
   const simpleProps = isSimple ? props as SimpleWheelProps : null;
-  const meditationProps = !isSimple ? props as MeditationWheelProps : {
+  const sessionProps = !isSimple ? props as SessionWheelProps : {
     size: 180,
     label: '',
     remaining: 0,
@@ -79,7 +79,7 @@ const Wheel = (props: Props) => {
     colors,
     displayText,
     accessibilityLabel,
-  } = meditationProps;
+  } = sessionProps;
 
   const stroke = 10;
   const r = (size - stroke) / 2;
@@ -256,7 +256,7 @@ const Wheel = (props: Props) => {
         accessibilityLabel={accessibilityLabel || `${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
         accessibilityRole="none"
         accessibilityState={{ disabled: state === "done" }}
-        accessibilityHint={state === "active" ? uiText.meditation.accessibility.meditationInProgress : state === "idle" ? uiText.meditation.accessibility.readyToStart : uiText.meditation.accessibility.sessionComplete}
+        accessibilityHint={state === "active" ? uiText.session.accessibility.sessionInProgress : state === "idle" ? uiText.session.accessibility.readyToStart : uiText.session.accessibility.sessionComplete}
       >
         {/* soft glow */}
         <Animated.View

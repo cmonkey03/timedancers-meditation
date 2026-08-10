@@ -1,11 +1,11 @@
-import WheelControls from '@/components/MeditationPage/WheelControls';
-import Wheel from '@/components/MeditationPage/Wheel';
+import Control from '@/components/SessionPage/Control';
+import Wheel from '@/components/SessionPage/Wheel';
+import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';
 import { useNotifications } from '@/hooks/use-notifications';
 import { usePhasedTimer } from '@/hooks/use-phased-timer';
 import { useThemeColors } from '@/hooks/use-theme';
-import { uiText } from '@/data/ui-text';
 import { getPhaseAccessibilityLabel } from '@/utils/accessibility';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
@@ -29,7 +29,7 @@ const WHEELS = [
   { key: "wisdom", seconds: 60, colors: ["purple", "indigo"] as [string, string] }, // Purple to Indigo (top)
 ] as const;
 
-const Meditation = () => {
+const Session = () => {
   useKeepAwakeSafe();
   const C = useThemeColors();
   const [input, setInput] = useState('5');
@@ -268,7 +268,7 @@ const Meditation = () => {
         justifyContent: 'center',
         backgroundColor: C.background,
       }}
-      accessibilityLabel={timer.running ? uiText.meditation.accessibility.sessionInProgress : uiText.meditation.status.setup}
+      accessibilityLabel={timer.running ? uiText.session.accessibility.sessionInProgress : uiText.session.status.setup}
       accessibilityRole="none"
     >
       {(() => {
@@ -316,16 +316,15 @@ const Meditation = () => {
       {showCompleted && (
         <Text 
           style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
-          accessibilityLabel={uiText.meditation.accessibility.sessionComplete}
+          accessibilityLabel={uiText.session.accessibility.sessionComplete}
           accessibilityRole="alert"
           accessible={true}
         >
-          {uiText.meditation.status.complete}
+          {uiText.session.status.complete}
         </Text>
       )}
       
-      <WheelControls
-        counting={timer.running}
+      <Control   counting={timer.running}
         handleInput={handleInput}
         input={input}
         onPress={onPress}
@@ -335,4 +334,4 @@ const Meditation = () => {
   );
 };
 
-export default Meditation;
+export default Session;

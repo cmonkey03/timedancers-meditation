@@ -1,9 +1,8 @@
-import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import Wheel from '@/components/SessionPage/Wheel';
+import { onboardingData } from '@/data/onboarding';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';
-import Wheel from '@/components/MeditationPage/Wheel';
-import { onboardingData } from '@/data/onboarding';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock expo-linear-gradient
 vi.mock('expo-linear-gradient', () => ({
@@ -64,7 +63,7 @@ vi.mock('@/hooks/use-fonts', () => ({
 // Component imported at top
 
 describe('components/Wheel', () => {
-  const meditationProps = {
+  const sessionProps = {
     size: 160,
     label: onboardingData.wheelLabels.power,
     remaining: 60,
@@ -79,8 +78,8 @@ describe('components/Wheel', () => {
     text: 'Test Wheel',
   };
 
-  it('renders meditation wheel without crashing', () => {
-    const { getByText } = render(<Wheel {...meditationProps} />);
+  it('renders session wheel without crashing', () => {
+    const { getByText } = render(<Wheel {...sessionProps} />);
     
     const label = getByText(onboardingData.wheelLabels.power);
     expect(label).toBeTruthy();
@@ -93,12 +92,12 @@ describe('components/Wheel', () => {
     expect(text).toBeTruthy();
   });
 
-  it('renders different meditation wheel states', () => {
+  it('renders different session wheel states', () => {
     const states = ['idle', 'active', 'releasing', 'done'] as const;
     
     states.forEach(state => {
       const { getByText } = render(
-        <Wheel {...meditationProps} state={state} />
+        <Wheel {...sessionProps} state={state} />
       );
       
       const label = getByText(onboardingData.wheelLabels.power);
@@ -106,12 +105,12 @@ describe('components/Wheel', () => {
     });
   });
 
-  it('handles different sizes for meditation wheel', () => {
+  it('handles different sizes for session wheel', () => {
     const sizes = [160, 220];
     
     sizes.forEach(size => {
       const { getByText } = render(
-        <Wheel {...meditationProps} size={size} />
+        <Wheel {...sessionProps} size={size} />
       );
       
       const label = getByText(onboardingData.wheelLabels.power);
@@ -128,7 +127,7 @@ describe('components/Wheel', () => {
     
     testCases.forEach(({ remaining, total }) => {
       const { getByText } = render(
-        <Wheel {...meditationProps} remaining={remaining} total={total} />
+        <Wheel {...sessionProps} remaining={remaining} total={total} />
       );
       
       const label = getByText(onboardingData.wheelLabels.power);
@@ -145,7 +144,7 @@ describe('components/Wheel', () => {
     
     colorCombinations.forEach(colors => {
       const { getByText } = render(
-        <Wheel {...meditationProps} colors={colors} />
+        <Wheel {...sessionProps} colors={colors} />
       );
       
       const label = getByText(onboardingData.wheelLabels.power);
@@ -158,7 +157,7 @@ describe('components/Wheel', () => {
     
     labels.forEach(label => {
       const { getByText } = render(
-        <Wheel {...meditationProps} label={label} />
+        <Wheel {...sessionProps} label={label} />
       );
       
       const labelElement = getByText(label);

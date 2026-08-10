@@ -1,19 +1,19 @@
-import Wheel from '@/components/MeditationPage/Wheel';
-import { Ionicons } from '@expo/vector-icons';
-import { useThemeColors } from '@/hooks/use-theme';
+import Wheel from '@/components/SessionPage/Wheel';
+import { onboardingData } from '@/data/onboarding';
 import { useCustomFonts } from '@/hooks/use-fonts';
+import { useThemeColors } from '@/hooks/use-theme';
+import { setOnboardingCompleted } from '@/utils/settings';
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-import AnimatedWelcomeText from './AnimatedWelcomeText';
 import AnimatedBounceArrow from './AnimatedBounceArrow';
+import AnimatedWelcomeText from './AnimatedWelcomeText';
 import AnimatedWheel from './AnimatedWheel';
 import ImageWrapper from './ImageWrapper';
 import SubtitleWrapper from './SubtitleWrapper';
 import SwipeIndicator from './SwipeIndicator';
 import TitleWrapper from './TitleWrapper';
 import WelcomeImage from './WelcomeImage';
-import { onboardingData } from '@/data/onboarding';
-import { setOnboardingCompleted } from '@/utils/settings';
 
 type Props = {
   finishOnboarding: () => void;

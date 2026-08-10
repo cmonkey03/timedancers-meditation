@@ -18,8 +18,8 @@ const config = {
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      build: 'xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
-      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/TimedancersMeditation.app',
+      build: 'xcodebuild -workspace ios/*.xcworkspace -scheme TimespinSession -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build',
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/TimespinSession.app',
     },
   },
   devices: {

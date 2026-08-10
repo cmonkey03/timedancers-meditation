@@ -1,11 +1,11 @@
-import Wheel from '@/components/MeditationPage/Wheel';
-import React, { useEffect, useState } from 'react';
+import Wheel from '@/components/SessionPage/Wheel';
+import { useEffect, useState } from 'react';
 import Animated, {
-  useSharedValue,
+  Easing,
   useAnimatedStyle,
+  useSharedValue,
   withRepeat,
   withTiming,
-  Easing,
 } from 'react-native-reanimated';
 
 interface AnimatedWheelProps {

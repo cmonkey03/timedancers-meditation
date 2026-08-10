@@ -1,5 +1,5 @@
 name: ✨ Feature Request
-description: Suggest a new feature for the TimeDancers Meditation app
+description: Suggest a new feature for the Timespin app
 title: "[Feature]: "
 labels: ["enhancement", "triage"]
 assignees: []
@@ -16,7 +16,7 @@ body:
       label: Feature Area
       description: Which area would this feature affect?
       options:
-        - Meditation Experience
+        - Session Experience
         - Timer System
         - Chakra Orbs
         - Audio/Chimes
@@ -76,11 +76,11 @@ body:
       required: true
 
   - type: textarea
-    id: meditation_context
+    id: session_context
     attributes:
-      label: Meditation Context
-      description: How does this feature relate to meditation practice or the TimeDancers philosophy?
-      placeholder: Explain the meditation/spiritual context...
+      label: Session Context
+      description: How does this feature relate to session practice or the Timespin philosophy?
+      placeholder: Explain the session/spiritual context...
 
   - type: dropdown
     id: complexity
@@ -107,7 +107,7 @@ body:
       options:
         - label: I have searched for existing feature requests before creating this one
           required: true
-        - label: This feature aligns with the TimeDancers meditation philosophy
+        - label: This feature aligns with the Timespin session philosophy
           required: true
         - label: I have provided sufficient detail for the development team to understand the request
           required: true

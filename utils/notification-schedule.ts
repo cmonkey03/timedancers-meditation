@@ -26,7 +26,7 @@ export function computeScheduleItems(
   return [
     {
       whenEpochMs: endEpochMs,
-      title: 'Meditation complete',
+      title: 'Session complete',
       body: 'Session finished',
       withSound,
     },

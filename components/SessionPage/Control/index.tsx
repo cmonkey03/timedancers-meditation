@@ -1,9 +1,9 @@
 import Button from '@/components/Button';
 import TimerWheelPicker from '@/components/TimerWheelPicker';
-import { useThemeColors } from '@/hooks/use-theme';
 import { uiText } from '@/data/ui-text';
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { useThemeColors } from '@/hooks/use-theme';
+import { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 
 interface Props {
@@ -14,13 +14,13 @@ interface Props {
   started: boolean;
 }
 
-const WheelControls = ({ counting, handleInput, input, onPress, started }: Props) => {
+const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
   const C = useThemeColors();
 
   const buttonText = useMemo(() => {
-    if (counting) return uiText.meditation.buttons.pause;
-    if (!started) return uiText.meditation.buttons.start;
-    if (!counting && started) return uiText.meditation.buttons.resume;
+    if (counting) return uiText.session.buttons.pause;
+    if (!started) return uiText.session.buttons.start;
+    if (!counting && started) return uiText.session.buttons.resume;
     return '';
   }, [counting, started]);
 
@@ -38,14 +38,14 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
           <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
-            text={uiText.meditation.buttons.cancel} 
+            text={uiText.session.buttons.cancel} 
             variant="ghost" 
             testID="cancel-button"
           />
         </View>
         <View 
           style={[styles.statusContainer, { backgroundColor: C.text30 }]}
-          accessibilityLabel={counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}
+          accessibilityLabel={counting ? uiText.session.status.inProgress : uiText.session.status.paused}
           accessibilityRole="summary"
           accessible={true}
         >
@@ -53,7 +53,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
             backgroundColor: counting ? C.success : C.warning 
           }]} />
           <Text style={[styles.statusText, { color: C.text }]}>
-            {counting ? uiText.meditation.status.inProgress : uiText.meditation.status.paused}
+            {counting ? uiText.session.status.inProgress : uiText.session.status.paused}
           </Text>
         </View>
       </Animated.View>
@@ -67,7 +67,7 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => onPress('counting')}
-            text={uiText.meditation.buttons.start}
+            text={uiText.session.buttons.start}
             variant="primary"
             testID="start-button"
           />
@@ -80,12 +80,12 @@ const WheelControls = ({ counting, handleInput, input, onPress, started }: Props
       </View>
       <View 
         style={[styles.instructionContainer, { backgroundColor: `${C.text}08` }]}
-        accessibilityLabel={uiText.meditation.accessibility.selectMeditationTime}
+        accessibilityLabel={uiText.session.accessibility.selectSessionTime}
         accessibilityRole="text"
         accessible={true}
       >
         <Text style={[styles.instructionText, { color: C.text }]}>
-          {uiText.meditation.instructions.selectTime}
+          {uiText.session.instructions.selectTime}
         </Text>
       </View>
     </Animated.View>
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WheelControls;
+export default Control;
