@@ -1,4 +1,4 @@
-import ReportingObserver from '@/components/Session/Ring';
+import Ring from '@/components/Session/Ring';
 import { getPhaseAccessibilityLabel } from '@/utils/accessibility';
 import * as Timer from '@/utils/timer';
 import { useEffect, useRef } from 'react';
@@ -9,7 +9,7 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// ReportingObserver definitions with rainbow colors (bottom to top: yellow/red → blue/green → purple/indigo)
+// Ring definitions with rainbow colors (bottom to top: yellow/red → blue/green → purple/indigo)
 const RINGS = [
   { key: "power",  seconds: 60, colors: ["yellow", "red"] as [string, string] }, // Yellow to Red (bottom)
   { key: "heart",   seconds: 60, colors: ["blue", "green"] as [string, string] }, // Blue to Green (middle)  
@@ -26,15 +26,15 @@ type Props = {
     phases: { seconds: number }[];
     started: boolean;
   };
-  prevIndex: number;
+  prevIndex: React.MutableRefObject<number>;
 };
 
-export default function SessionReportingObservers({ timer, prevIndex }: Props) {
-  const localPrevIndex = useRef(prevIndex);
+export default function SessionWheels({ timer, prevIndex }: Props) {
+  const localPrevIndex = useRef(prevIndex.current);
   
   // Update local ref when prop changes (using effect to avoid render-time ref access)
   useEffect(() => {
-    localPrevIndex.current = prevIndex;
+    localPrevIndex.current = prevIndex.current;
   }, [prevIndex]);
 
   return (
@@ -67,7 +67,7 @@ export default function SessionReportingObservers({ timer, prevIndex }: Props) {
           
           return (
             <View key={ring.key} style={{ alignItems: "center", marginVertical: big ? 16 : 16 }}>
-              <ReportingObserver
+              <Ring
                 size={big ? 200 : 120}
                 label={capitalize(ring.key)}
                 remaining={remaining}
