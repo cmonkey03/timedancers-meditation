@@ -1,4 +1,5 @@
 import Button from '@/components/Button';
+import DurationPicker from '@/components/Session/DurationPicker';
 import { uiText } from '@/data/ui-text';
 import { useThemeColors } from '@/hooks/use-theme';
 import { useMemo } from 'react';

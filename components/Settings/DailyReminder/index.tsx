@@ -1,4 +1,4 @@
-import TimePickerModal from '@/components/TimePickerModal';
+import TimePickerModal from '@/components/Settings/TimePickerModal';
 import { uiText } from '@/data/ui-text';
 import { useThemeColors } from '@/hooks/use-theme';
 import { initNotifications } from '@/utils/notifications';
@@ -127,7 +127,7 @@ export default function DailyReminder() {
         time={time || '08:00'}
         colorScheme={colorScheme}
         onCancel={() => setShowPicker(false)}
-        onConfirm={async (hhmm) => {
+        onConfirm={async (hhmm: string) => {
           try {
             setTime(hhmm);
             await AsyncStorage.setItem('dailyReminderTime', hhmm).catch(() => {});
