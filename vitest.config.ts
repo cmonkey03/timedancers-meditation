@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
-import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'vitest/config';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,7 +20,7 @@ export default defineConfig({
       'tests/animated-welcome-text.test.tsx',
       'tests/button.test.tsx', 
       'tests/use-fonts.test.ts',
-      'tests/wheel.test.tsx',
+      'tests/ring.test.tsx',
     ],
   },
 });

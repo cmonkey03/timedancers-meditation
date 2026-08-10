@@ -118,7 +118,7 @@ detox test -c ios.debug --loglevel verbose
 detox test -c ios.debug e2e/session.e2e.ts
 
 - **Start/Pause/Resume/Cancel Flow**: Tests the complete session session lifecycle
-- **Wheel States**: Verifies that session wheels display correctly with proper accessibility labels
+- **Ring States**: Verifies that session rings display correctly with proper accessibility labels
 - **Duration Selection**: Tests changing session duration
 - **Session Completion**: Tests session session completion (note: uses default 5-minute duration)
 

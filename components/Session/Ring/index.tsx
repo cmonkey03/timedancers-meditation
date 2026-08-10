@@ -22,7 +22,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type RingState = "idle" | "active" | "releasing" | "done";
 
-// Session wheel props
+// Session ring props
 interface SessionRingProps {
   size?: number;
   label: string;
@@ -34,7 +34,7 @@ interface SessionRingProps {
   accessibilityLabel?: string; // Optional custom accessibility label
 }
 
-// Simple wheel props (for onboarding/tower)
+// Simple ring props (for onboarding/tower)
 interface SimpleRingProps {
   color?: string;
   backgroundColor: string[];
@@ -48,7 +48,7 @@ const Ring = (props: Props) => {
   const { fontsLoaded, fonts } = useCustomFonts();
   const reduceMotion = useReducedMotion();
   
-  // Determine if this is simple or session wheel
+  // Determine if this is simple or session ring
   const isSimple = 'backgroundColor' in props;
   
   // Always call hooks at the top level - use conditional logic inside
@@ -88,7 +88,7 @@ const Ring = (props: Props) => {
   // Progress from 1 → 0 with smooth animation
   const targetProgress = Math.max(0, Math.min(1, remaining / Math.max(1, total)));
   
-  // Smooth continuous progress animation - only starts when wheel becomes active
+  // Smooth continuous progress animation - only starts when ring becomes active
   React.useEffect(() => {
     if (!isSimple && state === "active" && total > 0) {
       // Start a continuous animation from current progress to 0
@@ -101,12 +101,12 @@ const Ring = (props: Props) => {
         easing: Easing.linear,
       });
     } else {
-      // For non-active wheels, just set the progress directly
+      // For non-active rings, just set the progress directly
       smoothProgress.value = targetProgress;
     }
   }, [state, total, remaining, smoothProgress, targetProgress, isSimple]);
 
-  // Update progress for non-active wheels
+  // Update progress for non-active rings
   React.useEffect(() => {
     if (!isSimple && state !== "active") {
       progress.value = targetProgress;
@@ -117,7 +117,7 @@ const Ring = (props: Props) => {
   React.useEffect(() => {
     if (!isSimple && !reduceMotion) {
       if (state === "active") {
-        // continuous breathing for active wheel
+        // continuous breathing for active ring
         breath.value = withRepeat(
           withSequence(
             withTiming(1, { duration: 1400, easing: Easing.inOut(Easing.ease) }),
@@ -127,7 +127,7 @@ const Ring = (props: Props) => {
           true
         );
       } else if (state === "idle") {
-        // gentle pulse for all idle wheels - makes app feel alive
+        // gentle pulse for all idle rings - makes app feel alive
         breath.value = withRepeat(
           withSequence(
             withTiming(1, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
@@ -137,7 +137,7 @@ const Ring = (props: Props) => {
           true
         );
       } else {
-        // no breathing for other idle/done wheels
+        // no breathing for other idle/done rings
         breath.value = withTiming(0, { duration: 300 });
       }
     } else {
@@ -150,7 +150,7 @@ const Ring = (props: Props) => {
   React.useEffect(() => {
     if (!isSimple && !reduceMotion) {
       if (state === "active") {
-        // continuous spinning for active wheel background
+        // continuous spinning for active ring background
         backgroundSpin.value = withRepeat(
           withTiming(1, { duration: 4000, easing: Easing.linear }),
           -1,
@@ -199,7 +199,7 @@ const Ring = (props: Props) => {
     } else if (state === "idle") {
       return 1 + interpolate(breath.value, [0, 1], [0, 0.06]); // 6% gentle pulse for idle
     } else {
-      return 1; // no animation for other wheels
+      return 1; // no animation for other rings
     }
   });
 
@@ -220,7 +220,7 @@ const Ring = (props: Props) => {
   const [c0, c1] = colors || [C.primary, C.background];
   const gid = useMemo(() => `g-${label}-${c0}-${c1}` .replace(/\W/g, ""), [label, c0, c1]);
 
-  // Early return for simple wheels
+  // Early return for simple rings
   if (isSimple && simpleProps) {
     const { color, backgroundColor, text } = simpleProps;
     const textColor = color ?? C.text;
@@ -246,14 +246,14 @@ const Ring = (props: Props) => {
     <View style={{ alignItems: "center" }}>
       <View
         style={[
-          styles.wheelWrap,
+          styles.ringWrap,
           {
             width: size,
             height: size,
             opacity: dimmed ? 0.9 : 1,
           },
         ]}
-        accessibilityLabel={accessibilityLabel || `${label} wheel timer. ${mm} minutes ${ss} seconds remaining`}
+        accessibilityLabel={accessibilityLabel || `${label} ring timer. ${mm} minutes ${ss} seconds remaining`}
         accessibilityRole="none"
         accessibilityState={{ disabled: state === "done" }}
         accessibilityHint={state === "active" ? uiText.session.accessibility.sessionInProgress : state === "idle" ? uiText.session.accessibility.readyToStart : uiText.session.accessibility.sessionComplete}
@@ -350,7 +350,7 @@ const Ring = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-  wheelWrap: { 
+  ringWrap: { 
     justifyContent: "center", 
     alignItems: "center",
     position: "relative" as const,

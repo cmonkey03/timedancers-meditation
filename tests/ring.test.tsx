@@ -1,4 +1,4 @@
-import Wheel from '@/components/Session/Ring';
+import Ring from '@/components/Session/Ring';
 import { onboardingData } from '@/data/onboarding';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';
@@ -62,10 +62,10 @@ vi.mock('@/hooks/use-fonts', () => ({
 
 // Component imported at top
 
-describe('components/Wheel', () => {
+describe('components/Ring', () => {
   const sessionProps = {
     size: 160,
-    label: onboardingData.wheelLabels.power,
+    label: onboardingData.ringLabels.power,
     remaining: 60,
     total: 180,
     state: 'idle' as const,
@@ -75,45 +75,45 @@ describe('components/Wheel', () => {
   const simpleProps = {
     color: '#D28A2A',
     backgroundColor: ['#ffffff', '#f0f0f0'],
-    text: 'Test Wheel',
+    text: 'Test Ring',
   };
 
-  it('renders session wheel without crashing', () => {
-    const { getByText } = render(<Wheel {...sessionProps} />);
+  it('renders session ring without crashing', () => {
+    const { getByText } = render(<Ring {...sessionProps} />);
     
-    const label = getByText(onboardingData.wheelLabels.power);
+    const label = getByText(onboardingData.ringLabels.power);
     expect(label).toBeTruthy();
   });
 
-  it('renders simple wheel without crashing', () => {
-    const { getByText } = render(<Wheel {...simpleProps} />);
+  it('renders simple ring without crashing', () => {
+    const { getByText } = render(<Ring {...simpleProps} />);
     
-    const text = getByText('Test Wheel');
+    const text = getByText('Test Ring');
     expect(text).toBeTruthy();
   });
 
-  it('renders different session wheel states', () => {
+  it('renders different session ring states', () => {
     const states = ['idle', 'active', 'releasing', 'done'] as const;
     
     states.forEach(state => {
       const { getByText } = render(
-        <Wheel {...sessionProps} state={state} />
+        <Ring {...sessionProps} state={state} />
       );
       
-      const label = getByText(onboardingData.wheelLabels.power);
+      const label = getByText(onboardingData.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
 
-  it('handles different sizes for session wheel', () => {
+  it('handles different sizes for session ring', () => {
     const sizes = [160, 220];
     
     sizes.forEach(size => {
       const { getByText } = render(
-        <Wheel {...sessionProps} size={size} />
+        <Ring {...sessionProps} size={size} />
       );
       
-      const label = getByText(onboardingData.wheelLabels.power);
+      const label = getByText(onboardingData.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -127,10 +127,10 @@ describe('components/Wheel', () => {
     
     testCases.forEach(({ remaining, total }) => {
       const { getByText } = render(
-        <Wheel {...sessionProps} remaining={remaining} total={total} />
+        <Ring {...sessionProps} remaining={remaining} total={total} />
       );
       
-      const label = getByText(onboardingData.wheelLabels.power);
+      const label = getByText(onboardingData.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -144,20 +144,20 @@ describe('components/Wheel', () => {
     
     colorCombinations.forEach(colors => {
       const { getByText } = render(
-        <Wheel {...sessionProps} colors={colors} />
+        <Ring {...sessionProps} colors={colors} />
       );
       
-      const label = getByText(onboardingData.wheelLabels.power);
+      const label = getByText(onboardingData.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
 
   it('renders different labels', () => {
-    const labels = [onboardingData.wheelLabels.power, onboardingData.wheelLabels.heart, onboardingData.wheelLabels.wisdom];
+    const labels = [onboardingData.ringLabels.power, onboardingData.ringLabels.heart, onboardingData.ringLabels.wisdom];
     
     labels.forEach(label => {
       const { getByText } = render(
-        <Wheel {...sessionProps} label={label} />
+        <Ring {...sessionProps} label={label} />
       );
       
       const labelElement = getByText(label);
@@ -165,7 +165,7 @@ describe('components/Wheel', () => {
     });
   });
 
-  it('handles simple wheel with different background colors', () => {
+  it('handles simple ring with different background colors', () => {
     const backgroundColors = [
       ['#ffffff', '#f0f0f0'],
       ['#000000', '#333333'],
@@ -174,10 +174,10 @@ describe('components/Wheel', () => {
     
     backgroundColors.forEach(backgroundColor => {
       const { getByText } = render(
-        <Wheel {...simpleProps} backgroundColor={backgroundColor} />
+        <Ring {...simpleProps} backgroundColor={backgroundColor} />
       );
       
-      const text = getByText('Test Wheel');
+      const text = getByText('Test Ring');
       expect(text).toBeTruthy();
     });
   });
