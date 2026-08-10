@@ -1,6 +1,6 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
 import Control from '@/components/Session/Control';
-import Wheel from '@/components/Session/Wheel';
+import Wheel from '@/components/Session/Ring';
 import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
 import { useKeepAwakeSafe } from '@/hooks/use-keep-awake-safe';

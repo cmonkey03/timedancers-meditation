@@ -20,30 +20,30 @@ import Svg, { Circle, Defs, Stop, LinearGradient as SvgLinearGradient } from "re
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-type WheelState = "idle" | "active" | "releasing" | "done";
+type RingState = "idle" | "active" | "releasing" | "done";
 
 // Session wheel props
-interface SessionWheelProps {
+interface SessionRingProps {
   size?: number;
   label: string;
   remaining: number;
   total: number;
-  state: WheelState;
+  state: RingState;
   colors: [string, string];
   displayText?: string; // Optional custom text to display instead of timer
   accessibilityLabel?: string; // Optional custom accessibility label
 }
 
 // Simple wheel props (for onboarding/tower)
-interface SimpleWheelProps {
+interface SimpleRingProps {
   color?: string;
   backgroundColor: string[];
   text: string;
 }
 
-type Props = SessionWheelProps | SimpleWheelProps;
+type Props = SessionRingProps | SimpleRingProps;
 
-const Wheel = (props: Props) => {
+const Ring = (props: Props) => {
   const C = useThemeColors();
   const { fontsLoaded, fonts } = useCustomFonts();
   const reduceMotion = useReducedMotion();
@@ -60,13 +60,13 @@ const Wheel = (props: Props) => {
   const glow = useSharedValue(0);
   
   // Extract props based on type
-  const simpleProps = isSimple ? props as SimpleWheelProps : null;
-  const sessionProps = !isSimple ? props as SessionWheelProps : {
+  const simpleProps = isSimple ? props as SimpleRingProps : null;
+  const sessionProps = !isSimple ? props as SessionRingProps : {
     size: 180,
     label: '',
     remaining: 0,
     total: 1,
-    state: 'idle' as WheelState,
+    state: 'idle' as RingState,
     colors: ['#000', '#000'] as [string, string]
   };
 
@@ -373,4 +373,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheel;
+export default Ring;
