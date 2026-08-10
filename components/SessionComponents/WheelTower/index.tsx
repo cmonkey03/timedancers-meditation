@@ -1,6 +1,6 @@
-import Wheel from '@/components/SessionPage/Wheel';
 import { useThemeColors } from '@/hooks/use-theme';
 import { Text, useColorScheme, View } from 'react-native';
+import Wheel from '../Wheel';
 
 interface Props {
   large: boolean;

@@ -1,11 +1,11 @@
-import Wheel from '@/components/SessionPage/Wheel';
+import Wheel from '@/components/SessionComponents/Wheel';
 import { onboardingData } from '@/data/onboarding';
 import { useCustomFonts } from '@/hooks/use-fonts';
 import { useThemeColors } from '@/hooks/use-theme';
 import { setOnboardingCompleted } from '@/utils/settings';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
-import Onboarding from 'react-native-onboarding-swiper';
+import OnboardingSwiper from 'react-native-onboarding-swiper';
 import AnimatedBounceArrow from './AnimatedBounceArrow';
 import AnimatedWelcomeText from './AnimatedWelcomeText';
 import AnimatedWheel from './AnimatedWheel';
@@ -19,7 +19,7 @@ type Props = {
   finishOnboarding: () => void;
 };
 
-const OnboardingPage = ({ finishOnboarding }: Props) => {
+const Onboarding = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
   const { fontsLoaded, fonts } = useCustomFonts();
   const SkipButton = (props: any) => (
@@ -121,7 +121,7 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
     <View testID="onboarding" style={{
       flex: 1
     }} accessibilityLabel={onboardingData.accessibility.onboardingTutorial} accessibilityRole="none">
-      <Onboarding
+      <OnboardingSwiper
         onDone={async () => {
           await setOnboardingCompleted();
           finishOnboarding();
@@ -303,4 +303,4 @@ const OnboardingPage = ({ finishOnboarding }: Props) => {
   );
 };
 
-export default OnboardingPage;
+export default Onboarding;

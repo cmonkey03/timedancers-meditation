@@ -1,9 +1,9 @@
-import { DailyReminder, ThemePreview } from '@/components/SettingsPage';
-import Alerts from '@/components/SettingsPage/Alerts';
 import Button from '@/components/Button';
-import { useThemeColors } from '@/hooks/use-theme';
-import { useCustomFonts } from '@/hooks/use-fonts';
+import { DailyReminder, ThemePreview } from '@/components/SettingsComponents';
+import Alerts from '@/components/SettingsComponents/Alerts';
 import { uiText } from '@/data/ui-text';
+import { useCustomFonts } from '@/hooks/use-fonts';
+import { useThemeColors } from '@/hooks/use-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';

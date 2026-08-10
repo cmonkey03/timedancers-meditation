@@ -1,4 +1,4 @@
-import OnboardingPage from '@/components/OnboardingPage';
+import Onboarding from '@/components/OnboardingComponents';
 import { uiText } from '@/data/ui-text';
 import { useThemeColors } from '@/hooks/use-theme';
 import { hasCompletedOnboarding } from '@/utils/settings';
@@ -89,5 +89,5 @@ export default function HomeScreen() {
   }
 
   // Show onboarding if not completed
-  return <OnboardingPage key={key} finishOnboarding={finishOnboarding} />;
+  return <Onboarding key={key} finishOnboarding={finishOnboarding} />;
 }
