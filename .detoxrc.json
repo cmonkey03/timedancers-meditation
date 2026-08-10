@@ -22,13 +22,13 @@
       "type": "ios.app",
       "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
       "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/TimedancersMeditation.app",
-      "bundleId": "org.timedancers.meditation"
+      "bundleId": "com.gypsyfires.timespin"
     },
     "ios.release": {
       "type": "ios.app",
       "build": "xcodebuild -workspace ios/*.xcworkspace -scheme TimedancersMeditation -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
       "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/TimedancersMeditation.app",
-      "bundleId": "org.timedancers.meditation"
+      "bundleId": "com.gypsyfires.timespin"
     }
   },
   "devices": {

@@ -2,8 +2,8 @@ import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'Timedancers Meditation',
-  slug: 'timedancers-meditation',
+  name: 'Timespin',
+  slug: 'timespin-app',
   owner: "rustlemediallc",
   version: '1.0.0',
   android: {
@@ -15,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
-    package: 'org.timedancers.meditation',
+    package: 'com.gypsyfires.timespin',
     permissions: [
       'RECEIVE_BOOT_COMPLETED',
       'VIBRATE',
@@ -26,10 +26,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     ...config.ios,
     supportsTablet: true,
-    bundleIdentifier: 'org.timedancers.meditation',
+    bundleIdentifier: 'com.gypsyfires.timespin',
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
-      "CFBundleDisplayName": "Timedancers",   // <= short label under the icon
+      "CFBundleDisplayName": "Timespin",   // <= short label under the icon
       // Allow audio to continue in the background
       "UIBackgroundModes": ["audio", "fetch"],
       // Allow notifications to show when app is in background
@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'timedancers',
+  scheme: 'timespin',
   userInterfaceStyle: 'automatic',
   extra: {
     eas: {
