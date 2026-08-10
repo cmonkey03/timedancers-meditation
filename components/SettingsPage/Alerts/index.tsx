@@ -55,14 +55,15 @@ const TestButton = ({ onPress, disabled }: { onPress: () => void; disabled: bool
             paddingVertical: 10,
             borderRadius: 20,
             borderWidth: 2,
-            borderColor: disabled ? `${C.text}20` : `${C.text}4D`,
-            backgroundColor: disabled ? `${C.text}08` : 'transparent',
+            borderColor: disabled ? C.text30 : C.text60,
+            backgroundColor: disabled ? C.text30 : 'transparent',
+            shadowColor: C.shadow,
           },
           animatedStyle,
         ]}
       >
         <Text style={{ 
-          color: disabled ? `${C.text}40` : C.text, 
+          color: disabled ? C.text40 : C.text, 
           fontWeight: '600',
           fontSize: 14,
         }}>
@@ -185,7 +186,7 @@ const VolumeSlider = ({
               style={[
                 styles.sliderActiveTrack,
                 {
-                  backgroundColor: disabled ? `${C.text}40` : '#2d5a3d',
+                  backgroundColor: disabled ? C.text40 : C.buttonPrimary,
                 },
                 activeTrackAnimatedStyle,
               ]}
@@ -196,7 +197,7 @@ const VolumeSlider = ({
               style={[
                 styles.sliderKnob,
                 {
-                  backgroundColor: disabled ? `${C.text}60` : '#2d5a3d',
+                  backgroundColor: disabled ? C.text60 : C.buttonPrimary,
                   borderColor: C.surface,
                 },
                 knobAnimatedStyle,
@@ -272,14 +273,15 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
           style={[
             styles.pill,
             {
-              borderColor: selected ? '#2d5a3d' : `${C.text}30`,
-              backgroundColor: selected ? '#2d5a3d' : 'transparent',
+              borderColor: selected ? C.buttonPrimary : C.text30,
+              backgroundColor: selected ? C.buttonPrimary : C.buttonGhost,
+              shadowColor: C.shadow,
             },
             animatedStyle,
           ]}
         >
           <Text style={{ 
-            color: selected ? '#ffffff' : C.text, 
+            color: selected ? C.buttonPrimaryText : C.text, 
             fontWeight: selected ? '600' : '500',
             fontSize: 14,
           }}>
@@ -355,7 +357,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginRight: 8,
     marginBottom: 8,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -392,7 +393,6 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

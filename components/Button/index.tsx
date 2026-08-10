@@ -52,7 +52,8 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
         style={[
           styles.btn,
           variant === "primary" ? styles.btnPrimary : styles.btnGhost,
-          variant === "ghost" && { borderColor: `${C.text}4D` },
+          variant === "ghost" && { borderColor: C.text30 },
+          { shadowColor: C.shadow },
           animatedStyle,
         ]}
       >
@@ -77,7 +78,6 @@ const styles = StyleSheet.create({
     borderRadius: 22, 
     alignItems: 'center', 
     justifyContent: 'center',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 3,

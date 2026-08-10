@@ -217,7 +217,7 @@ const Wheel = (props: Props) => {
   const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
   const ss = String(Math.floor(remaining % 60)).padStart(2, "0");
 
-  const [c0, c1] = colors || ["#000", "#000"];
+  const [c0, c1] = colors || [C.primary, C.background];
   const gid = useMemo(() => `g-${label}-${c0}-${c1}` .replace(/\W/g, ""), [label, c0, c1]);
 
   // Early return for simple wheels

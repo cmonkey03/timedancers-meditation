@@ -43,14 +43,14 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       <Animated.View
         style={[
           {
-            borderColor: enabled ? `${C.text}80` : `${C.text}30`,
+            borderColor: enabled ? C.text60 : C.text30,
             borderWidth: 2,
             borderRadius: 22,
             paddingHorizontal: 18,
             paddingVertical: 12,
             flex: 0.5,
             opacity: enabled ? 1 : 0.5,
-            shadowColor: '#000',
+            shadowColor: C.shadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: enabled ? 0.05 : 0,
             shadowRadius: 2,
