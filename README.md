@@ -1,4 +1,4 @@
-# Timespin App
+# Timewheel App
 
 A meditation timer app built with Expo Router and React Native, featuring customizable session timers with phase-based timing and chime alerts.
 
@@ -15,7 +15,7 @@ A meditation timer app built with Expo Router and React Native, featuring custom
 ## Project Structure
 
 ```
-timespin-app/
+timewheel-app/
 ├── src/                      # All source code
 │   ├── app/                   # Expo Router pages
 │   ├── components/            # React components
@@ -86,6 +86,7 @@ The app follows a clean architecture pattern:
 ## Development
 
 The project uses a `src/` directory structure following React/Expo best practices. Path aliases are configured:
+
 - `@/*` → `./src/*` (source code)
 - `@/assets/*` → `./assets/*` (static assets)
 
@@ -93,7 +94,6 @@ The project uses a `src/` directory structure following React/Expo best practice
 
 - `BACKGROUND_BEHAVIOR.md` - Background app behavior documentation
 - `DEPLOYMENT_SETUP.md` - Deployment setup instructions
-- `REFACTORING_SUMMARY.md` - Recent refactoring details
 
 ## License
 

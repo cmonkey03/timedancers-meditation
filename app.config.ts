@@ -2,8 +2,8 @@ import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'Timespin',
-  slug: 'timespin-app',
+  name: 'Timewheel',
+  slug: 'timewheel-app',
   owner: "rustlemediallc",
   version: '1.0.0',
   android: {
@@ -15,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
-    package: 'com.gypsyfires.timespin',
+    package: 'com.gypsyfires.timewheel',
     permissions: [
       'RECEIVE_BOOT_COMPLETED',
       'VIBRATE',
@@ -26,10 +26,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     ...config.ios,
     supportsTablet: true,
-    bundleIdentifier: 'com.gypsyfires.timespin',
+    bundleIdentifier: 'com.gypsyfires.timewheel',
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
-      "CFBundleDisplayName": "Timespin",   // <= short label under the icon
+      "CFBundleDisplayName": "Timewheel",   // <= short label under the icon
       // Allow audio to continue in the background
       "UIBackgroundModes": ["audio", "fetch"],
       // Allow notifications to show when app is in background
@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'timespin',
+  scheme: 'timewheel',
   userInterfaceStyle: 'automatic',
   extra: {
     eas: {

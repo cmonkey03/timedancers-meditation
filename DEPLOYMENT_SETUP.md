@@ -1,6 +1,6 @@
 # 🚀 Deployment Setup Guide
 
-This guide sets up automated testing for the Timespin app using GitHub Actions, with deployment handled entirely by Expo's GitHub integration.
+This guide sets up automated testing for the Timewheel app using GitHub Actions, with deployment handled entirely by Expo's GitHub integration.
 
 ## 📋 Prerequisites
 
@@ -12,7 +12,7 @@ This guide sets up automated testing for the Timespin app using GitHub Actions, 
 
 1. Go to [Expo GitHub App](https://github.com/apps/expo)
 2. Click **Install** or **Configure**
-3. Select your repository (`timespin-app`)
+3. Select your repository (`timewheel-app`)
 4. Grant necessary permissions
 
 **That's it for deployment!** Expo will automatically:
@@ -63,14 +63,14 @@ Feature Branch → develop (Full E2E Tests) → PR to main (Quick Checks) → Me
 
 ## 🎉 You're Ready
 
-Your Timespin app now has:
+Your Timewheel app now has:
 
 - ✅ **Automated Testing**: E2E tests on develop, quick checks on PRs
 - ✅ **Zero-Config Deployment**: Expo handles everything automatically
 - ✅ **Professional CI/CD**: Enterprise-grade without complexity
 - ✅ **Instant Updates**: EAS Updates for immediate feature delivery
 
-## 🧘‍♀️ Timespin App Features Covered
+## 🧘‍♀️ Timewheel App Features Covered
 
 Your meditation timer app features are fully tested:
 
