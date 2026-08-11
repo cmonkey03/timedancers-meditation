@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withTiming,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
 } from 'react-native-reanimated';
 
 const WelcomeImage = () => {
@@ -57,7 +57,7 @@ const WelcomeImage = () => {
     >
       {/* The growing tree */}
       <Animated.Image
-        source={require('@/assets/images/favicon.png')}
+        source={require('../../../../assets/images/favicon.png')}
         style={[
           {
             width: 120,

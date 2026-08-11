@@ -24,6 +24,5 @@ module.exports = {
   // Resolve our TS path alias
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/../src/$1',
-    '^@/assets/(.*)$': '<rootDir>/../assets/$1',
   },
 };

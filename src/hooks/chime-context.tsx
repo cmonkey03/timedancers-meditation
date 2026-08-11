@@ -1,3 +1,4 @@
+import { settingsService } from '@/services/settings';
 import type { AlertMode, ChimeContextValue, ChimeEvent } from '@/types';
 import { useAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
@@ -9,8 +10,8 @@ const ChimeContext = createContext<ChimeContextValue | null>(null);
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 function ChimeProviderInner({ children }: { children: React.ReactNode }) {
-  const chime1 = useAudioPlayer(require('@/assets/sounds/chime1.mp3'));
-  const chime2 = useAudioPlayer(require('@/assets/sounds/chime2.mp3'));
+  const chime1 = useAudioPlayer(require('../../assets/sounds/chime1.mp3'));
+  const chime2 = useAudioPlayer(require('../../assets/sounds/chime2.mp3'));
 
   const [mode, setModeState] = useState<AlertMode>('chime');
   const [volume, setVolume] = useState(0.7);

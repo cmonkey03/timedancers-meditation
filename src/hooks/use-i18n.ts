@@ -2,31 +2,19 @@
  * Internationalization hook
  * Handles language detection, switching, and translation
  */
-import { useState, useEffect } from 'react';
-import { Platform } from 'react-native';
-import { getLocaleStrings, Locale, localeNames, defaultLocale } from '@/locales';
+import { defaultLocale, getLocaleStrings, Locale, localeNames } from '@/locales';
 import { settingsService } from '@/services/settings';
-
-const STORAGE_KEY = 'appLocale';
+import { useCallback, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 export function useI18n() {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
   const [strings, setStrings] = useState(getLocaleStrings(defaultLocale));
 
-  // Load saved locale on mount
-  useEffect(() => {
-    loadSavedLocale();
-  }, []);
-
-  // Update strings when locale changes
-  useEffect(() => {
-    setStrings(getLocaleStrings(locale));
-  }, [locale]);
-
   /**
    * Load saved locale from storage
    */
-  async function loadSavedLocale() {
+  const loadSavedLocale = useCallback(async () => {
     try {
       const savedLocale = await settingsService.getLocale();
       if (savedLocale && (savedLocale === 'en' || savedLocale === 'es')) {
@@ -39,12 +27,22 @@ export function useI18n() {
       console.error('Failed to load locale:', error);
       detectDeviceLanguage();
     }
-  }
+  }, []);
+
+  // Load saved locale on mount
+  useEffect(() => {
+    loadSavedLocale();
+  }, [loadSavedLocale]);
+
+  // Update strings when locale changes
+  useEffect(() => {
+    setStrings(getLocaleStrings(locale));
+  }, [locale]);
 
   /**
    * Detect device language and set appropriate locale
    */
-  function detectDeviceLanguage() {
+  const detectDeviceLanguage = useCallback(() => {
     try {
       const deviceLocale = Platform.select({
         ios: () => {
@@ -73,7 +71,7 @@ export function useI18n() {
       console.error('Failed to detect device language:', error);
       setLocaleState(defaultLocale);
     }
-  }
+  }, []);
 
   /**
    * Change the app locale
