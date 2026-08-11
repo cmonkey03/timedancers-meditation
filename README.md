@@ -1,8 +1,40 @@
-# Welcome to your Expo app 👋
+# Timespin App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A meditation timer app built with Expo Router and React Native, featuring customizable session timers with phase-based timing and chime alerts.
 
-## Get started
+## Features
+
+- **Phase-based meditation timer** with customizable duration
+- **Three-phase sessions**: Power, Heart, and Wisdom phases
+- **Chime and haptic alerts** for phase transitions and completion
+- **Background notification support** for timed sessions
+- **Daily reminder notifications**
+- **Theme customization** (light/dark/system)
+- **Accessibility-focused design**
+
+## Project Structure
+
+```
+timespin-app/
+├── src/                      # All source code
+│   ├── app/                   # Expo Router pages
+│   ├── components/            # React components
+│   ├── hooks/                 # Custom hooks
+│   │   ├── session/          # Session-related hooks
+│   │   ├── ui/               # UI-related hooks
+│   │   └── platform/         # Platform-specific hooks
+│   ├── utils/                 # Utility functions
+│   ├── data/                  # Static data
+│   ├── services/              # Business logic layer
+│   ├── contexts/              # React contexts
+│   ├── types/                 # TypeScript types
+│   └── tests/                 # Unit tests
+├── assets/                   # Static assets
+├── e2e/                       # E2E tests
+└── [config files]            # Configuration
+```
+
+## Getting Started
 
 1. Install dependencies
 
@@ -10,41 +42,59 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Start the development server
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Open the app in a development build or simulator
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Available Scripts
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `npm start` - Start Expo development server
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS  
+- `npm run web` - Run on web
+- `npm test` - Run unit tests
+- `npm run lint` - Run ESLint
+- `npm run e2e` - Run E2E tests
 
-## Get a fresh project
+## Architecture
 
-When you're ready, run:
+The app follows a clean architecture pattern:
 
-```bash
-npm run reset-project
-```
+- **Service Layer**: Centralized data persistence and business logic
+- **Context Layer**: State management for sessions and themes
+- **Component Layer**: Focused, reusable UI components
+- **Hook Layer**: Organized custom hooks for different concerns
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Key Technologies
 
-## Learn more
+- **Expo Router** - File-based routing
+- **React Native Reanimated** - Animations
+- **Expo Notifications** - Local notifications
+- **Expo Audio** - Sound playback
+- **TypeScript** - Type safety
 
-To learn more about developing your project with Expo, look at the following resources:
+## Testing
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **Unit tests**: Vitest for logic testing
+- **E2E tests**: Detox for end-to-end testing
+- **38 unit tests** covering timer logic, notifications, and accessibility
 
-## Join the community
+## Development
 
-Join our community of developers creating universal apps.
+The project uses a `src/` directory structure following React/Expo best practices. Path aliases are configured:
+- `@/*` → `./src/*` (source code)
+- `@/assets/*` → `./assets/*` (static assets)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Documentation
+
+- `BACKGROUND_BEHAVIOR.md` - Background app behavior documentation
+- `DEPLOYMENT_SETUP.md` - Deployment setup instructions
+- `REFACTORING_SUMMARY.md` - Recent refactoring details
+
+## License
+
+Private project
