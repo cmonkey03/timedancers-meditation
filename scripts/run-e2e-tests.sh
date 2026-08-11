@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TImespin Session App - E2E Test Runner
+# Timewheel Session App - E2E Test Runner
 # This script builds the app and runs all E2E test suites
 
 set -e  # Exit on any error
@@ -98,7 +98,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Start the test process
-print_header "TImespin Session Test Runner"
+print_header "Timewheel Session Test Runner"
 
 # Build the app if not skipping
 if [ "$SKIP_BUILD" = false ]; then

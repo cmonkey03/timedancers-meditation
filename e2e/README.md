@@ -1,6 +1,6 @@
 # E2E Testing with Detox
 
-This directory contains end-to-end tests for the Timespin Session app using Detox.
+This directory contains end-to-end tests for the Timewheel Session app using Detox.
 
 ## Test Files
 

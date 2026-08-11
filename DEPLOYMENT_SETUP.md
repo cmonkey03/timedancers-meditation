@@ -1,6 +1,6 @@
-# 🚀 Simple Deployment Setup Guide
+# 🚀 Deployment Setup Guide
 
-This guide sets up automated testing for the Timespin app using GitHub Actions, with deployment handled entirely by Expo's GitHub integration.
+This guide sets up automated testing for the Timewheel app using GitHub Actions, with deployment handled entirely by Expo's GitHub integration.
 
 ## 📋 Prerequisites
 
@@ -12,7 +12,7 @@ This guide sets up automated testing for the Timespin app using GitHub Actions, 
 
 1. Go to [Expo GitHub App](https://github.com/apps/expo)
 2. Click **Install** or **Configure**
-3. Select your repository (`timespin-app`)
+3. Select your repository (`timewheel-app`)
 4. Grant necessary permissions
 
 **That's it for deployment!** Expo will automatically:
@@ -46,7 +46,7 @@ Feature Branch → develop (Full E2E Tests) → PR to main (Quick Checks) → Me
 ### **1. Push to `develop`**
 
 - ✅ Full E2E tests run automatically
-- 🧪 Tests all session features (chakra orbs, timer, volume controls)
+- 🧪 Tests all session features (timer, notifications, settings)
 - 📱 iOS simulator testing
 
 ### **2. Create PR to `main`**
@@ -63,21 +63,21 @@ Feature Branch → develop (Full E2E Tests) → PR to main (Quick Checks) → Me
 
 ## 🎉 You're Ready
 
-Your Timespin app now has:
+Your Timewheel app now has:
 
 - ✅ **Automated Testing**: E2E tests on develop, quick checks on PRs
 - ✅ **Zero-Config Deployment**: Expo handles everything automatically
 - ✅ **Professional CI/CD**: Enterprise-grade without complexity
 - ✅ **Instant Updates**: EAS Updates for immediate feature delivery
 
-## 🧘‍♀️ Timespin App Features Covered
+## 🧘‍♀️ Timewheel App Features Covered
 
-Your sophisticated session app features are fully tested:
+Your meditation timer app features are fully tested:
 
-- ⏱️ **Phase-based Timer**: Settle, rebound, witness phases with drift prevention
-- 🧘‍♀️ **Chakra Orb System**: Magical three-orb session interface with animations
-- 🔊 **Volume Controls**: Precise chime volume with real-time feedback
-- 🎨 **Polished UI**: Unified design system with smooth animations
+- ⏱️ **Phase-based Timer**: Power, Heart, Wisdom phases with drift prevention
+- 🔔 **Background Notifications**: Session alerts when app is closed
+- 🔊 **Audio Chimes**: Customizable chime sounds for phase transitions
+- 🎨 **Theme Support**: Light/dark mode with system preference
 - ♿ **Accessibility**: Screen reader support and proper contrast ratios
 
 ## 🚀 Next Steps
@@ -85,11 +85,11 @@ Your sophisticated session app features are fully tested:
 1. **Test the flow**: Push to `develop` to see E2E tests
 2. **Create a PR**: See the quick checks and Expo's build status
 3. **Merge to main**: Watch Expo deploy automatically
-4. **Celebrate**: Your session app has professional deployment! 🧘‍♀️✨
+4. **Celebrate**: Your meditation timer app has professional deployment! 🧘‍♀️✨
 
 ---
 
 **No tokens, no complex configuration, no maintenance.**
 Just push code and let Expo handle the rest!
 
-Built with ❤️ for mindful timedancing
+Built with ❤️ for mindful meditation

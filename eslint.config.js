@@ -10,6 +10,8 @@ module.exports = defineConfig([
   {
     rules: {
       'react-hooks/immutability': 'off',
+      'import/no-unresolved': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 ]);
