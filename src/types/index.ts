@@ -61,6 +61,7 @@ export interface AppSettings {
   activeSessionEndAtMs: string | null;
   themeOverride: 'light' | 'dark' | null;
   onboardingCompleted: boolean;
+  appLocale: string | null;
 }
 
 // ==================== Theme Types ====================
@@ -151,4 +152,5 @@ export type AsyncStorageKey =
   | 'dailyReminderId'
   | 'activeSessionEndAtMs'
   | 'themeOverride'
-  | 'onboardingCompleted';
+  | 'onboardingCompleted'
+  | 'appLocale';

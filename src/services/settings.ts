@@ -139,6 +139,17 @@ class SettingsService {
     await storageService.set(STORAGE_KEYS.ONBOARDING_COMPLETED, 'true');
   }
 
+  // ==================== Locale Settings ====================
+
+  async getLocale(): Promise<string | null> {
+    const value = await storageService.get(STORAGE_KEYS.APP_LOCALE);
+    return value;
+  }
+
+  async setLocale(locale: string): Promise<void> {
+    await storageService.set(STORAGE_KEYS.APP_LOCALE, locale);
+  }
+
   // ==================== Bulk Operations ====================
 
   /**

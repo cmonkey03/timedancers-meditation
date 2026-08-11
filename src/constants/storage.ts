@@ -13,4 +13,5 @@ export const STORAGE_KEYS = {
   ACTIVE_SESSION_END_AT_MS: 'activeSessionEndAtMs',
   THEME_OVERRIDE: 'themeOverride',
   ONBOARDING_COMPLETED: 'onboardingCompleted',
+  APP_LOCALE: 'appLocale',
 } as const;
