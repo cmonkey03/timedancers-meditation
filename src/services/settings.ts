@@ -1,22 +1,10 @@
 /**
  * Settings service for centralized app settings management
  */
+import { STORAGE_KEYS } from '@/constants';
 import type { AlertMode, AppSettings, DailyReminder } from '@/types';
 import { cancelScheduledById, scheduleDailyReminder } from '@/utils/notifications';
 import { storageService } from './storage';
-
-const STORAGE_KEYS = {
-  lastDurationMinutes: 'lastDurationMinutes' as const,
-  alertMode: 'alertMode' as const,
-  chimeVolume: 'chimeVolume' as const,
-  allowBackgroundAlerts: 'allowBackgroundAlerts' as const,
-  dailyReminderEnabled: 'dailyReminderEnabled' as const,
-  dailyReminderTime: 'dailyReminderTime' as const,
-  dailyReminderId: 'dailyReminderId' as const,
-  activeSessionEndAtMs: 'activeSessionEndAtMs' as const,
-  themeOverride: 'themeOverride' as const,
-  onboardingCompleted: 'onboardingCompleted' as const,
-};
 
 class SettingsService {
   // ==================== Duration Settings ====================
@@ -98,7 +86,7 @@ class SettingsService {
     }
 
     // Schedule new one if time is valid
-    const id = await scheduleDailyReminder(time, 'Timewheel', 'Ready for today\'s session?');
+    const id = await scheduleDailyReminder(time, APP_NAME, 'Ready for today\'s session?');
     await storageService.set(STORAGE_KEYS.dailyReminderEnabled, 'true');
     await storageService.set(STORAGE_KEYS.dailyReminderTime, time);
     if (id) await storageService.set(STORAGE_KEYS.dailyReminderId, id);
