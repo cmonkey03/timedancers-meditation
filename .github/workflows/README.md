@@ -1,6 +1,6 @@
-# GitHub Workflows for Timespin App
+# GitHub Workflows for Timewheel App
 
-This directory contains GitHub Actions workflows for automated testing and deployment of the Timespin app.
+This directory contains GitHub Actions workflows for automated testing and deployment of the Timewheel app.
 
 ## 🔄 Workflows Overview
 
@@ -89,9 +89,9 @@ The workflows use macOS runners with:
 Add these to your main README.md:
 
 ```markdown
-[![E2E Tests](https://github.com/your-username/timespin-app/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/e2e-tests.yml)
-[![Deploy](https://github.com/your-username/timespin-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/deploy.yml)
-[![PR Checks](https://github.com/your-username/timespin-app/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/your-username/timespin-app/actions/workflows/pr-checks.yml)
+[![E2E Tests](https://github.com/your-username/timewheel-app/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/your-username/timewheel-app/actions/workflows/e2e-tests.yml)
+[![Deploy](https://github.com/your-username/timewheel-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/your-username/timewheel-app/actions/workflows/deploy.yml)
+[![PR Checks](https://github.com/your-username/timewheel-app/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/your-username/timewheel-app/actions/workflows/pr-checks.yml)
 ```
 
 ## 🚀 Deployment Process

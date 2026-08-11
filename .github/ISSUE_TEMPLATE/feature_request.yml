@@ -1,5 +1,5 @@
 name: ✨ Feature Request
-description: Suggest a new feature for the Timespin app
+description: Suggest a new feature for the Timewheel app
 title: "[Feature]: "
 labels: ["enhancement", "triage"]
 assignees: []
@@ -79,7 +79,7 @@ body:
     id: session_context
     attributes:
       label: Session Context
-      description: How does this feature relate to session practice or the Timespin philosophy?
+      description: How does this feature relate to session practice or the Timewheel philosophy?
       placeholder: Explain the session/spiritual context...
 
   - type: dropdown
@@ -107,7 +107,7 @@ body:
       options:
         - label: I have searched for existing feature requests before creating this one
           required: true
-        - label: This feature aligns with the Timespin session philosophy
+        - label: This feature aligns with the Timewheel session philosophy
           required: true
         - label: I have provided sufficient detail for the development team to understand the request
           required: true

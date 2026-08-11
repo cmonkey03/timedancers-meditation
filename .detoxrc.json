@@ -20,15 +20,15 @@
   "apps": {
     "ios.debug": {
       "type": "ios.app",
-      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme Timespin -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
-      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/Timespin.app",
-      "bundleId": "com.gypsyfires.timespin"
+      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme Timewheel -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/Timewheel.app",
+      "bundleId": "com.gypsyfires.timewheel"
     },
     "ios.release": {
       "type": "ios.app",
-      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme Timespin -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
-      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/Timespin.app",
-      "bundleId": "com.gypsyfires.timespin"
+      "build": "xcodebuild -workspace ios/*.xcworkspace -scheme Timewheel -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
+      "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/Timewheel.app",
+      "bundleId": "com.gypsyfires.timewheel"
     }
   },
   "devices": {

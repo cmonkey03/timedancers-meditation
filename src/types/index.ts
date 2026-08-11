@@ -1,5 +1,5 @@
 /**
- * Centralized type definitions for the Timespin app
+ * Centralized type definitions for the Timewheel app
  */
 
 // ==================== Timer & Session Types ====================

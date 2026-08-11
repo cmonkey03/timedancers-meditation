@@ -1,5 +1,5 @@
 @echo off
-REM Timespin Session App - E2E Test Runner (Windows)
+REM Timewheel Session App - E2E Test Runner (Windows)
 REM This script builds the app and runs all E2E test suites
 
 setlocal enabledelayedexpansion
@@ -73,7 +73,7 @@ if errorlevel 1 (
 
 echo.
 echo ================================
-echo  Timespin Session Test Runner
+echo  Timewheel Session Test Runner
 echo ================================
 echo.
 
