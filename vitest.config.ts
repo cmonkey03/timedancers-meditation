@@ -8,19 +8,20 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   resolve: {
     alias: {
-      '@': resolve(__dirname, '.'),
+      '@': resolve(__dirname, './src'),
+      '@/assets': resolve(__dirname, './assets'),
     },
   },
   test: {
     environment: 'node',
-    include: ['tests/**/*.test.{ts,tsx}'],
+    include: ['src/tests/**/*.test.{ts,tsx}'],
     exclude: [
       // Skip component tests that use @testing-library/react-native
       // These have module resolution issues with vitest
-      'tests/animated-welcome-text.test.tsx',
-      'tests/button.test.tsx', 
-      'tests/use-fonts.test.ts',
-      'tests/ring.test.tsx',
+      'src/tests/animated-welcome-text.test.tsx',
+      'src/tests/button.test.tsx', 
+      'src/tests/use-fonts.test.ts',
+      'src/tests/ring.test.tsx',
     ],
   },
 });
