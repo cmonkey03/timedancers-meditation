@@ -1,4 +1,5 @@
 import { useI18n } from '@/contexts/I18nContext';
+import { exploreLinks } from '@/data/explore';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -41,11 +42,7 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
 export default function Explore() {
   const C = useThemeColors();
   const { t } = useI18n();
-  const links = [
-    { label: t('explore.links.aboutCreator'), url: 'https://russell.dance' },
-    { label: t('explore.links.research'), url: 'https://russell.dance/research/feeling-impact' },
-    { label: t('explore.links.newsletter'), url: 'https://newsletter.gypsyfires.com' },
-  ];
+  const links = exploreLinks.map((l) => ({ label: t(l.labelKey), url: l.url }));
   return (
     <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel={t('explore.accessibility.explorePage')} accessibilityRole="none">
       <Text style={[s.title, { color: C.text }]}>{t('explore.title')}</Text>
