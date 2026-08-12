@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { ChimeProvider } from '@/hooks/chime-context';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function Layout() {
   const insets = useSafeAreaInsets();
   const C = useThemeColors();
+  const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
   const bottomPad = Math.min(insets.bottom, 8); // clamp for compact spacing
   return (
@@ -42,7 +43,7 @@ export default function Layout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: uiText.tabs.home,
+            title: t('tabs.home'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="home-outline" size={size} color={color as string} />
             ),
@@ -51,7 +52,7 @@ export default function Layout() {
         <Tabs.Screen
           name="session"
           options={{
-            title: uiText.tabs.session,
+            title: t('tabs.session'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="aperture-outline" size={size} color={color as string} />
             ),
@@ -60,7 +61,7 @@ export default function Layout() {
         <Tabs.Screen
           name="settings"
           options={{
-            title: uiText.tabs.settings,
+            title: t('tabs.settings'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="settings-outline" size={size} color={color as string} />
             ),
@@ -69,7 +70,7 @@ export default function Layout() {
         <Tabs.Screen
           name="explore"
           options={{
-            title: uiText.tabs.explore,
+            title: t('tabs.explore'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
               <Ionicons name="compass-outline" size={size} color={color as string} />
             ),

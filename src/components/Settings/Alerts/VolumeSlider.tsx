@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -18,6 +18,7 @@ interface VolumeSliderProps {
 
 export default function VolumeSlider({ volume, onVolumeChange, disabled }: VolumeSliderProps) {
   const C = useThemeColors();
+  const { t } = useI18n();
   const sliderWidth = 200;
   const knobSize = 24;
   
@@ -92,7 +93,7 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
     <View style={styles.volumeContainer}>
       <View style={styles.volumeHeader}>
         <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>
-          {uiText.settings.alerts.chimeVolume}
+          {t('settings.alerts.chimeVolume')}
         </Text>
         <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>
           {volumePercentage}%
@@ -109,10 +110,10 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
                 width: sliderWidth,
               }
             ]}
-            accessibilityLabel={`${uiText.settings.alerts.accessibility.chimeVolume} ${volumePercentage}%`}
+            accessibilityLabel={`${t('settings.alerts.accessibility.chimeVolume')} ${volumePercentage}%`}
             accessibilityRole="adjustable"
             accessibilityValue={{ min: 0, max: 100, now: volumePercentage }}
-            accessibilityHint={uiText.settings.alerts.accessibility.adjustVolume}
+            accessibilityHint={t('settings.alerts.accessibility.adjustVolume')}
             accessible={true}
           >
             {/* Active track */}

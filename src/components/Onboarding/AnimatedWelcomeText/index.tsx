@@ -1,4 +1,4 @@
-import { onboardingData } from '@/data/onboarding';
+import { useI18n } from '@/contexts/I18nContext';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { useEffect } from 'react';
@@ -13,6 +13,7 @@ import Animated, {
 
 const AnimatedWelcomeText = () => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
   
   // Animation values for mystical appearance
@@ -21,8 +22,8 @@ const AnimatedWelcomeText = () => {
   const subtitleOpacity = useSharedValue(0);
   const subtitleScale = useSharedValue(0.8);
   
-  const fullTitle = onboardingData.welcome.title;
-  const fullSubtitle = onboardingData.welcome.subtitle;
+  const fullTitle = t('onboarding.welcome.title');
+  const fullSubtitle = t('onboarding.welcome.subtitle');
 
   useEffect(() => {
     if (!fontsLoaded) return;

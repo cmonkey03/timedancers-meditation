@@ -1,5 +1,5 @@
 import TimePickerModal from '@/components/Settings/TimePickerModal';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { initNotifications } from '@/utils/notifications';
 import { getDailyReminder, setDailyReminderEnabled } from '@/utils/settings';
@@ -10,6 +10,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 
 const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string; onPress: () => void }) => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const scale = useSharedValue(1);
   
   const animatedStyle = useAnimatedStyle(() => ({
@@ -35,10 +36,10 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       onPressOut={handlePressOut}
       disabled={!enabled}
       testID="daily-reminder-time-button"
-      accessibilityLabel={`Daily reminder time ${time || 'not set'}`}
+      accessibilityLabel={`${t('settings.dailyReminder.timeAccessibilityLabel')} ${time || t('settings.dailyReminder.notSet')}`}
       accessibilityRole="button"
       accessibilityState={{ disabled: !enabled }}
-      accessibilityHint={enabled ? uiText.settings.dailyReminder.setTimeHint : uiText.settings.dailyReminder.enableToSetTime}
+      accessibilityHint={enabled ? t('settings.dailyReminder.setTimeHint') : t('settings.dailyReminder.enableToSetTime')}
     >
       <Animated.View
         style={[
@@ -64,7 +65,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
           fontWeight: '600',
           fontSize: 16,
         }}>
-          {time || uiText.settings.dailyReminder.timePlaceholder}
+          {time || t('settings.dailyReminder.timePlaceholder')}
         </Text>
       </Animated.View>
     </Pressable>
@@ -73,6 +74,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
 
 export default function DailyReminder() {
   const C = useThemeColors();
+  const { t, locale } = useI18n();
   const [enabled, setEnabled] = useState(false);
   const [time, setTime] = useState('');
   const [showPicker, setShowPicker] = useState(false);
@@ -95,22 +97,22 @@ export default function DailyReminder() {
         marginBottom: 16,
       }}
     >
-      <Text style={{ fontWeight: '600', color: C.text, fontSize: 16 }}>{uiText.settings.sections.dailyReminder}</Text>
+      <Text style={{ fontWeight: '600', color: C.text, fontSize: 16 }}>{t('settings.sections.dailyReminder')}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, marginBottom: 8 }}>
         <Switch
           value={enabled}
           onValueChange={async (v) => {
             setEnabled(v);
             try {
-              await initNotifications();
-              const t = time || '08:00';
-              const res = await setDailyReminderEnabled(v, t);
-              if (v && t !== res.time) setTime(res.time);
+              await initNotifications(locale);
+              const nextTime = time || '08:00';
+              const res = await setDailyReminderEnabled(v, nextTime, t('notifications.dailyReminderBody'));
+              if (v && nextTime !== res.time) setTime(res.time);
             } catch {}
           }}
           testID="daily-reminder-switch"
-          accessibilityLabel={uiText.settings.dailyReminder.enable}
-          accessibilityHint={uiText.settings.dailyReminder.hint}
+          accessibilityLabel={t('settings.dailyReminder.enable')}
+          accessibilityHint={t('settings.dailyReminder.hint')}
         />
         <View style={{ width: 16 }} />
         <TimeButton 
@@ -119,7 +121,7 @@ export default function DailyReminder() {
           onPress={() => enabled && setShowPicker(true)} 
         />
       </View>
-      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>{uiText.settings.dailyReminder.description}</Text>
+      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>{t('settings.dailyReminder.description')}</Text>
 
       {/* Bottom-sheet time picker */}
       <TimePickerModal
@@ -133,8 +135,8 @@ export default function DailyReminder() {
             await AsyncStorage.setItem('dailyReminderTime', hhmm).catch(() => {});
             setShowPicker(false);
             if (enabled) {
-              await initNotifications();
-              await setDailyReminderEnabled(true, hhmm);
+              await initNotifications(locale);
+              await setDailyReminderEnabled(true, hhmm, t('notifications.dailyReminderBody'));
             }
           } catch {
             setShowPicker(false);

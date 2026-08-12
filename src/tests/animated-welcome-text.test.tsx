@@ -1,8 +1,16 @@
 import AnimatedWelcomeText from '@/components/Onboarding/AnimatedWelcomeText';
-import { onboardingData } from '@/data/onboarding';
+import { locales } from '@/locales';
 import { render } from '@testing-library/react-native';
 import { Text, View } from 'react-native';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+// Mock the i18n context to return English strings
+vi.mock('@/contexts/I18nContext', async () => {
+  const { locales } = await import('@/locales');
+  const t = (path: string) =>
+    path.split('.').reduce((acc: any, key: string) => (acc ? acc[key] : undefined), locales.en) || path;
+  return { useI18n: () => ({ t }) };
+});
 
 // Mock react-native-reanimated
 vi.mock('react-native-reanimated', () => {
@@ -65,8 +73,8 @@ describe('components/AnimatedWelcomeText', () => {
   it('renders when fonts are loaded', () => {
     const { getByText } = render(<AnimatedWelcomeText />);
     
-    expect(getByText(onboardingData.welcome.title)).toBeTruthy();
-    expect(getByText(onboardingData.welcome.subtitle)).toBeTruthy();
+    expect(getByText(locales.en.onboarding.welcome.title)).toBeTruthy();
+    expect(getByText(locales.en.onboarding.welcome.subtitle)).toBeTruthy();
   });
 
   it('does not render when fonts are not loaded', () => {
@@ -77,8 +85,8 @@ describe('components/AnimatedWelcomeText', () => {
 
     const { queryByText } = render(<AnimatedWelcomeText />);
     
-    expect(queryByText(onboardingData.welcome.title)).toBeNull();
-    expect(queryByText(onboardingData.welcome.subtitle)).toBeNull();
+    expect(queryByText(locales.en.onboarding.welcome.title)).toBeNull();
+    expect(queryByText(locales.en.onboarding.welcome.subtitle)).toBeNull();
   });
 
   it('uses correct theme colors', () => {
@@ -103,7 +111,7 @@ describe('components/AnimatedWelcomeText', () => {
     const { queryByText, rerender } = render(<AnimatedWelcomeText />);
     
     // Initially loaded
-    expect(queryByText(onboardingData.welcome.title)).toBeTruthy();
+    expect(queryByText(locales.en.onboarding.welcome.title)).toBeTruthy();
 
     // Change to not loaded
     mockUseCustomFonts.mockReturnValue({
@@ -112,6 +120,6 @@ describe('components/AnimatedWelcomeText', () => {
     });
 
     rerender(<AnimatedWelcomeText />);
-    expect(queryByText(onboardingData.welcome.title)).toBeNull();
+    expect(queryByText(locales.en.onboarding.welcome.title)).toBeNull();
   });
 });

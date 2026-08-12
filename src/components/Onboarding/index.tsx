@@ -1,5 +1,5 @@
 import Ring from '@/components/Session/Ring';
-import { onboardingData } from '@/data/onboarding';
+import { useI18n } from '@/contexts/I18nContext';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { setOnboardingCompleted } from '@/utils/settings';
@@ -21,14 +21,15 @@ type Props = {
 
 const Onboarding = ({ finishOnboarding }: Props) => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
   const SkipButton = (props: any) => (
     <Pressable
       {...props}
       testID="onboarding-skip"
-      accessibilityLabel={onboardingData.buttons.skip}
+      accessibilityLabel={t('onboarding.buttons.skip')}
       accessibilityRole="button"
-      accessibilityHint={onboardingData.accessibility.skipTutorial}
+      accessibilityHint={t('onboarding.accessibility.skipTutorial')}
       style={[
         {
           paddingHorizontal: 20,
@@ -48,7 +49,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
         fontSize: 15,
         opacity: 0.6,
         letterSpacing: 0.3,
-      }}>{onboardingData.buttons.skip}</Text>
+      }}>{t('onboarding.buttons.skip')}</Text>
     </Pressable>
   );
 
@@ -56,9 +57,9 @@ const Onboarding = ({ finishOnboarding }: Props) => {
     <Pressable
       {...props}
       testID="onboarding-next"
-      accessibilityLabel={onboardingData.buttons.next}
+      accessibilityLabel={t('onboarding.buttons.next')}
       accessibilityRole="button"
-      accessibilityHint={onboardingData.accessibility.nextScreen}
+      accessibilityHint={t('onboarding.accessibility.nextScreen')}
       style={[
         {
           paddingHorizontal: 20,
@@ -78,7 +79,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
         color: C.text, 
         fontSize: 15,
         letterSpacing: 0.3,
-      }}>{onboardingData.buttons.next}</Text>
+      }}>{t('onboarding.buttons.next')}</Text>
     </Pressable>
   );
 
@@ -86,9 +87,9 @@ const Onboarding = ({ finishOnboarding }: Props) => {
     <Pressable
       {...props}
       testID="onboarding-done"
-      accessibilityLabel={onboardingData.buttons.begin}
+      accessibilityLabel={t('onboarding.buttons.begin')}
       accessibilityRole="button"
-      accessibilityHint={onboardingData.accessibility.completeOnboarding}
+      accessibilityHint={t('onboarding.accessibility.completeOnboarding')}
       style={[
         {
           paddingHorizontal: 24,
@@ -112,7 +113,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
         color: C.buttonPrimaryText, 
         fontSize: 15,
         letterSpacing: 0.3,
-      }}>{onboardingData.buttons.begin}</Text>
+      }}>{t('onboarding.buttons.begin')}</Text>
     </Pressable>
   );
 
@@ -120,7 +121,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
   return (
     <View testID="onboarding" style={{
       flex: 1
-    }} accessibilityLabel={onboardingData.accessibility.onboardingTutorial} accessibilityRole="none">
+    }} accessibilityLabel={t('onboarding.accessibility.onboardingTutorial')} accessibilityRole="none">
       <OnboardingSwiper
         onDone={async () => {
           await setOnboardingCompleted();
@@ -162,36 +163,36 @@ const Onboarding = ({ finishOnboarding }: Props) => {
               <View style={{ alignItems: 'center', gap: 14 }}>
                 <Ring 
                   size={120}
-                  label={onboardingData.ringLabels.wisdom}
+                  label={t('onboarding.ringLabels.wisdom')}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['purple', 'indigo']}
-                  displayText={onboardingData.ringLabels.wisdom}
+                  displayText={t('onboarding.ringLabels.wisdom')}
                 />
                 <Ring 
                   size={120}
-                  label={onboardingData.ringLabels.heart}
+                  label={t('onboarding.ringLabels.heart')}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['blue', 'green']}
-                  displayText={onboardingData.ringLabels.heart}
+                  displayText={t('onboarding.ringLabels.heart')}
                 />
                 <Ring 
                   size={120}
-                  label={onboardingData.ringLabels.power}
+                  label={t('onboarding.ringLabels.power')}
                   remaining={300}
                   total={300}
                   state="idle"
                   colors={['yellow', 'red']}
-                  displayText={onboardingData.ringLabels.power}
+                  displayText={t('onboarding.ringLabels.power')}
                 />
               </View>
             </ImageWrapper>
           ),
-          title: <TitleWrapper color={C.text} text={onboardingData.pages[1].title} />,
-          subtitle: <SubtitleWrapper color={C.text} text={onboardingData.instructions[0] || ''} />,
+          title: <TitleWrapper color={C.text} text={t('onboarding.pages.1.title')} />,
+          subtitle: <SubtitleWrapper color={C.text} text={t('onboarding.instructions.0')} />,
         },
         {
           backgroundColor: C.background,
@@ -205,18 +206,18 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>{onboardingData.preview}</Text>
+              }}>{t('onboarding.preview')}</Text>
               <AnimatedRing 
                 size={180}
-                label={onboardingData.ringLabels.power}
+                label={t('onboarding.ringLabels.power')}
                 startTime={180}
                 total={180}
                 colors={['yellow', 'red']}
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text={onboardingData.pages[2].title} color={C.text} />,
-          subtitle: <SubtitleWrapper text={onboardingData.instructions[1] || ''} color={C.text} />,
+          title: <TitleWrapper text={t('onboarding.pages.2.title')} color={C.text} />,
+          subtitle: <SubtitleWrapper text={t('onboarding.instructions.1')} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -230,18 +231,18 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>{onboardingData.preview}</Text>
+              }}>{t('onboarding.preview')}</Text>
               <AnimatedRing 
                 size={180}
-                label={onboardingData.ringLabels.heart}
+                label={t('onboarding.ringLabels.heart')}
                 startTime={180}
                 total={180}
                 colors={['blue', 'green']}
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text={onboardingData.pages[3].title} color={C.text} />,
-          subtitle: <SubtitleWrapper text={onboardingData.instructions[2] || ''} color={C.text} />,
+          title: <TitleWrapper text={t('onboarding.pages.3.title')} color={C.text} />,
+          subtitle: <SubtitleWrapper text={t('onboarding.instructions.2')} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -255,18 +256,18 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 marginBottom: 40,
-              }}>{onboardingData.preview}</Text>
+              }}>{t('onboarding.preview')}</Text>
               <AnimatedRing 
                 size={180}
-                label={onboardingData.ringLabels.wisdom}
+                label={t('onboarding.ringLabels.wisdom')}
                 startTime={180}
                 total={180}
                 colors={['purple', 'indigo']}
               />
             </ImageWrapper>
           ),
-          title: <TitleWrapper text={onboardingData.pages[4].title} color={C.text} />,
-          subtitle: <SubtitleWrapper text={onboardingData.instructions[3] || ''} color={C.text} />,
+          title: <TitleWrapper text={t('onboarding.pages.4.title')} color={C.text} />,
+          subtitle: <SubtitleWrapper text={t('onboarding.instructions.3')} color={C.text} />,
         },
         {
           backgroundColor: C.background,
@@ -289,10 +290,10 @@ const Onboarding = ({ finishOnboarding }: Props) => {
               </View>
             </ImageWrapper>
           ),
-          title: <TitleWrapper text={onboardingData.pages[5].title} color={C.text} />,
+          title: <TitleWrapper text={t('onboarding.pages.5.title')} color={C.text} />,
           subtitle: (
             <SubtitleWrapper
-              text={onboardingData.pages[5].subtitle}
+              text={t('onboarding.pages.5.subtitle')}
               color={C.text}
             />
           ),

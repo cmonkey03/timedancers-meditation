@@ -2,6 +2,7 @@
  * Settings service for centralized app settings management
  */
 import { APP_NAME, STORAGE_KEYS } from '@/constants';
+import { defaultLocale, getLocaleStrings } from '@/locales';
 import type { AlertMode, AppSettings, DailyReminder } from '@/types';
 import { cancelScheduledById, scheduleDailyReminder } from '@/utils/notifications';
 import { storageService } from './storage';
@@ -72,7 +73,7 @@ class SettingsService {
     }
   }
 
-  async setDailyReminderEnabled(enabled: boolean, time: string): Promise<DailyReminder> {
+  async setDailyReminderEnabled(enabled: boolean, time: string, body?: string): Promise<DailyReminder> {
     // Cancel any existing scheduled reminder
     const existingId = await storageService.get(STORAGE_KEYS.DAILY_REMINDER_ID);
     if (existingId) {
@@ -86,7 +87,10 @@ class SettingsService {
     }
 
     // Schedule new one if time is valid
-    const id = await scheduleDailyReminder(time, APP_NAME, 'Ready for today\'s session?');
+    const savedLocale = await this.getLocale();
+    const reminderBody =
+      body ?? getLocaleStrings(savedLocale === 'es' ? 'es' : defaultLocale).notifications.dailyReminderBody;
+    const id = await scheduleDailyReminder(time, APP_NAME, reminderBody);
     await storageService.set(STORAGE_KEYS.DAILY_REMINDER_ENABLED, 'true');
     await storageService.set(STORAGE_KEYS.DAILY_REMINDER_TIME, time);
     if (id) await storageService.set(STORAGE_KEYS.DAILY_REMINDER_ID, id);

@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import DurationPicker from '@/components/Session/DurationPicker';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -16,13 +16,14 @@ interface Props {
 
 const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
   const C = useThemeColors();
+  const { t } = useI18n();
 
   const buttonText = useMemo(() => {
-    if (counting) return uiText.session.buttons.pause;
-    if (!started) return uiText.session.buttons.start;
-    if (!counting && started) return uiText.session.buttons.resume;
+    if (counting) return t('session.buttons.pause');
+    if (!started) return t('session.buttons.start');
+    if (!counting && started) return t('session.buttons.resume');
     return '';
-  }, [counting, started]);
+  }, [counting, started, t]);
 
   if (started) {
     // Timer is running - show pause/resume and cancel
@@ -38,14 +39,14 @@ const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
           <View style={styles.spacer} />
           <Button 
             onPress={() => onPress('cancel')} 
-            text={uiText.session.buttons.cancel} 
+            text={t('session.buttons.cancel')} 
             variant="ghost" 
             testID="cancel-button"
           />
         </View>
         <View 
           style={[styles.statusContainer, { backgroundColor: C.text30 }]}
-          accessibilityLabel={counting ? uiText.session.status.inProgress : uiText.session.status.paused}
+          accessibilityLabel={counting ? t('session.status.inProgress') : t('session.status.paused')}
           accessibilityRole="summary"
           accessible={true}
         >
@@ -53,7 +54,7 @@ const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
             backgroundColor: counting ? C.success : C.warning 
           }]} />
           <Text style={[styles.statusText, { color: C.text }]}>
-            {counting ? uiText.session.status.inProgress : uiText.session.status.paused}
+            {counting ? t('session.status.inProgress') : t('session.status.paused')}
           </Text>
         </View>
       </Animated.View>
@@ -67,7 +68,7 @@ const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
         <View style={styles.buttonContainer}>
           <Button
             onPress={() => onPress('counting')}
-            text={uiText.session.buttons.start}
+            text={t('session.buttons.start')}
             variant="primary"
             testID="start-button"
           />
@@ -80,12 +81,12 @@ const Control = ({ counting, handleInput, input, onPress, started }: Props) => {
       </View>
       <View 
         style={[styles.instructionContainer, { backgroundColor: `${C.text}08` }]}
-        accessibilityLabel={uiText.session.accessibility.selectSessionTime}
+        accessibilityLabel={t('session.accessibility.selectSessionTime')}
         accessibilityRole="text"
         accessible={true}
       >
         <Text style={[styles.instructionText, { color: C.text }]}>
-          {uiText.session.instructions.selectTime}
+          {t('session.instructions.selectTime')}
         </Text>
       </View>
     </Animated.View>

@@ -1,6 +1,6 @@
 import DismissKeyboard from '@/components/DismissKeyboard';
 import { Control, Wheels } from '@/components/Session';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useChime } from '@/hooks/chime-context';
 import { useScreenLock } from '@/hooks/platform/use-screen-lock';
 import { useSessionAppState } from '@/hooks/platform/use-session-app-state';
@@ -20,6 +20,7 @@ export default function SessionScreen() {
   useSessionAudio();
   
   const C = useThemeColors();
+  const { t } = useI18n();
   const appIsActiveRef = useSessionAppState();
   
   const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
@@ -141,7 +142,7 @@ export default function SessionScreen() {
             justifyContent: 'center',
             backgroundColor: C.background,
           }}
-          accessibilityLabel={timer.running ? uiText.session.accessibility.sessionInProgress : uiText.session.status.setup}
+          accessibilityLabel={timer.running ? t('session.accessibility.sessionInProgress') : t('session.status.setup')}
           accessibilityRole="none"
         >
           <Wheels timer={timer} prevIndex={prevIndexRef} />
@@ -149,11 +150,11 @@ export default function SessionScreen() {
           {showCompleted && (
             <Text 
               style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
-              accessibilityLabel={uiText.session.accessibility.sessionComplete}
+              accessibilityLabel={t('session.accessibility.sessionComplete')}
               accessibilityRole="alert"
               accessible={true}
             >
-              {uiText.session.status.complete}
+              {t('session.status.complete')}
             </Text>
           )}
           

@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import DateTimePicker, { AndroidNativeProps, IOSNativeProps } from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
@@ -22,6 +22,7 @@ export default function TimePickerModal({
   colorScheme?: ColorSchemeName;
 }) {
   const C = useThemeColors();
+  const { t } = useI18n();
   const initial = useMemo(() => {
     const parts = (time || '').split(':');
     const h = parseInt(parts[0] || '8', 10);
@@ -58,12 +59,12 @@ export default function TimePickerModal({
           <View style={[styles.toolbar, { borderBottomColor: C.border }]}>
             <Button
               onPress={onCancel}
-              text={uiText.timePicker.buttons.cancel}
+              text={t('timePicker.buttons.cancel')}
               variant="ghost"
             />
             <Button
               onPress={confirm}
-              text={uiText.timePicker.buttons.done}
+              text={t('timePicker.buttons.done')}
               variant="primary"
             />
           </View>

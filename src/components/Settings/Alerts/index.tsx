@@ -1,3 +1,4 @@
+import { useI18n } from '@/contexts/I18nContext';
 import { useChime } from '@/hooks/chime-context';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { settingsService } from '@/services/settings';
@@ -14,6 +15,7 @@ type Props = {
 
 export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBackgroundAlerts }: Props) {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { playStartAlert, volume, updateVolume, mode, setMode } = useChime();
   const [sessionActive, setSessionActive] = useState(false);
 
@@ -36,9 +38,9 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
 
   return (
     <View style={[styles.card, { backgroundColor: C.surface }]}>
-      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>Alerts</Text>
+      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>{t('settings.sections.alerts')}</Text>
       <ModeSelector mode={mode} onModeChange={setMode} />
-      <Text style={{ color: C.text, opacity: 0.75, marginBottom: 8, fontSize: 14 }}>Choose how the app alerts you throughout your session.</Text>
+      <Text style={{ color: C.text, opacity: 0.75, marginBottom: 8, fontSize: 14 }}>{t('settings.alerts.description')}</Text>
 
       {/* Volume slider - only show for chime modes */}
       {(mode === 'chime' || mode === 'chime_haptic') && (
@@ -55,7 +57,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
 
       {/* Play alerts in background toggle */}
       <View style={[styles.bgToggleRow, { borderColor: C.border }]}>
-        <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>Play alerts in background</Text>
+        <Text style={{ color: C.text, fontWeight: '600', fontSize: 16 }}>{t('settings.alerts.playInBackground')}</Text>
         <Switch 
           value={allowBackgroundAlerts} 
           onValueChange={onToggleAllowBackgroundAlerts}
@@ -63,7 +65,7 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
         />
       </View>
       <Text style={{ color: C.text, opacity: 0.75, marginTop: 6, marginBottom: 12, fontSize: 14 }}>
-        Chimes & haptics still play if the app is in the background or the screen is locked.
+        {t('settings.alerts.backgroundDescription')}
       </Text>
 
     </View>

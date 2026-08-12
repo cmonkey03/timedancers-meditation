@@ -7,6 +7,7 @@
  * - Handle background/foreground transitions to schedule/cancel appropriately
  * - Manage a session end token so we can clean up stale notifications on cold start
  */
+import { useI18n } from '@/contexts/I18nContext';
 import { settingsService } from '@/services/settings';
 import type { AlertMode, UsePhasedTimerState } from '@/types';
 import { computeScheduleItems } from '@/utils/notification-schedule';
@@ -25,14 +26,15 @@ export function useNotifications(
   alertMode: AlertMode,
   allowBackgroundAlerts: boolean
 ) {
+  const { locale } = useI18n();
   // Init notifications once
   useEffect(() => {
-    Notifier.initNotifications().catch(() => {});
-  }, []);
+    Notifier.initNotifications(locale).catch(() => {});
+  }, [locale]);
 
   const scheduleNotificationsForRemaining = useCallback(async () => {
     if (!allowBackgroundAlerts) return;
-    const items = computeScheduleItems(timer, alertMode);
+    const items = computeScheduleItems(timer, alertMode, locale);
     if (items.length === 0) return;
 
     await Notifier.cancelAllScheduled();
@@ -53,7 +55,7 @@ export function useNotifications(
     if (last?.whenEpochMs) {
       await settingsService.setActiveSessionEndAtMs(last.whenEpochMs);
     }
-  }, [allowBackgroundAlerts, timer, alertMode]);
+  }, [allowBackgroundAlerts, timer, alertMode, locale]);
 
   // AppState-based scheduling/cancellation
   useEffect(() => {

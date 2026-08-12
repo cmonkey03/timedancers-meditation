@@ -58,6 +58,14 @@ describe('computeScheduleItems', () => {
     expect(itemsSilent.every((i: { withSound: boolean }) => i.withSound === false)).toBe(true);
   });
 
+  it('localizes notification title and body by locale', () => {
+    const start = Date.now();
+    const st = makeState({ startAtMs: start });
+    const items = computeScheduleItems(st, 'chime', 'es');
+    expect(items[0].title).toBe('Sesión completa');
+    expect(items[0].body).toBe('Sesión terminada');
+  });
+
   it('schedules completion accounting for pausedTotalMs (remaining time only)', () => {
     const start = Date.now();
     // Simulate 90s elapsed and 10s paused; effective elapsed = 80s

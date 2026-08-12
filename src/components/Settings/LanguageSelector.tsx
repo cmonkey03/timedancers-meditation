@@ -1,4 +1,4 @@
-import { useI18n } from '@/hooks/use-i18n';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';

@@ -1,5 +1,5 @@
 import Onboarding from '@/components/Onboarding';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { settingsService } from '@/services/settings';
 import { useFocusEffect, useRouter } from 'expo-router';
@@ -12,6 +12,7 @@ export default function HomeScreen() {
   const [skipOnboarding] = useState(() => process.env.NODE_ENV === 'test');
   const [isLoading, setIsLoading] = useState(true);
   const C = useThemeColors();
+  const { t } = useI18n();
 
   const finishOnboarding = useCallback(async () => {
     router.push('/session');
@@ -69,7 +70,7 @@ export default function HomeScreen() {
         justifyContent: 'center',
         alignItems: 'center'
       }} testID="loading">
-        <Text style={{ color: C.text, fontSize: 16 }}>{uiText.common.loading}</Text>
+        <Text style={{ color: C.text, fontSize: 16 }}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -83,7 +84,7 @@ export default function HomeScreen() {
         justifyContent: 'center',
         alignItems: 'center'
       }} testID="e2e-loading">
-        <Text style={{ color: C.text, fontSize: 16 }}>{uiText.common.loading}</Text>
+        <Text style={{ color: C.text, fontSize: 16 }}>{t('common.loading')}</Text>
       </View>
     );
   }

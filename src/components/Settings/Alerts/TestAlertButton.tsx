@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { Pressable, Text } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -10,6 +10,7 @@ interface TestAlertButtonProps {
 
 export default function TestAlertButton({ onPress, disabled }: TestAlertButtonProps) {
   const C = useThemeColors();
+  const { t } = useI18n();
   const scale = useSharedValue(1);
   
   const animatedStyle = useAnimatedStyle(() => ({
@@ -32,7 +33,7 @@ export default function TestAlertButton({ onPress, disabled }: TestAlertButtonPr
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       testID="test-alert-button"
-      accessibilityLabel={uiText.settings.alerts.accessibility.testAlert}
+      accessibilityLabel={t('settings.alerts.accessibility.testAlert')}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
     >
@@ -55,7 +56,7 @@ export default function TestAlertButton({ onPress, disabled }: TestAlertButtonPr
           fontWeight: '600',
           fontSize: 14,
         }}>
-          {uiText.settings.alerts.testAlert}
+          {t('settings.alerts.testAlert')}
         </Text>
       </Animated.View>
     </Pressable>

@@ -1,13 +1,17 @@
 // Pure scheduling logic for notifications without importing React Native.
 // This file is safe to import from unit tests.
 
+import { defaultLocale, getLocaleStrings, Locale } from '@/locales';
 import type { AlertMode, UsePhasedTimerState } from '@/types';
 
 export function computeScheduleItems(
   timer: UsePhasedTimerState,
-  alertMode: AlertMode
+  alertMode: AlertMode,
+  locale: Locale = defaultLocale
 ): { whenEpochMs: number; title: string; body: string; withSound: boolean }[] {
   if (!timer.started || timer.startAtMs == null) return [];
+
+  const strings = getLocaleStrings(locale);
 
   // Compute total session duration in ms (sum of configured phases)
   const totalMs = timer.phases.reduce((sum, p) => sum + (p.seconds || 0) * 1000, 0);
@@ -24,8 +28,8 @@ export function computeScheduleItems(
   return [
     {
       whenEpochMs: endEpochMs,
-      title: 'Session complete',
-      body: 'Session finished',
+      title: strings.notifications.sessionComplete,
+      body: strings.notifications.sessionFinished,
       withSound,
     },
   ];
