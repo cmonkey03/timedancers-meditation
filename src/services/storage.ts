@@ -2,8 +2,8 @@
  * AsyncStorage wrapper service
  * Provides a centralized interface for all storage operations
  */
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { AsyncStorageKey } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class StorageService {
   /**
@@ -55,7 +55,7 @@ class StorageService {
   /**
    * Get multiple values from AsyncStorage
    */
-  async multiGet(keys: AsyncStorageKey[]): Promise<[string, string | null][]> {
+  async multiGet(keys: AsyncStorageKey[]): Promise<readonly [string, string | null][]> {
     try {
       return await AsyncStorage.multiGet(keys);
     } catch (error) {
@@ -89,7 +89,7 @@ class StorageService {
   /**
    * Get all keys from AsyncStorage
    */
-  async getAllKeys(): Promise<string[]> {
+  async getAllKeys(): Promise<readonly string[]> {
     try {
       return await AsyncStorage.getAllKeys();
     } catch (error) {

@@ -16,8 +16,8 @@ export { useNotifications } from './platform/use-notifications';
 export { useSessionAppState } from './platform/use-session-app-state';
 
 // UI hooks
-export { useTheme } from './ui/use-theme';
 export { useCustomFonts } from './ui/use-fonts';
+export { useThemeColors } from './ui/use-theme';
 
 // Other hooks (still in root)
 export { useChime } from './chime-context';

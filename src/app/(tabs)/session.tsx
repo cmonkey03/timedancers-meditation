@@ -2,13 +2,13 @@ import DismissKeyboard from '@/components/DismissKeyboard';
 import { Control, Wheels } from '@/components/Session';
 import { uiText } from '@/data/ui-text';
 import { useChime } from '@/hooks/chime-context';
-import { useKeepAwakeSafe } from '@/hooks/platform/use-keep-awake-safe';
-import { useNotifications } from '@/hooks/platform/use-notifications';
+import { useScreenLock } from '@/hooks/platform/use-screen-lock';
 import { useSessionAppState } from '@/hooks/platform/use-session-app-state';
 import { usePhasedTimer } from '@/hooks/session/use-phased-timer';
 import { useSessionAudio } from '@/hooks/session/use-session-audio';
 import { useSessionCompletion } from '@/hooks/session/use-session-completion';
 import { useSessionEffects } from '@/hooks/session/use-session-effects';
+import { useSessionLifecycle } from '@/hooks/session/use-session-lifecycle';
 import { useSessionPersistence } from '@/hooks/session/use-session-persistence';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import * as Notifier from '@/utils/notifications';
@@ -17,7 +17,6 @@ import { useEffect, useMemo } from 'react';
 import { Text, View } from 'react-native';
 
 export default function SessionScreen() {
-  useKeepAwakeSafe();
   useSessionAudio();
   
   const C = useThemeColors();
@@ -25,6 +24,9 @@ export default function SessionScreen() {
   
   const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
+  
+  // Screen lock - only keep awake when timer is running
+  useScreenLock(timer.running);
   
   // Alerts (chime/haptic) — single shared instance from ChimeProvider
   const { playStartAlert, triggerChime, resetChimeState, mode: alertMode } = useChime();
@@ -35,8 +37,8 @@ export default function SessionScreen() {
     handleInput 
   } = useSessionPersistence(timer.started);
 
-  // Notifications helper (scheduling, tokens, cleanup)
-  const { scheduleNotificationsForRemaining, markSessionStart, clearSessionToken, coldStartCleanup } = useNotifications(
+  // Session lifecycle manager (notifications, app state, cleanup)
+  const { scheduleNotificationsForRemaining, markSessionStart, clearSessionToken, coldStartCleanup } = useSessionLifecycle(
     timer,
     alertMode,
     allowBackgroundAlerts
@@ -59,17 +61,6 @@ export default function SessionScreen() {
       curr[2]?.seconds !== next[2].seconds;
     if (differs) setPhases(next);
   }, [input, timer.running, timer.started, timer.phases, setPhases]);
-
-  // React to background-alerts toggle and alert-mode changes while running.
-  // Reschedule background notifications when either setting changes.
-  useEffect(() => {
-    if (!timer.running) return;
-    if (allowBackgroundAlerts) {
-      scheduleNotificationsForRemaining();
-    } else {
-      Notifier.cancelAllScheduled();
-    }
-  }, [alertMode, allowBackgroundAlerts, timer.running, scheduleNotificationsForRemaining]);
 
   // Session effects (phase transitions, haptics)
   const prevIndexRef = useSessionEffects(timer, triggerChime);

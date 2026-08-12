@@ -1,4 +1,4 @@
-import type { Phase, TimerState, UsePhasedTimerState } from '@/types';
+import type { Phase, TimerNow, TimerState, UsePhasedTimerState } from '@/types';
 import * as Timer from '@/utils/timer';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -34,7 +34,7 @@ export function usePhasedTimer(initialPhases: Phase[]) {
   useEffect(() => {
     const TICK_MS = 250;
     const tick = () => {
-      setNow((prev) => {
+      setNow((prev: TimerNow) => {
         const computed = Timer.computeNow(timerState);
         const sec = Math.ceil(computed.phaseRemainingMs / 1000);
         const shouldUpdate =

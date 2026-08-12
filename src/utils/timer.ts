@@ -1,6 +1,9 @@
 // Timer logic for session with phase-based timing
 // Uses wall clock time to prevent drift and handle app sleep/pause scenarios
-import type { Phase, TimerState } from '@/types';
+import type { Phase, TimerNow, TimerState } from '@/types';
+
+// Re-export Phase for test imports
+export type { Phase } from '@/types';
 
 export const DEFAULT_PHASES: Phase[] = [
   { key: "power",  seconds: 5 * 60 },
