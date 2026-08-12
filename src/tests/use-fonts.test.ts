@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from 'vitest';
+import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { renderHook } from '@testing-library/react-native';
-import { useCustomFonts } from '@/hooks/use-fonts';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock expo-font
 const mockUseFonts = vi.fn();

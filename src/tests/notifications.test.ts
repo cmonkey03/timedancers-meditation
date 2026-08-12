@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import type { UsePhasedTimerState } from '@/hooks/use-phased-timer';
+import type { UsePhasedTimerState } from '@/types';
 import { computeScheduleItems } from '@/utils/notification-schedule';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const makeState = (over: Partial<UsePhasedTimerState> = {}): UsePhasedTimerState => ({
   now: {
