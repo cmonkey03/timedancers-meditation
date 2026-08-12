@@ -42,7 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: 'automatic',
   extra: {
     eas: {
-       projectId: "de8347b6-d666-4360-b7ec-791c9eee94cf",
+       projectId: "53833aaf-4006-4a64-9e8a-b6043b844e3b",
     }
   },
   web: {
