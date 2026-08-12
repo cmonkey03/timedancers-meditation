@@ -8,6 +8,7 @@
  * - Coordinate app state transitions for background notifications
  * - Provide unified interface for session control
  */
+import { useI18n } from '@/contexts/I18nContext';
 import { settingsService } from '@/services/settings';
 import type { AlertMode, UsePhasedTimerState } from '@/types';
 import { computeScheduleItems } from '@/utils/notification-schedule';
@@ -21,11 +22,12 @@ export function useSessionLifecycle(
   alertMode: AlertMode,
   allowBackgroundAlerts: boolean
 ) {
+  const { locale } = useI18n();
   // ==================== Notification Scheduling ====================
   
   const scheduleNotificationsForRemaining = useCallback(async () => {
     if (!allowBackgroundAlerts) return;
-    const items = computeScheduleItems(timer, alertMode);
+    const items = computeScheduleItems(timer, alertMode, locale);
     if (items.length === 0) return;
 
     await Notifier.cancelAllScheduled();
@@ -46,7 +48,7 @@ export function useSessionLifecycle(
     if (last?.whenEpochMs) {
       await settingsService.setActiveSessionEndAtMs(last.whenEpochMs);
     }
-  }, [allowBackgroundAlerts, timer, alertMode]);
+  }, [allowBackgroundAlerts, timer, alertMode, locale]);
 
   // ==================== Session State Management ====================
 

@@ -1,8 +1,11 @@
+import { defaultLocale, getLocaleStrings, Locale } from '@/locales';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
 // Initialize notifications: request permissions and create Android channel
-export async function initNotifications() {
+export async function initNotifications(locale: Locale = defaultLocale) {
+  const strings = getLocaleStrings(locale);
+
   // iOS: request permissions
   const { status } = await Notifications.getPermissionsAsync();
   if (status !== 'granted') {
@@ -19,7 +22,7 @@ export async function initNotifications() {
   if (Platform.OS === 'android') {
     // Ensure the default channel has sound, since some triggers (calendar) use it implicitly
     await Notifications.setNotificationChannelAsync('default', {
-      name: 'Default',
+      name: strings.notifications.channelDefault,
       importance: Notifications.AndroidImportance.HIGH,
       sound: 'default',
       enableVibrate: true,
@@ -27,7 +30,7 @@ export async function initNotifications() {
     });
     // Also create an explicit channel we can target for time-interval triggers
     await Notifications.setNotificationChannelAsync('session-timer-v2', {
-      name: 'Session Timer',
+      name: strings.notifications.channelSessionTimer,
       importance: Notifications.AndroidImportance.HIGH,
       sound: 'default',
       enableVibrate: true,

@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import type { AlertMode } from '@/types';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -9,15 +9,16 @@ interface ModeSelectorProps {
   onModeChange: (mode: AlertMode) => void;
 }
 
-const MODES: { key: AlertMode; label: string }[] = [
-  { key: 'chime', label: uiText.settings.alerts.modes.chime },
-  { key: 'chime_haptic', label: uiText.settings.alerts.modes.chimeHaptic },
-  { key: 'haptic', label: uiText.settings.alerts.modes.haptic },
-  { key: 'silent', label: uiText.settings.alerts.modes.silent },
-];
-
 export default function ModeSelector({ mode, onModeChange }: ModeSelectorProps) {
   const C = useThemeColors();
+  const { t } = useI18n();
+
+  const MODES: { key: AlertMode; label: string }[] = [
+    { key: 'chime', label: t('settings.alerts.modes.chime') },
+    { key: 'chime_haptic', label: t('settings.alerts.modes.chimeHaptic') },
+    { key: 'haptic', label: t('settings.alerts.modes.haptic') },
+    { key: 'silent', label: t('settings.alerts.modes.silent') },
+  ];
 
   const PillButton = ({ m }: { m: { key: AlertMode; label: string } }) => {
     const selected = m.key === mode;

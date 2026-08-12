@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { Picker } from '@react-native-picker/picker';
 import { Platform, StyleSheet, View } from 'react-native';
@@ -10,6 +10,7 @@ interface Props {
 
 const DurationPicker = ({ value, onValueChange }: Props) => {
   const C = useThemeColors();
+  const { t } = useI18n();
 
   // Generate options from 1 to 60 minutes
   const minuteOptions = Array.from({ length: 60 }, (_, i) => i + 1);
@@ -22,8 +23,8 @@ const DurationPicker = ({ value, onValueChange }: Props) => {
           onValueChange={onValueChange}
           style={[styles.picker, { color: C.text }]}
           itemStyle={Platform.OS === 'ios' ? [styles.iosItem, { color: C.text }] : undefined}
-          accessibilityLabel={`${uiText.session.accessibility.selectDuration} ${value} minutes`}
-          accessibilityHint={uiText.session.accessibility.swipeToSelect}
+          accessibilityLabel={`${t('session.accessibility.selectDuration')} ${value} minutes`}
+          accessibilityHint={t('session.accessibility.swipeToSelect')}
         >
           {minuteOptions.map((minute) => (
             <Picker.Item

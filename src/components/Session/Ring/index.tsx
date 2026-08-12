@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -45,6 +45,7 @@ type Props = SessionRingProps | SimpleRingProps;
 
 const Ring = (props: Props) => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
   const reduceMotion = useReducedMotion();
   
@@ -256,7 +257,7 @@ const Ring = (props: Props) => {
         accessibilityLabel={accessibilityLabel || `${label} ring timer. ${mm} minutes ${ss} seconds remaining`}
         accessibilityRole="none"
         accessibilityState={{ disabled: state === "done" }}
-        accessibilityHint={state === "active" ? uiText.session.accessibility.sessionInProgress : state === "idle" ? uiText.session.accessibility.readyToStart : uiText.session.accessibility.sessionComplete}
+        accessibilityHint={state === "active" ? t('session.accessibility.sessionInProgress') : state === "idle" ? t('session.accessibility.readyToStart') : t('session.accessibility.sessionComplete')}
       >
         {/* soft glow */}
         <Animated.View

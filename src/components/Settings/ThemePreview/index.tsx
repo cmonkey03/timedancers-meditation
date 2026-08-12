@@ -1,4 +1,4 @@
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
 import { useThemeOverride } from '@/hooks/theme-override';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { Pressable, Text, View } from 'react-native';
@@ -65,12 +65,13 @@ const ThemePillButton = ({ opt, selected, onPress }: {
 
 export default function ThemePreview() {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { override, setOverride } = useThemeOverride();
 
   const options = [
-    { key: 'system' as const, label: uiText.settings.theme.system },
-    { key: 'light' as const, label: uiText.settings.theme.light },
-    { key: 'dark' as const, label: uiText.settings.theme.dark },
+    { key: 'system' as const, label: t('settings.theme.system') },
+    { key: 'light' as const, label: t('settings.theme.light') },
+    { key: 'dark' as const, label: t('settings.theme.dark') },
   ];
 
   return (
@@ -82,7 +83,7 @@ export default function ThemePreview() {
         marginBottom: 16,
       }}
     >
-      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>Theme</Text>
+      <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>{t('settings.sections.theme')}</Text>
       <View style={{ flexDirection: 'row', marginBottom: 8, flexWrap: 'wrap' }}>
         {options.map((opt) => {
           const selected =
@@ -99,7 +100,7 @@ export default function ThemePreview() {
           );
         })}
       </View>
-      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>Choose your preferred appearance theme.</Text>
+      <Text style={{ color: C.text, opacity: 0.75, fontSize: 14 }}>{t('settings.theme.description')}</Text>
     </View>
   );
 }

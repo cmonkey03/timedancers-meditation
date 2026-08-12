@@ -1,5 +1,5 @@
-import { exploreData } from '@/data/explore';
-import { uiText } from '@/data/ui-text';
+import { useI18n } from '@/contexts/I18nContext';
+import { exploreLinks } from '@/data/explore';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import * as WebBrowser from 'expo-web-browser';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -8,6 +8,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 
 const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const scale = useSharedValue(1);
   
   const animatedStyle = useAnimatedStyle(() => ({
@@ -29,7 +30,7 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
       onPressOut={handlePressOut}
       accessibilityLabel={link.label}
       accessibilityRole="link"
-      accessibilityHint={`Opens ${link.label} in browser`}
+      accessibilityHint={t('explore.accessibility.openLink')}
     >
       <Animated.View style={[s.link, { borderBottomColor: C.border }, animatedStyle]}>
         <Text style={[s.linkText, { color: C.text }]}>{link.label}</Text>
@@ -40,10 +41,12 @@ const LinkButton = ({ link }: { link: { label: string; url: string } }) => {
 
 export default function Explore() {
   const C = useThemeColors();
+  const { t } = useI18n();
+  const links = exploreLinks.map((l) => ({ label: t(l.labelKey), url: l.url }));
   return (
-    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel={uiText.explore.accessibility.explorePage} accessibilityRole="none">
-      <Text style={[s.title, { color: C.text }]}>{exploreData.title}</Text>
-      {exploreData.links.map((l) => (
+    <View style={[s.wrap, { backgroundColor: C.background }]} accessibilityLabel={t('explore.accessibility.explorePage')} accessibilityRole="none">
+      <Text style={[s.title, { color: C.text }]}>{t('explore.title')}</Text>
+      {links.map((l) => (
         <LinkButton key={l.url} link={l} />
       ))}
     </View>

@@ -1,8 +1,9 @@
-export const exploreData = {
-  title: 'Explore',
-  links: [
-    { label: 'About the creator of this app', url: 'https://russell.dance' },
-    { label: 'Research: Intimate Violence', url: 'https://russell.dance/research/feeling-impact' },
-    { label: 'Newsletter', url: 'https://newsletter.gypsyfires.com' },
-  ],
-} as const;
+/**
+ * Explore page resource links.
+ * Labels are translated via i18n keys; URLs are static app data.
+ */
+export const exploreLinks = [
+  { labelKey: 'explore.links.aboutCreator', url: 'https://russellpatrickbrown.com' },
+  { labelKey: 'explore.links.research', url: 'https://russellpatrickbrown.com/research' },
+  { labelKey: 'explore.links.newsletter', url: 'https://newsletter.gypsyfires.com' },
+] as const;

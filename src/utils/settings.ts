@@ -9,8 +9,8 @@ export async function getDailyReminder(): Promise<DailyReminder> {
   return settingsService.getDailyReminder();
 }
 
-export async function setDailyReminderEnabled(enabled: boolean, time: string): Promise<DailyReminder> {
-  return settingsService.setDailyReminderEnabled(enabled, time);
+export async function setDailyReminderEnabled(enabled: boolean, time: string, body?: string): Promise<DailyReminder> {
+  return settingsService.setDailyReminderEnabled(enabled, time, body);
 }
 
 /**

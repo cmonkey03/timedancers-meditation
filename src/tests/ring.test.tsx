@@ -1,8 +1,16 @@
 import Ring from '@/components/Session/Ring';
-import { onboardingData } from '@/data/onboarding';
+import { locales } from '@/locales';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';
 import { describe, expect, it, vi } from 'vitest';
+
+// Mock the i18n context to return English strings
+vi.mock('@/contexts/I18nContext', async () => {
+  const { locales } = await import('@/locales');
+  const t = (path: string) =>
+    path.split('.').reduce((acc: any, key: string) => (acc ? acc[key] : undefined), locales.en) || path;
+  return { useI18n: () => ({ t }) };
+});
 
 // Mock expo-linear-gradient
 vi.mock('expo-linear-gradient', () => ({
@@ -65,7 +73,7 @@ vi.mock('@/hooks/use-fonts', () => ({
 describe('components/Ring', () => {
   const sessionProps = {
     size: 160,
-    label: onboardingData.ringLabels.power,
+    label: locales.en.onboarding.ringLabels.power,
     remaining: 60,
     total: 180,
     state: 'idle' as const,
@@ -81,7 +89,7 @@ describe('components/Ring', () => {
   it('renders session ring without crashing', () => {
     const { getByText } = render(<Ring {...sessionProps} />);
     
-    const label = getByText(onboardingData.ringLabels.power);
+    const label = getByText(locales.en.onboarding.ringLabels.power);
     expect(label).toBeTruthy();
   });
 
@@ -100,7 +108,7 @@ describe('components/Ring', () => {
         <Ring {...sessionProps} state={state} />
       );
       
-      const label = getByText(onboardingData.ringLabels.power);
+      const label = getByText(locales.en.onboarding.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -113,7 +121,7 @@ describe('components/Ring', () => {
         <Ring {...sessionProps} size={size} />
       );
       
-      const label = getByText(onboardingData.ringLabels.power);
+      const label = getByText(locales.en.onboarding.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -130,7 +138,7 @@ describe('components/Ring', () => {
         <Ring {...sessionProps} remaining={remaining} total={total} />
       );
       
-      const label = getByText(onboardingData.ringLabels.power);
+      const label = getByText(locales.en.onboarding.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
@@ -147,13 +155,13 @@ describe('components/Ring', () => {
         <Ring {...sessionProps} colors={colors} />
       );
       
-      const label = getByText(onboardingData.ringLabels.power);
+      const label = getByText(locales.en.onboarding.ringLabels.power);
       expect(label).toBeTruthy();
     });
   });
 
   it('renders different labels', () => {
-    const labels = [onboardingData.ringLabels.power, onboardingData.ringLabels.heart, onboardingData.ringLabels.wisdom];
+    const labels = [locales.en.onboarding.ringLabels.power, locales.en.onboarding.ringLabels.heart, locales.en.onboarding.ringLabels.wisdom];
     
     labels.forEach(label => {
       const { getByText } = render(
