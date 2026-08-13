@@ -62,13 +62,15 @@ export default function SettingsScreen() {
       <DailyReminder />
 
       {/* Language Selector */}
-      <View style={{ marginTop: 16 }}>
-        <Text style={{ 
-          fontSize: 16, 
-          fontWeight: '600', 
-          color: C.text, 
-          marginBottom: 8 
-        }}>{t('settings.language.title')}</Text>
+      <View
+        style={{
+          backgroundColor: C.surface,
+          borderRadius: 12,
+          padding: 12,
+          marginBottom: 16,
+        }}
+      >
+        <Text style={{ fontWeight: '600', color: C.text, marginBottom: 10, fontSize: 16 }}>{t('settings.language.title')}</Text>
         <LanguageSelector />
       </View>
 

@@ -24,6 +24,7 @@ export const en = {
       next: 'Next',
       begin: 'Begin',
     },
+    swipeToBegin: 'Swipe to begin',
     preview: 'Preview',
     instructions: [
       'Settle into your body and let time slow down. As you breathe, feel yourself dropping into this moment—the only moment that truly exists.',

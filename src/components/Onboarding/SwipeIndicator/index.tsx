@@ -1,3 +1,4 @@
+import { useI18n } from '@/contexts/I18nContext';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +15,7 @@ import Animated, {
 
 const SwipeIndicator = () => {
   const C = useThemeColors();
+  const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
 
   const opacity = useSharedValue(0);
@@ -55,7 +57,7 @@ const SwipeIndicator = () => {
           letterSpacing: 0.5,
         }}
       >
-        Swipe to begin
+        {t('onboarding.swipeToBegin')}
       </Text>
     </Animated.View>
   );
