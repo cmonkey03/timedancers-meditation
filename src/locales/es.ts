@@ -24,6 +24,7 @@ export const es = {
       next: 'Siguiente',
       begin: 'Comenzar',
     },
+    swipeToBegin: 'Desliza para comenzar',
     preview: 'Vista previa',
     instructions: [
       'Asiéntate en tu cuerpo y deja que el tiempo se desacelere. Mientras respiras, siente cómo te sumerges en este momento: el único momento que realmente existe.',
