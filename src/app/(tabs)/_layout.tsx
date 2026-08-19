@@ -20,7 +20,7 @@ export default function Layout() {
         tabBarActiveTintColor: C.primary,
         tabBarInactiveTintColor: C.mutedText,
         tabBarStyle: {
-          backgroundColor: C.surface,
+          backgroundColor: C.background,
           elevation: 0, // Android shadow off
           shadowOpacity: 0, // iOS shadow off
           borderTopWidth: 0.5,
@@ -45,7 +45,7 @@ export default function Layout() {
           options={{
             title: t('tabs.home'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
-              <Ionicons name="home-outline" size={size} color={color as string} />
+              <Ionicons name="play-circle-outline" size={size} color={color as string} />
             ),
           }}
         />
@@ -54,7 +54,7 @@ export default function Layout() {
           options={{
             title: t('tabs.session'),
             tabBarIcon: ({ color, size }: { color: ColorValue; size: number }) => (
-              <Ionicons name="aperture-outline" size={size} color={color as string} />
+              <Ionicons name="timer-outline" size={size} color={color as string} />
             ),
           }}
         />

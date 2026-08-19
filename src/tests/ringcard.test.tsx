@@ -1,4 +1,4 @@
-import Ring from '@/components/Session/Ring';
+import RingCard from '@/components/Session/RingCard';
 import { locales } from '@/locales';
 import { render } from '@testing-library/react-native';
 import { View } from 'react-native';
@@ -70,7 +70,7 @@ vi.mock('@/hooks/use-fonts', () => ({
 
 // Component imported at top
 
-describe('components/Ring', () => {
+describe('components/RingCard', () => {
   const sessionProps = {
     size: 160,
     label: locales.en.onboarding.ringLabels.power,
@@ -87,14 +87,14 @@ describe('components/Ring', () => {
   };
 
   it('renders session ring without crashing', () => {
-    const { getByText } = render(<Ring {...sessionProps} />);
+    const { getByText } = render(<RingCard {...sessionProps} />);
     
     const label = getByText(locales.en.onboarding.ringLabels.power);
     expect(label).toBeTruthy();
   });
 
   it('renders simple ring without crashing', () => {
-    const { getByText } = render(<Ring {...simpleProps} />);
+    const { getByText } = render(<RingCard {...simpleProps} />);
     
     const text = getByText('Test Ring');
     expect(text).toBeTruthy();
@@ -105,7 +105,7 @@ describe('components/Ring', () => {
     
     states.forEach(state => {
       const { getByText } = render(
-        <Ring {...sessionProps} state={state} />
+        <RingCard {...sessionProps} state={state} />
       );
       
       const label = getByText(locales.en.onboarding.ringLabels.power);
@@ -118,7 +118,7 @@ describe('components/Ring', () => {
     
     sizes.forEach(size => {
       const { getByText } = render(
-        <Ring {...sessionProps} size={size} />
+        <RingCard {...sessionProps} size={size} />
       );
       
       const label = getByText(locales.en.onboarding.ringLabels.power);
@@ -135,7 +135,7 @@ describe('components/Ring', () => {
     
     testCases.forEach(({ remaining, total }) => {
       const { getByText } = render(
-        <Ring {...sessionProps} remaining={remaining} total={total} />
+        <RingCard {...sessionProps} remaining={remaining} total={total} />
       );
       
       const label = getByText(locales.en.onboarding.ringLabels.power);
@@ -152,7 +152,7 @@ describe('components/Ring', () => {
     
     colorCombinations.forEach(colors => {
       const { getByText } = render(
-        <Ring {...sessionProps} colors={colors} />
+        <RingCard {...sessionProps} colors={colors} />
       );
       
       const label = getByText(locales.en.onboarding.ringLabels.power);
@@ -165,7 +165,7 @@ describe('components/Ring', () => {
     
     labels.forEach(label => {
       const { getByText } = render(
-        <Ring {...sessionProps} label={label} />
+        <RingCard {...sessionProps} label={label} />
       );
       
       const labelElement = getByText(label);
@@ -182,7 +182,7 @@ describe('components/Ring', () => {
     
     backgroundColors.forEach(backgroundColor => {
       const { getByText } = render(
-        <Ring {...simpleProps} backgroundColor={backgroundColor} />
+        <RingCard {...simpleProps} backgroundColor={backgroundColor} />
       );
       
       const text = getByText('Test Ring');

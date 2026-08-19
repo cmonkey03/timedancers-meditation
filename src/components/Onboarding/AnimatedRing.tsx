@@ -1,4 +1,4 @@
-import Ring from '@/components/Session/Ring';
+import RingCard from '@/components/Session/RingCard';
 import { useEffect, useState } from 'react';
 import Animated, {
     Easing,
@@ -47,7 +47,7 @@ const AnimatedRing = ({ size, label, colors, startTime, total }: AnimatedRingPro
 
   return (
     <Animated.View style={animatedStyle}>
-      <Ring
+      <RingCard
         size={size}
         label={label}
         remaining={remaining}

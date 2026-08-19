@@ -1,5 +1,4 @@
-import DismissKeyboard from '@/components/DismissKeyboard';
-import { Control, Wheels } from '@/components/Session';
+import { Control, Wheel } from '@/components/Session';
 import { useI18n } from '@/contexts/I18nContext';
 import { useChime } from '@/hooks/chime-context';
 import { useScreenLock } from '@/hooks/platform/use-screen-lock';
@@ -13,7 +12,7 @@ import { useSessionPersistence } from '@/hooks/session/use-session-persistence';
 import { useThemeColors } from '@/hooks/ui/use-theme';
 import * as Notifier from '@/utils/notifications';
 import * as Timer from '@/utils/timer';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Text, View } from 'react-native';
 
 export default function SessionScreen() {
@@ -23,7 +22,7 @@ export default function SessionScreen() {
   const { t } = useI18n();
   const appIsActiveRef = useSessionAppState();
   
-  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
+  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(10), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
   
   // Screen lock - only keep awake when timer is running
@@ -53,7 +52,7 @@ export default function SessionScreen() {
   // Simple equal-division phases when idle: recompute from minutes input
   useEffect(() => {
     if (timer.running || timer.started) return;
-    const minutes = parseInt(input) || 3;
+    const minutes = parseInt(input) || 10;
     const next = Timer.createPhasesFromMinutes(minutes);
     const curr = timer.phases;
     const differs =
@@ -64,7 +63,7 @@ export default function SessionScreen() {
   }, [input, timer.running, timer.started, timer.phases, setPhases]);
 
   // Session effects (phase transitions, haptics)
-  const prevIndexRef = useSessionEffects(timer, triggerChime);
+  useSessionEffects(timer, triggerChime);
 
   // Session completion handling
   const { showCompleted, resetCompletionTriggered } = useSessionCompletion(
@@ -105,7 +104,7 @@ export default function SessionScreen() {
         break;
       case 'cancel':
         // Reset timer
-        const minutes = parseInt(input) || 3;
+        const minutes = parseInt(input) || 10;
         const newPhases = Timer.createPhasesFromMinutes(minutes);
         setPhases(newPhases);
         reset();
@@ -132,24 +131,28 @@ export default function SessionScreen() {
     }
   };
 
+  const minutes = parseInt(input) || 10;
+  const handleDial = useCallback((m: number) => handleInput(String(m)), [handleInput]);
+
   return (
     <View style={{ flex: 1, backgroundColor: C.background }} testID="screen-session">
-      <DismissKeyboard>
-        <View
-          style={{
-            alignItems: 'center',
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: C.background,
-          }}
-          accessibilityLabel={timer.running ? t('session.accessibility.sessionInProgress') : t('session.status.setup')}
-          accessibilityRole="none"
-        >
-          <Wheels timer={timer} prevIndex={prevIndexRef} />
-          
+      <View
+        style={{
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: C.background,
+        }}
+        accessibilityLabel={timer.running ? t('session.accessibility.sessionInProgress') : t('session.status.setup')}
+        accessibilityRole="none"
+      >
+        <Wheel timer={timer} minutes={minutes} onDialMinutes={handleDial} />
+        
+        {/* Fixed-height slot so the completion message never shifts the wheel */}
+        <View style={{ height: 48, marginTop: 16, justifyContent: 'center', alignItems: 'center' }}>
           {showCompleted && (
-            <Text 
-              style={{ marginTop: 16, color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1 }}
+            <Text
+              style={{ color: C.buttonPrimary, fontWeight: '800', fontSize: 22, letterSpacing: 1, textAlign: 'center' }}
               accessibilityLabel={t('session.accessibility.sessionComplete')}
               accessibilityRole="alert"
               accessible={true}
@@ -157,16 +160,14 @@ export default function SessionScreen() {
               {t('session.status.complete')}
             </Text>
           )}
-          
-          <Control   
-            counting={timer.running}
-            handleInput={handleInput}
-            input={input}
-            onPress={onPress}
-            started={timer.started}
-          />
         </View>
-      </DismissKeyboard>
+        
+        <Control   
+          counting={timer.running}
+          onPress={onPress}
+          started={timer.started}
+        />
+      </View>
     </View>
   );
 }

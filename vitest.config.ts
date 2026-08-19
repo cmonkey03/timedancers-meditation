@@ -20,7 +20,8 @@ export default defineConfig({
       'src/tests/animated-welcome-text.test.tsx',
       'src/tests/button.test.tsx', 
       'src/tests/use-fonts.test.ts',
-      'src/tests/ring.test.tsx',
+      'src/tests/ringcard.test.tsx',
+      'src/tests/wheel.test.tsx',
     ],
   },
 });
