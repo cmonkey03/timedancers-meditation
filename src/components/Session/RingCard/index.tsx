@@ -22,8 +22,8 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type RingState = "idle" | "active" | "releasing" | "done";
 
-// Session ring props
-interface SessionRingProps {
+// Session ring card props
+interface SessionRingCardProps {
   size?: number;
   label: string;
   remaining: number;
@@ -41,9 +41,9 @@ interface SimpleRingProps {
   text: string;
 }
 
-type Props = SessionRingProps | SimpleRingProps;
+type Props = SessionRingCardProps | SimpleRingProps;
 
-const Ring = (props: Props) => {
+const RingCard = (props: Props) => {
   const C = useThemeColors();
   const { t } = useI18n();
   const { fontsLoaded, fonts } = useCustomFonts();
@@ -62,7 +62,7 @@ const Ring = (props: Props) => {
   
   // Extract props based on type
   const simpleProps = isSimple ? props as SimpleRingProps : null;
-  const sessionProps = !isSimple ? props as SessionRingProps : {
+  const sessionProps = !isSimple ? props as SessionRingCardProps : {
     size: 180,
     label: '',
     remaining: 0,
@@ -374,4 +374,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Ring;
+export default RingCard;

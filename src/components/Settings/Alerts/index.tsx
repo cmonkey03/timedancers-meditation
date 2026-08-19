@@ -62,6 +62,9 @@ export default function AlertsSettings({ allowBackgroundAlerts, onToggleAllowBac
           value={allowBackgroundAlerts} 
           onValueChange={onToggleAllowBackgroundAlerts}
           testID="background-alerts-switch"
+          trackColor={{ false: C.sliderActive30, true: C.sliderActive }}
+          thumbColor={allowBackgroundAlerts ? C.buttonPrimaryText : C.sliderActive60}
+          ios_backgroundColor={C.sliderActive30}
         />
       </View>
       <Text style={{ color: C.text, opacity: 0.75, marginTop: 6, marginBottom: 12, fontSize: 14 }}>

@@ -1,4 +1,4 @@
-import Ring from '@/components/Session/Ring';
+import RingCard from '@/components/Session/RingCard';
 import { useI18n } from '@/contexts/I18nContext';
 import { useCustomFonts } from '@/hooks/ui/use-fonts';
 import { useThemeColors } from '@/hooks/ui/use-theme';
@@ -161,7 +161,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
           image: (
             <ImageWrapper>
               <View style={{ alignItems: 'center', gap: 14 }}>
-                <Ring 
+                <RingCard 
                   size={120}
                   label={t('onboarding.ringLabels.wisdom')}
                   remaining={300}
@@ -170,7 +170,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                   colors={['purple', 'indigo']}
                   displayText={t('onboarding.ringLabels.wisdom')}
                 />
-                <Ring 
+                <RingCard 
                   size={120}
                   label={t('onboarding.ringLabels.heart')}
                   remaining={300}
@@ -179,7 +179,7 @@ const Onboarding = ({ finishOnboarding }: Props) => {
                   colors={['blue', 'green']}
                   displayText={t('onboarding.ringLabels.heart')}
                 />
-                <Ring 
+                <RingCard 
                   size={120}
                   label={t('onboarding.ringLabels.power')}
                   remaining={300}

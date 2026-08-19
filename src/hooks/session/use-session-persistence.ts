@@ -9,7 +9,7 @@ import { settingsService } from '@/services/settings';
 import { useCallback, useEffect, useState } from 'react';
 
 export function useSessionPersistence(timerStarted: boolean) {
-  const [input, setInput] = useState('5');
+  const [input, setInput] = useState('10');
   const [allowBackgroundAlerts, setAllowBackgroundAlerts] = useState<boolean>(true);
 
   // Prefill input from last used duration and restore settings

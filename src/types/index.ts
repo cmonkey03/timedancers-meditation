@@ -89,6 +89,9 @@ export interface AppColors {
   buttonPrimaryText: string;
   buttonGhost: string;
   
+  // Slider colors
+  sliderActive: string;
+  
   // Status colors
   success: string;
   warning: string;
@@ -97,10 +100,23 @@ export interface AppColors {
   // Shadow
   shadow: string;
   
+  // Timewheel rings
+  ringInactive: string;
+  ringActive: string;
+  // Radial gradient stops for the wheel's smoky center cloud (inner, mid, outer)
+  wheelCloud: [string, string, string];
+  // Per-stage tone of the three soft cloud rings (stage 1, 2, 3)
+  wheelRings: [string, string, string];
+  // Timer numerals rendered on the cloud's center (inverted against it)
+  wheelText: string;
+  
   // Opacity helpers
   text30: string;
   text40: string;
   text60: string;
+  sliderActive30: string;
+  sliderActive40: string;
+  sliderActive60: string;
 }
 
 export interface ThemeColors {

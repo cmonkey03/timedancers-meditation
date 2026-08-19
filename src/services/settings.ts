@@ -196,7 +196,7 @@ class SettingsService {
     });
 
     return {
-      lastDurationMinutes: obj[STORAGE_KEYS.LAST_DURATION_MINUTES] || '5',
+      lastDurationMinutes: obj[STORAGE_KEYS.LAST_DURATION_MINUTES] || '10',
       alertMode: (obj[STORAGE_KEYS.ALERT_MODE] as AlertMode) || 'chime',
       chimeVolume: obj[STORAGE_KEYS.CHIME_VOLUME] ? parseFloat(obj[STORAGE_KEYS.CHIME_VOLUME]!) : 0.7,
       allowBackgroundAlerts: obj[STORAGE_KEYS.ALLOW_BACKGROUND_ALERTS] === 'true',
