@@ -42,10 +42,10 @@ export function useSessionEffects(
     }
   }, [timer, triggerChime]);
 
-  // Haptic feedback on ring change
+  // Heavy haptic pulse on milestone (stage transition)
   useEffect(() => {
     if (timer.now.currentIndex !== prevIndexRef.current && !timer.now.done) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       prevIndexRef.current = timer.now.currentIndex;
     }
   }, [timer.now.currentIndex, timer.now.done]);

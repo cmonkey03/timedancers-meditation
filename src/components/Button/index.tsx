@@ -50,15 +50,15 @@ const Button = ({ onPress, text, variant = "primary", testID }: Props) => {
       <Animated.View
         style={[
           styles.btn,
-          variant === "primary" ? styles.btnPrimary : styles.btnGhost,
+          variant === "primary" ? { backgroundColor: C.buttonPrimary } : styles.btnGhost,
+          variant === "primary" && { shadowColor: C.shadow },
           variant === "ghost" && { borderColor: C.text30 },
-          { shadowColor: C.shadow },
           animatedStyle,
         ]}
       >
         <Text style={[
           styles.btnText,
-          variant === "ghost" && { color: C.text },
+          variant === "primary" ? { color: C.buttonPrimaryText } : { color: C.text },
           fontsLoaded && { fontFamily: fonts.inter.semiBold },
         ]}>
           {text}
@@ -74,16 +74,13 @@ const styles = StyleSheet.create({
     minHeight: 44, // WCAG minimum touch target size
     paddingHorizontal: 20, 
     paddingVertical: 14, 
-    borderRadius: 22, 
+    borderRadius: 999, 
     alignItems: 'center', 
     justifyContent: 'center',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 3,
     elevation: 2,
-  },
-  btnPrimary: { 
-    backgroundColor: '#2d5a3d' 
   },
   btnGhost: { 
     backgroundColor: 'transparent', 
@@ -93,7 +90,6 @@ const styles = StyleSheet.create({
   btnText: { 
     fontSize: 16, 
     fontWeight: '600', 
-    color: '#ffffff' 
   },
 });
 

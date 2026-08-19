@@ -54,7 +54,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const { playStartAlert, triggerChime, resetChimeState, mode: alertMode } = useChime();
   
   // Timer state
-  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(5), []);
+  const initialPhases = useMemo(() => Timer.createPhasesFromMinutes(10), []);
   const { state: timer, start, pause, resume, reset, setPhases } = usePhasedTimer(initialPhases);
   
   // Persistence
@@ -75,7 +75,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   // Update phases when input changes (only when idle)
   useEffect(() => {
     if (timer.running || timer.started) return;
-    const minutes = parseInt(input) || 3;
+    const minutes = parseInt(input) || 10;
     const next = Timer.createPhasesFromMinutes(minutes);
     const curr = timer.phases;
     const differs =
@@ -137,7 +137,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, [resume, allowBackgroundAlerts, scheduleNotificationsForRemaining]);
   
   const cancelSession = useCallback(() => {
-    const minutes = parseInt(input) || 3;
+    const minutes = parseInt(input) || 10;
     const newPhases = Timer.createPhasesFromMinutes(minutes);
     setPhases(newPhases);
     reset();

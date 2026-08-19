@@ -51,8 +51,8 @@ export default function ModeSelector({ mode, onModeChange }: ModeSelectorProps) 
           style={[
             styles.pill,
             {
-              borderColor: selected ? C.buttonPrimary : C.text30,
-              backgroundColor: selected ? C.buttonPrimary : C.buttonGhost,
+              borderColor: selected ? C.sliderActive : C.sliderActive30,
+              backgroundColor: selected ? C.sliderActive : C.buttonGhost,
               shadowColor: C.shadow,
             },
             animatedStyle,

@@ -1,5 +1,3 @@
 export { default as Control } from './Control';
-export { default as DurationPicker } from './DurationPicker';
-export { default as Ring } from './Ring';
-export { default as Wheels } from './Wheels/index';
-
+export { default as RingCard } from './RingCard';
+export { default as Wheel } from './Wheel';

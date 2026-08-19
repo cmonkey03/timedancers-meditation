@@ -106,7 +106,7 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
             style={[
               styles.sliderTrack,
               { 
-                backgroundColor: disabled ? `${C.text}20` : `${C.text}30`,
+                backgroundColor: disabled ? C.sliderActive30 : C.sliderActive40,
                 width: sliderWidth,
               }
             ]}
@@ -121,7 +121,7 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
               style={[
                 styles.sliderActiveTrack,
                 {
-                  backgroundColor: disabled ? C.text40 : C.buttonPrimary,
+                  backgroundColor: disabled ? C.sliderActive40 : C.sliderActive,
                 },
                 activeTrackAnimatedStyle,
               ]}
@@ -132,7 +132,7 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
               style={[
                 styles.sliderKnob,
                 {
-                  backgroundColor: disabled ? C.text60 : C.buttonPrimary,
+                  backgroundColor: disabled ? C.sliderActive60 : C.sliderActive,
                   borderColor: C.surface,
                 },
                 knobAnimatedStyle,
@@ -142,8 +142,8 @@ export default function VolumeSlider({ volume, onVolumeChange, disabled }: Volum
         </GestureDetector>
         
         <View style={styles.volumeLabels}>
-          <Text style={{ color: C.text, opacity: 0.5, fontSize: 12 }}>0%</Text>
-          <Text style={{ color: C.text, opacity: 0.5, fontSize: 12 }}>100%</Text>
+          <Text style={{ color: C.sliderActive, opacity: 0.5, fontSize: 12 }}>0%</Text>
+          <Text style={{ color: C.sliderActive, opacity: 0.5, fontSize: 12 }}>100%</Text>
         </View>
       </View>
     </View>

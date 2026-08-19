@@ -44,7 +44,7 @@ const TimeButton = ({ enabled, time, onPress }: { enabled: boolean; time: string
       <Animated.View
         style={[
           {
-            borderColor: enabled ? C.text60 : C.text30,
+            borderColor: enabled ? C.sliderActive60 : C.sliderActive30,
             borderWidth: 2,
             borderRadius: 22,
             paddingHorizontal: 18,
@@ -113,6 +113,9 @@ export default function DailyReminder() {
           testID="daily-reminder-switch"
           accessibilityLabel={t('settings.dailyReminder.enable')}
           accessibilityHint={t('settings.dailyReminder.hint')}
+          trackColor={{ false: C.sliderActive30, true: C.sliderActive }}
+          thumbColor={enabled ? C.buttonPrimaryText : C.sliderActive60}
+          ios_backgroundColor={C.sliderActive30}
         />
         <View style={{ width: 16 }} />
         <TimeButton 
